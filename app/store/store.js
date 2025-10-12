@@ -1,0 +1,13 @@
+import { configureStore } from '@reduxjs/toolkit';
+import userSlice from './reducer/userSlice';
+
+// Configure the store. Thunk is automatically added.
+export const store = configureStore({
+  reducer: {
+    user: userSlice, // Add your slice reducers here
+  },
+});
+
+// TypeScript: Infer the `RootState` and `AppDispatch` types from the store itself
+// export type RootState = ReturnType<typeof store.getState>;
+// export type AppDispatch = typeof store.dispatch;

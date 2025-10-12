@@ -1,0 +1,14 @@
+# Dependency directories
+node_modules/
+
+# Generated directories/files
+android/
+ios/
+web-build/
+dist/
+build/
+coverage/
+
+# Expo/Babel/Git config files
+babel.config.js
+.git/
