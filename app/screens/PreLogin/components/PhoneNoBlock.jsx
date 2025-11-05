@@ -1,15 +1,16 @@
 import {View, StyleSheet, Text} from 'react-native';
 import {useRef, useState} from 'react';
-import {PBtn} from '../../../components/brick/button';
+import {PBtn} from '@components/brick/button';
 import * as Animatable from 'react-native-animatable';
-import {themeColors} from '../../../utils/constant';
-import {PInputFilled, PInputOutlined} from '../../../components/brick/inputs';
-import {fonts} from '../../../utils/theme';
+import {themeColors} from '@utils/constant';
+import {PInputFilled, PInputOutlined} from 'components/brick/inputs';
+import {fonts} from '@utils/theme';
 import {useDispatch} from 'react-redux';
-// import CALL_SAGA from '../../../store/sagas/types/types'
-import {PToast} from '../../../components/brick/PToast';
-import {useKeyboardStatus} from '../../../hooks/useKeyboardState';
-// import { setParam } from '../../../store/reducers/userReducer';
+// import CALL_SAGA from '@store/sagas/types/types'
+import {PToast} from '@components/brick/PToast';
+import {useKeyboardStatus} from '@hooks/useKeyboardState';
+import {registerUserThunk} from '@thunk/userThunk';
+
 
 const proceeBtnObj = {
   label: 'Proceed',
@@ -17,7 +18,7 @@ const proceeBtnObj = {
 };
 
 const PhoneNoBlock = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const phoneNoValueRef = useRef('');
   const {isKeyboardVisible} = useKeyboardStatus();
   const validatePhoneNo = () => {
@@ -29,13 +30,12 @@ const PhoneNoBlock = () => {
       // DO FCM notification here and enable
       // dispatch(setParam({ key: "isPhoneNoValidateStatus", value: true }))
       // dispatch(setParam({ key: "phoneNo", value: phoneNo }))
-
-      
+      dispatch(registerUserThunk(phoneNo));
     } else {
       PToast({
         message: 'Please enter valid Phone Number to Proceed.',
         time: 'SHORT',
-        type:'error'
+        type: 'error',
       });
     }
   };

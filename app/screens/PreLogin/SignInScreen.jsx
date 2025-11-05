@@ -6,13 +6,11 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { themeColors } from '../../utils/constant';
-import pickaarLogo from '../../../assets/logo.png';
+import { themeColors } from '@utils/constant';
+import pickaarLogo from '@assets/logo.png';
 import * as Animatable from 'react-native-animatable';
-import PhoneNoBlock from './components/PhoneNoBlock';
-import OTPBlock from './components/OTPBlock';
-
-// import OTPBlock from './components/otpblock';
+import PhoneNoBlock from '@screens/PreLogin/components/PhoneNoBlock';
+import OTPBlock from '@screens/PreLogin/components/OTPBlock';
 
 export default function SignInScreen(props) {
   const [isPhoneNoValidated, setIsPhoneNoValidated] = useState(false);

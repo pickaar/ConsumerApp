@@ -1,14 +1,16 @@
-
+// @ts-nocheck
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SignInScreen from '../screens/PreLogin/SignInScreen';
+import SignInScreen from '@screens/PreLogin/SignInScreen';
 // import FeedbackComponent from '../screens/ActiveBooking/StepTwo/Feedback';
 // import ActiveBookingStackNavScreens from './activeBookingNav';
 // import BookingStackNavScreens from './bookingNav';
-import MainTab from './MainTabNav';
+import MainTab from '@nav/MainTabNav';
 // import TravelStackNavScreens from './travelBooking';
 // import { getData } from '../utils/helpersFn';
 // import { localStorageKeys } from '../utils/constant';
 import { SplashScreen } from '../screens/PreLogin/SplashScreen';
+import { Text, View } from 'react-native';
 // import SettingScreenNav from './NavConfig';
 
 const RootStack = createNativeStackNavigator();
@@ -16,7 +18,7 @@ const RootStack = createNativeStackNavigator();
 const RootStackNavScreens = ({initialRouteScreen}) => {
 
     return (
-        <RootStack.Navigator initialRouteName="SignInScreen">
+        <RootStack.Navigator initialRouteName={"SignInScreen"}>
 
             {/* <RootStack.Screen
                 name="splashScreen"
@@ -27,7 +29,7 @@ const RootStackNavScreens = ({initialRouteScreen}) => {
             /> */}
             <RootStack.Screen
                 name="SignInScreen"
-                component={SignInScreen}
+                component={<View><Text>Testing</Text></View>}
                 options={{
                     headerShown: false,
                 }}

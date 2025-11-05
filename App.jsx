@@ -1,15 +1,19 @@
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import RootStackNavScreens from './app/navigators/RootStackScreen';
-import { localStorageKeys, themeColors } from './app/utils/constant';
+import RootStackNavScreens from '@nav/RootStackScreen';
+import { localStorageKeys, themeColors } from '@utils/constant';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { store } from './app/store/store';
+import { store } from '@store/store';
 import * as SplashScreenObj from 'expo-splash-screen';
-import { useEffect, useState, useCallback } from 'react';
-import { getData } from './app/utils/helperfn';
-import { SplashScreen } from './app/screens/PreLogin/SplashScreen';
+import { useEffect, useCallback } from 'react';
+import { getData } from '@utils/helperfn';
+import { SplashScreen } from '@screens/PreLogin/SplashScreen';
 import { useFonts } from 'expo-font';
 import Toast from 'react-native-toast-message';
+import { setIsLoading } from '@reducer/userSlice';
+import { useAppDispatch, useAppSelector } from '@store/hook';
+import { ONLOAD_STATUS } from '@utils/constant';
 SplashScreenObj.preventAutoHideAsync();
 
 const MyTheme = {
@@ -22,26 +26,24 @@ const MyTheme = {
 };
 
 function RootApp({ fontsLoaded }) {
-  const [isLoading, setIsLoading] = useState('Idle');
-  const dispatch = useDispatch();
-  const userLoadingStatus = useSelector(state => state.user.isLoading);
-
+  const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector(state => state.user);
   const checkLoginStatus = useCallback(async () => {
     try {
       const phoneNumber = await getData(localStorageKeys.uniquePhoneNo);
       const status = await getData(localStorageKeys.loginStatus);
-
+      console.log('Login Status on Splash Screen :' + status);
       if (status === 'Y' && phoneNumber) {
         dispatch({
           type: 'user/FETCH_USER_DETAILS',
           payload: { phoneNo: phoneNumber },
         });
       } else {
-        setIsLoading('failed');
+        dispatch(setIsLoading(ONLOAD_STATUS.FAILED));
       }
     } catch (e) {
       console.log('Async Store Error :' + e);
-      setIsLoading('failed');
+      dispatch(setIsLoading(ONLOAD_STATUS.FAILED));
     }
   }, [dispatch]);
 
@@ -49,40 +51,52 @@ function RootApp({ fontsLoaded }) {
     checkLoginStatus();
   }, [checkLoginStatus]);
 
-  useEffect(() => {
-    SplashScreenObj.hideAsync();
-    if (userLoadingStatus === 'succeeded') setIsLoading('Succeeded');
-    else if (userLoadingStatus === 'failed') setIsLoading('failed');
-  }, [userLoadingStatus]);
-
-  if (isLoading === 'Idle' || !fontsLoaded) return <SplashScreen />;
+  // useEffect(() => {
+  //   SplashScreenObj.hideAsync();
+  //   if (userLoadingStatus === 'succeeded') setIsLoading('Succeeded');
+  //   else if (userLoadingStatus === 'failed') setIsLoading('failed');
+  // }, [userLoadingStatus]);
+  if (isLoading === ONLOAD_STATUS.IDLE || !fontsLoaded) return <SplashScreen />;
+  console.log('Initial Route Screen :' + (isLoading === ONLOAD_STATUS.SUCCESS ? 'dashboard' : 'SignInScreen'));
+  const initialRoute = isLoading === ONLOAD_STATUS.SUCCESS ? 'dashboard' : 'SignInScreen';
 
   return (
     <NavigationContainer theme={MyTheme}>
-      <RootStackNavScreens
-        initialRouteScreen={
-          isLoading === 'Succeeded' ? 'dashboard' : 'SignInScreen'
-        }
-      />
+      <RootStackNavScreens initialRouteScreen={initialRoute} />
     </NavigationContainer>
   );
 }
 
 export default function App() {
   const [fontsLoaded] = useFonts({
+    // @ts-ignore
     'Rubik-Black': require('./assets/fonts/Rubik-Black.ttf'),
+    // @ts-ignore
     'Rubik-BlackItalic': require('./assets/fonts/Rubik-BlackItalic.ttf'),
+    // @ts-ignore
     'Rubik-Bold': require('./assets/fonts/Rubik-Bold.ttf'),
+    // @ts-ignore
+
     'Rubik-BoldItalic': require('./assets/fonts/Rubik-BoldItalic.ttf'),
+    // @ts-ignore
     'Rubik-ExtraBold': require('./assets/fonts/Rubik-ExtraBold.ttf'),
+    // @ts-ignore
     'Rubik-ExtraBoldItalic': require('./assets/fonts/Rubik-ExtraBoldItalic.ttf'),
+    // @ts-ignore
     'Rubik-Italic': require('./assets/fonts/Rubik-Italic.ttf'),
+    // @ts-ignore
     'Rubik-Light': require('./assets/fonts/Rubik-Light.ttf'),
+    // @ts-ignore
     'Rubik-LightItalic': require('./assets/fonts/Rubik-LightItalic.ttf'),
+    // @ts-ignore
     'Rubik-Medium': require('./assets/fonts/Rubik-Medium.ttf'),
+    // @ts-ignore
     'Rubik-MediumItalic': require('./assets/fonts/Rubik-MediumItalic.ttf'),
+    // @ts-ignore
     'Rubik-Regular': require('./assets/fonts/Rubik-Regular.ttf'),
+    // @ts-ignore
     'Rubik-SemiBold': require('./assets/fonts/Rubik-SemiBold.ttf'),
+    // @ts-ignore
     'Rubik-SemiBoldItalic': require('./assets/fonts/Rubik-SemiBoldItalic.ttf'),
   });
 
@@ -90,7 +104,7 @@ export default function App() {
     <Provider store={store}>
       <View style={styles.container}>
         <RootApp fontsLoaded={fontsLoaded} />
-        <Toast/>
+        <Toast />
       </View>
     </Provider>
   );

@@ -1,7 +1,6 @@
 export const localStorageKeys = {
     loginStatus: 'isAlreadyLoggedIn',
     uniquePhoneNo:'phoneNumber',
-
 }
 
 export const themeColors = {
@@ -20,3 +19,17 @@ export const themeColors = {
     chepestBgColor: '#5188f9',
     infoHighlightColor: '#2667c5'
 }
+
+
+// src/constants/FileStatus.js
+
+/**
+ * @typedef {'IDLE' | 'SUCCESS' | 'FAILED' } FileStatus
+ */
+
+/** @type {{[key in FileStatus]: FileStatus}} */
+export const ONLOAD_STATUS = Object.freeze({
+  IDLE: 'IDLE',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+});

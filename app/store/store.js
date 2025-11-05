@@ -1,6 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './reducer/userSlice';
-
+/**
+ * @typedef {object} RootState
+ * @property {ReturnType<typeof userSlice>} user
+ * // Add other slices here:
+ * // property {ReturnType<typeof someOtherReducer>} someOtherSlice
+ */
 // Configure the store. Thunk is automatically added.
 export const store = configureStore({
   reducer: {

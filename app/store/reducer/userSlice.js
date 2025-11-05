@@ -1,31 +1,47 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { handshake } from '../thunk/userThunk';
+import { handshake, registerUserThunk } from '../thunk/userThunk';
+import { ONLOAD_STATUS } from '@utils/constant';
 export const userSlice = createSlice({
   name: 'user',
+
+
   initialState: {
     userData: null,
-    isLoading: 'idle', // 'idle' | 'pending' | 'succeeded' | 'failed'
+    isLoading: ONLOAD_STATUS.IDLE, 
     error: null,
   },
+
+
   reducers: {
-    // Standard synchronous reducers go here (e.g., clearUser: ...)
+    setIsLoading(state, action) {
+      state.isLoading = action.payload;
+    },
   },
-  
-  extraReducers: (builder) => {
+
+  extraReducers: builder => {
     builder
-      .addCase(handshake.pending, (state) => {
-        state.isLoading = 'pending';
-        state.error = null;
+      .addCase(registerUserThunk.pending, state => {
+        // state.isLoading = 'pending';
+        // state.error = null;
+        // alert(`Registration successful: ${action.payload?.successmsg || 'No message provided.'}`);
+        //
       })
-      .addCase(handshake.fulfilled, (state, action) => {
-        state.isLoading = 'succeeded';
-        state.userData = action.payload; // Payload is the data returned from the async function
+      .addCase(registerUserThunk.fulfilled, (state, action) => {
+        alert(
+          // `Registration successful: ${action.payload?.successmsg || 'No message provided.'}`,
+        );
+        // state.isLoading = 'succeeded';
+        // state.userData = action.payload; // Payload is the data returned from the async function
       })
-      .addCase(handshake.rejected, (state, action) => {
-        state.isLoading = 'failed';
-        state.error = action.payload || 'Failed to fetch user data.'; // Payload is the value from rejectWithValue
+      .addCase(registerUserThunk.rejected, (state, action) => {
+        alert(`Rejected: ${action.payload || 'No error message provided.'}`);
+
+        // state.isLoading = 'failed';
+        // state.error = action.payload || 'Failed to fetch user data.'; // Payload is the value from rejectWithValue
       });
   },
 });
 
+const { setIsLoading } = userSlice.actions;
+export { setIsLoading };
 export default userSlice.reducer;

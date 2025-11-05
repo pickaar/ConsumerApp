@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2016",
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".", // Must be specified for 'paths' to work. Sets the base directory for path lookups.
+    "checkJs":true,
+    "strict": false,
+    "resolveJsonModule": true,
+    "paths": {
+      // Define your aliases here:
+      "@components/*": ["app/components/*"],
+      "@screens/*": ["app/screens/*"],
+      "@utils/*": ["app/utils/*"],
+      "@hooks/*": ["app/hooks/*"],
+      "@assets/*": ["assets/*"],
+      "@reducer/*": ["app/store/reducer/*"],
+      "@thunk/*": ["app/store/thunk/*"],
+      "@nav/*": ["app/navigators/*"],
+      "@app/*": ["app/*"],
+      "@store/*": ["app/store/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+  // ... (other options)
+}
