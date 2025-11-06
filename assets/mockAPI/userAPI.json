@@ -1,0 +1,27 @@
+{
+    "login": {
+        "userID": 12345679897,
+        "phoneNo": "9894936594",
+        "userName": "Vanitha Kameeshwaran",
+        "profileImage": "",
+        "loginState": true,
+        "locations": [
+            {
+                "name": "Home",
+                "address": "VGP, Prabhu nagar, Perumbakkam, Chennai - 600100"
+            },
+            {
+                "name": "Vlr Home",
+                "address": "VGP, Prabhu nagar, Perumbakkam, Vellore - 632006"
+            }
+        ]
+    },
+    "validatePhoneNoAPI": {
+        "status": true,
+        "msg": "Successfully send OTP to your device"
+    },
+    "validateOTPAPI": {
+        "status": true,
+        "msg": "Successfully validated the OTP"
+    }
+}

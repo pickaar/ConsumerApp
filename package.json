@@ -34,6 +34,7 @@
   },
   "private": true,
   "devDependencies": {
+    "@types/react": "~19.1.10",
     "babel-plugin-module-resolver": "^5.0.2",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
@@ -41,6 +42,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-react-native": "^5.0.0",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.2"
   }
 }

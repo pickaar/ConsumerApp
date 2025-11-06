@@ -1,16 +1,15 @@
-import {View, StyleSheet, Text} from 'react-native';
-import {useRef, useState} from 'react';
-import {PBtn} from '@components/brick/button';
+import React from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { useRef, useState } from 'react';
+import { PBtn } from '@components/brick/button';
 import * as Animatable from 'react-native-animatable';
-import {themeColors} from '@utils/constant';
-import {PInputFilled, PInputOutlined} from 'components/brick/inputs';
-import {fonts} from '@utils/theme';
-import {useDispatch} from 'react-redux';
-// import CALL_SAGA from '@store/sagas/types/types'
-import {PToast} from '@components/brick/PToast';
-import {useKeyboardStatus} from '@hooks/useKeyboardState';
-import {registerUserThunk} from '@thunk/userThunk';
-
+import { themeColors } from '@utils/constant';
+import { PInputOutlined } from '@components/brick/inputs';
+import { fonts } from '@utils/theme';
+import { PToast } from '@components/brick/PToast';
+import { useKeyboardStatus } from '@hooks/useKeyboardState';
+import { registerUserThunk } from '@thunk/userThunk';
+import { useAppDispatch } from '@app/store/store';
 
 const proceeBtnObj = {
   label: 'Proceed',
@@ -18,24 +17,26 @@ const proceeBtnObj = {
 };
 
 const PhoneNoBlock = () => {
-  const dispatch = useDispatch();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const dispatch = useAppDispatch();
   const phoneNoValueRef = useRef('');
-  const {isKeyboardVisible} = useKeyboardStatus();
+  const { isKeyboardVisible } = useKeyboardStatus();
   const validatePhoneNo = () => {
     /*Validation and sending OTP logic will goes here
             @return true = redirect to OTP block
         */
     const phoneNo = phoneNoValueRef.current;
-    if (phoneNo.length > 8 && phoneNo.length < 12) {
+    if (phoneNo.length > 1 && phoneNo.length < 12) {
       // DO FCM notification here and enable
-      // dispatch(setParam({ key: "isPhoneNoValidateStatus", value: true }))
-      // dispatch(setParam({ key: "phoneNo", value: phoneNo }))
-      dispatch(registerUserThunk(phoneNo));
+      // @ts-ignore
+      dispatch(registerUserThunk('+91' + phoneNo));
+      setIsProcessing(true);
     } else {
       PToast({
         message: 'Please enter valid Phone Number to Proceed.',
         time: 'SHORT',
         type: 'error',
+        position: 'top', // or 'top', depending on your UI preference
       });
     }
   };
@@ -43,20 +44,19 @@ const PhoneNoBlock = () => {
   return (
     <Animatable.View
       animation="bounceInUp"
-      duraton="2500"
-      style={[styles.container, {flex: 1}]}
+      duration={2500}
+      style={[styles.container, { flex: 1 }]}
     >
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View>
           {!isKeyboardVisible && (
-            <Text fontFamily={fonts.RubikBold} style={[styles.title]}>
+            <Text style={[styles.title, { fontFamily: fonts.RubikBold }]}>
               Welcome to Pickaar !
             </Text>
           )}
           {!isKeyboardVisible && (
             <Text
-              fontFamily={fonts.RubikMedium}
-              style={{fontSize: 10, paddingHorizontal: 9}}
+              style={{ fontSize: 10, paddingHorizontal: 9, fontFamily: fonts.RubikMedium }}
             >
               Best place to find affordable rides.
             </Text>
@@ -64,13 +64,14 @@ const PhoneNoBlock = () => {
         </View>
       </View>
       <View style={styles.fieldsContainer}>
-        <View style={{marginTop: 40}}>
+        <View style={{ marginTop: 40 }}>
           {isKeyboardVisible && (
-            <View style={{marginBottom: 5}}>
-              <Text>Enter Phone Number</Text>
+            <View style={{ marginBottom: 5 }}>
+              <Text style={{ fontFamily: fonts.RubikMedium }}>Enter Phone Number</Text>
             </View>
           )}
           <PInputOutlined
+            editable={!isProcessing ? true : false}
             keyboardType="phone-pad"
             config={{
               maxLength: 12,
@@ -85,11 +86,11 @@ const PhoneNoBlock = () => {
         <View>
           <PBtn
             config={{
-              label: 'Proceed',
+              label: !isProcessing ? 'Proceed' : 'Processing...',
               outlinedBtn: false,
               icon: {
                 isRequired: false,
-                name: 'navigate-next',
+                name: !isProcessing ? 'navigate-next' : 'cached',
               },
             }}
             onPress={validatePhoneNo}

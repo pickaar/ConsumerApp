@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -6,15 +6,21 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { themeColors } from '@utils/constant';
+import {  ONLOAD_STATUS, themeColors } from '@utils/constant';
 import pickaarLogo from '@assets/logo.png';
 import * as Animatable from 'react-native-animatable';
 import PhoneNoBlock from '@screens/PreLogin/components/PhoneNoBlock';
 import OTPBlock from '@screens/PreLogin/components/OTPBlock';
+import { useAppSelector } from '@app/store/hook';
 
 export default function SignInScreen(props) {
-  const [isPhoneNoValidated, setIsPhoneNoValidated] = useState(false);
+  const registerUserLoader = useAppSelector(state => state.user.loadingStatus.registerUserLoader === ONLOAD_STATUS.SUCCESS);
+  const validateOTPLoader = useAppSelector(state => state.user.loadingStatus.validateOTPLoader === ONLOAD_STATUS.SUCCESS);
 
+  if(validateOTPLoader){
+    props.navigation.replace('dashboard');
+  }
+  
   return (
     <View style={styles.container}>
       <View style={styles.topHalf}>
@@ -33,7 +39,7 @@ export default function SignInScreen(props) {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={0}
       >
-        {!isPhoneNoValidated ? (
+        {!registerUserLoader? (
           <PhoneNoBlock />
         ) : (
           <OTPBlock ValidateOTP={true} />

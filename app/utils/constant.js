@@ -1,23 +1,23 @@
 export const localStorageKeys = {
-    loginStatus: 'isAlreadyLoggedIn',
-    uniquePhoneNo:'phoneNumber',
+  loginStatus: 'isAlreadyLoggedIn',
+  uniquePhoneNo: 'phoneNumber',
 }
 
 export const themeColors = {
-    // primary: '#2A2A2A',
-    primary: '#000',
-    secondary: 'rgb(59, 59, 59)',
-    light: 'rgb(247, 247, 247)',
-    yellow: '#FFCC57',
-    gray: '#aeaaaa',
-    white: '#ffffff',
-    lightGray: '#ebeaeaa6',
-    lightGray2: '#ebeaead6',
-    darkGray: '#484f59',
-    lightYellow: '#fcb5122e',
-    recommendedBgColor: '#099a7dfc',
-    chepestBgColor: '#5188f9',
-    infoHighlightColor: '#2667c5'
+  // primary: '#2A2A2A',
+  primary: '#000',
+  secondary: 'rgb(59, 59, 59)',
+  light: 'rgb(247, 247, 247)',
+  yellow: '#FFCC57',
+  gray: '#aeaaaa',
+  white: '#ffffff',
+  lightGray: '#ebeaeaa6',
+  lightGray2: '#ebeaead6',
+  darkGray: '#484f59',
+  lightYellow: '#fcb5122e',
+  recommendedBgColor: '#099a7dfc',
+  chepestBgColor: '#5188f9',
+  infoHighlightColor: '#2667c5'
 }
 
 
@@ -32,4 +32,18 @@ export const ONLOAD_STATUS = Object.freeze({
   IDLE: 'IDLE',
   SUCCESS: 'SUCCESS',
   FAILED: 'FAILED',
+});
+
+
+/**
+ * @typedef {'IDLE' | 'SUCCESS' | 'REJECTED' } ApiCallStatus
+ */
+
+/** @type {{[key in ApiCallStatus]: ApiCallStatus}} */
+
+export const API_CALL_STATUS = Object.freeze({
+  IDLE: 'IDLE',
+  SUCCESS: 'SUCCESS',
+  PENDING: 'PENDING',
+  REJECTED: 'REJECTED',
 });

@@ -1,18 +1,20 @@
-import OtpInputContainer from "../../../components/walls/OtpInputContainer";
+import React from 'react';
+import OtpInputContainer from "@screens/PreLogin/components/OtpInputContainer";
 import { View, Text, StyleSheet } from 'react-native';
-import { PBtn } from "../../../components/brick/button";
+import { PBtn } from "@components/brick/button";
 import * as Animatable from 'react-native-animatable';
-import { themeColors } from "../../../utils/constant";
+import { themeColors } from "@utils/constant";
+import { useAppDispatch } from '@app/store/store';
+import { validateOTPThunk } from '@thunk/userThunk';
 // import CALL_SAGA from '../../../store/sagas/types/types';
 // import { useDispatch } from 'react-redux';
 
-const OTPBlock = ({ ValidateOTP }) => {
+const OTPBlock = () => {
 
-    // const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const getOTP = (OTP) => {
-
-        // ValidateOTP(OTP);
+       dispatch(validateOTPThunk(OTP));
     }
 
     const ValidateOTP1 = (OTP) => {
@@ -35,19 +37,19 @@ const OTPBlock = ({ ValidateOTP }) => {
     return (
         <Animatable.View
             animation="bounceInUp"
-            duraton="2500"
+            duration={1500}
             style={[styles.container, { flex: 0.8 }]}>
-            <View style={{ flex: 1, width: '100%', flexDirection: 'column', justifyContent: 'center' }}>
+            <View style={{ flex: 1, width: '100%', flexDirection: 'column', justifyContent: 'flex-end' }}>
 
                 <View style={[styles.alignContent]}>
                     <OtpInputContainer
                         postEnteredOTP={getOTP} />
                 </View>
                 <View style={[styles.alignContent, { alignItems: 'center' }]}>
-                    <Text style={{ fontSize: 12 }}>We have send OTP on your Mobile</Text>
+                    <Text style={{ fontSize: 14 }}>OTP sent to your mobile number.</Text>
                 </View>
 
-                <View style={[styles.alignContent]}>
+                {/* <View >
                     <PBtn
                         config={{
                             label: 'Continue',
@@ -56,7 +58,7 @@ const OTPBlock = ({ ValidateOTP }) => {
                             }
                         }}
                         onPress={ValidateOTP} />
-                </View>
+                </View> */}
             </View>
 
         </Animatable.View>
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
     },
     alignContent: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         minHeight: 50
     }
 })

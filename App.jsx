@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import RootStackNavScreens from '@nav/RootStackScreen';
-import { localStorageKeys, themeColors } from '@utils/constant';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { API_CALL_STATUS, localStorageKeys, themeColors } from '@utils/constant';
+import { Provider} from 'react-redux';
 import { store } from '@store/store';
 import * as SplashScreenObj from 'expo-splash-screen';
 import { useEffect, useCallback } from 'react';
@@ -12,8 +12,9 @@ import { SplashScreen } from '@screens/PreLogin/SplashScreen';
 import { useFonts } from 'expo-font';
 import Toast from 'react-native-toast-message';
 import { setIsLoading } from '@reducer/userSlice';
-import { useAppDispatch, useAppSelector } from '@store/hook';
+import { useAppDispatch } from '@store/store';
 import { ONLOAD_STATUS } from '@utils/constant';
+import { useAppSelector } from '@app/store/hook';
 SplashScreenObj.preventAutoHideAsync();
 
 const MyTheme = {
@@ -26,24 +27,26 @@ const MyTheme = {
 };
 
 function RootApp({ fontsLoaded }) {
+  
   const dispatch = useAppDispatch();
-  const { isLoading } = useAppSelector(state => state.user);
+  const { handShakeLoader } = useAppSelector(state => state.user.loadingStatus);
+  const initialRoute = handShakeLoader === API_CALL_STATUS.SUCCESS ? 'dashboard' : 'SignInScreen';
   const checkLoginStatus = useCallback(async () => {
     try {
       const phoneNumber = await getData(localStorageKeys.uniquePhoneNo);
       const status = await getData(localStorageKeys.loginStatus);
-      console.log('Login Status on Splash Screen :' + status);
+
       if (status === 'Y' && phoneNumber) {
         dispatch({
           type: 'user/FETCH_USER_DETAILS',
           payload: { phoneNo: phoneNumber },
         });
       } else {
-        dispatch(setIsLoading(ONLOAD_STATUS.FAILED));
+        dispatch(setIsLoading(API_CALL_STATUS.REJECTED));
       }
     } catch (e) {
-      console.log('Async Store Error :' + e);
-      dispatch(setIsLoading(ONLOAD_STATUS.FAILED));
+      console.warn('Error checking login status:', e);
+      dispatch(setIsLoading(API_CALL_STATUS.REJECTED));
     }
   }, [dispatch]);
 
@@ -51,14 +54,11 @@ function RootApp({ fontsLoaded }) {
     checkLoginStatus();
   }, [checkLoginStatus]);
 
-  // useEffect(() => {
-  //   SplashScreenObj.hideAsync();
-  //   if (userLoadingStatus === 'succeeded') setIsLoading('Succeeded');
-  //   else if (userLoadingStatus === 'failed') setIsLoading('failed');
-  // }, [userLoadingStatus]);
-  if (isLoading === ONLOAD_STATUS.IDLE || !fontsLoaded) return <SplashScreen />;
-  console.log('Initial Route Screen :' + (isLoading === ONLOAD_STATUS.SUCCESS ? 'dashboard' : 'SignInScreen'));
-  const initialRoute = isLoading === ONLOAD_STATUS.SUCCESS ? 'dashboard' : 'SignInScreen';
+  useEffect(() => {
+    SplashScreenObj.hideAsync();
+  }, [handShakeLoader]);
+
+  if (handShakeLoader === API_CALL_STATUS.IDLE || !fontsLoaded) return <SplashScreen />;
 
   return (
     <NavigationContainer theme={MyTheme}>

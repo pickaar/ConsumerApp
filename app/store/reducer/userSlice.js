@@ -1,43 +1,41 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { handshake, registerUserThunk } from '../thunk/userThunk';
-import { ONLOAD_STATUS } from '@utils/constant';
+import { registerUserThunk, validateOTPThunk } from '@thunk/userThunk';
+import { API_CALL_STATUS, ONLOAD_STATUS } from '@utils/constant';
 export const userSlice = createSlice({
   name: 'user',
-
-
   initialState: {
     userData: null,
-    isLoading: ONLOAD_STATUS.IDLE, 
+    loadingStatus:{
+      handShakeLoader: ONLOAD_STATUS.IDLE, 
+      registerUserLoader: API_CALL_STATUS.IDLE,
+      validateOTPLoader: API_CALL_STATUS.IDLE
+    },
     error: null,
   },
 
-
   reducers: {
     setIsLoading(state, action) {
-      state.isLoading = action.payload;
+      state.loadingStatus.handShakeLoader = action.payload;
     },
   },
 
   extraReducers: builder => {
     builder
-      .addCase(registerUserThunk.pending, state => {
-        // state.isLoading = 'pending';
-        // state.error = null;
-        // alert(`Registration successful: ${action.payload?.successmsg || 'No message provided.'}`);
-        //
-      })
       .addCase(registerUserThunk.fulfilled, (state, action) => {
-        alert(
-          // `Registration successful: ${action.payload?.successmsg || 'No message provided.'}`,
-        );
-        // state.isLoading = 'succeeded';
-        // state.userData = action.payload; // Payload is the data returned from the async function
+        state.loadingStatus.registerUserLoader = API_CALL_STATUS.SUCCESS;
+        state.userData = action.payload;
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
-        alert(`Rejected: ${action.payload || 'No error message provided.'}`);
+        state.loadingStatus.registerUserLoader = API_CALL_STATUS.REJECTED;
+      })
 
-        // state.isLoading = 'failed';
-        // state.error = action.payload || 'Failed to fetch user data.'; // Payload is the value from rejectWithValue
+
+      .addCase(validateOTPThunk.fulfilled, (state, action) => {
+        state.loadingStatus.validateOTPLoader = API_CALL_STATUS.SUCCESS;
+        state.userData = action.payload;
+      })
+      .addCase(validateOTPThunk.rejected, (state, action) => {
+        state.loadingStatus.validateOTPLoader = API_CALL_STATUS.REJECTED;
       });
   },
 });

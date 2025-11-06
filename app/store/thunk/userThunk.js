@@ -1,50 +1,48 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// 1. Define the Async Thunk
-export const handshake = createAsyncThunk(
-  // Action type string
-  'user/handshake',
-
-  // The payload creator is an async function
-  async (userId, {rejectWithValue}) => {
+// Sample thunk to fetch user data
+export const fetchUser = createAsyncThunk(
+  'user/fetchUser',
+  async (phoneNumber, thunkAPI) => {
     try {
-      return await axios
-        .post(
-          'https://localhost:8080/users/register',
-          {userId}, // Pass userId in the request body as JSON
-        )
-        .then(res => res)
-        .catch(err => {
-          throw err;
-        });
+      // const response = await axios.get(`/users/${phoneNumber}`);
+      const response = await axios.get(`/assets/users.json`);
+      return response.data.login;
     } catch (error) {
-      // Return a custom error message to be used as action.payload for 'rejected'
-      return rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching user');
     }
-  },
+  }
 );
 
 export const registerUserThunk = createAsyncThunk(
-  // Action type string
-  'user/registerUserThunk',
-
-  // The payload creator is an async function
-  async (phoneNumber, {rejectWithValue}) => {
+  'user/registerUser',
+  async (phoneNo,thunkAPI) => {
     try {
-      return await axios
-        .post(
-          'http://127.0.0.1:65072/users/register',
-          { phoneNumber}, // Pass userId in the request body as JSON
-        )
-        .then(res => res)
-        .catch(err => {
-          alert(`Error: ${err.message || 'Unknown error occurred.'}`);
-          throw err;
-        });
+      console.log('Registering User with Phone No :' + phoneNo);
+      // const response = await axios.post('/register', { phoneNo});
+      const response = await require('../../../assets/mockAPI/registerUserResponse.json');
+      return response;
     } catch (error) {
-      // Return a custom error message to be used as action.payload for 'rejected'
-      return rejectWithValue(error.message);
+      console.log('Error in registering user :' + error);
+      return thunkAPI.rejectWithValue(error.response?.data || 'Error registering user');
     }
-  },
+  }
+);
+
+export const validateOTPThunk = createAsyncThunk(
+  'user/validateOTP',
+  async (OTP, thunkAPI) => {
+    try {
+      // const response = await axios.post('/validate-otp', { OTP });
+      const response = await require('../../../assets/mockAPI/validateOTP.json');
+      if (response.status === false) {
+        return thunkAPI.rejectWithValue('OTP validation failed');
+      }
+      return response;
+
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || 'Error validating OTP');
+    }
+  }
 );
