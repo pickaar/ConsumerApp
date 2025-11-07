@@ -1,7 +1,4 @@
-export const localStorageKeys = {
-  loginStatus: 'isAlreadyLoggedIn',
-  uniquePhoneNo: 'phoneNumber',
-}
+export const STORAGE_KEY = '@userData';
 
 export const themeColors = {
   // primary: '#2A2A2A',
@@ -46,4 +43,16 @@ export const API_CALL_STATUS = Object.freeze({
   SUCCESS: 'SUCCESS',
   PENDING: 'PENDING',
   REJECTED: 'REJECTED',
+});
+
+
+/**
+ * @typedef {'DASHBOARD' |'SIGN_IN' } stackscreens
+ */
+
+/** @type {{[key in stackscreens]: stackscreens}} */
+
+export const SCREENS = Object.freeze({
+  DASHBOARD: 'DASHBOARD',
+  SIGN_IN: 'SIGN_IN',
 });

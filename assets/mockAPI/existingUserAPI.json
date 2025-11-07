@@ -1,13 +1,13 @@
 {
   "userID": 12345679897,
   "phoneNo": 9879879879,
-  "userName": null,
-  "profileImage": null,
+  "userName": "Vanitha Kameeshwaran",
+  "profileImage": "",
   "loginState": true,
   "locations": [
     {
       "name": "Home",
-      "address": null
+      "address": "221B, Baker Street, London"
     }
   ]
 }

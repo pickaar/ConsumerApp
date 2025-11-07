@@ -11,21 +11,32 @@ import MainTab from '@nav/MainTabNav';
 // import { localStorageKeys } from '../utils/constant';
 import { SplashScreen } from '../screens/PreLogin/SplashScreen';
 import { Text, View } from 'react-native';
+import { SCREENS } from '@utils/constant';
 
 const RootStack = createNativeStackNavigator();
 
-const RootStackNavScreens = ({initialRouteScreen}) => {
+const RootStackNavScreens = ({ initialRouteScreen }) => {
 
     return (
         <RootStack.Navigator initialRouteName={initialRouteScreen} id={undefined}>
 
             <RootStack.Screen
-                name="SignInScreen"
+                name={SCREENS.SIGN_IN}
                 component={SignInScreen}
                 options={{
                     headerShown: false,
                 }}
             />
+
+            <RootStack.Screen
+                name={SCREENS.DASHBOARD}
+                component={MainTab}
+                options={{
+                    headerShown: false,
+                    // @ts-ignore
+                    cardStyle: { backgroundColor: '#fff' }
+                }} />
+
 
             {/* <RootStack.Screen
                 name="setting"

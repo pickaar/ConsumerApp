@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import RootStackNavScreens from '@nav/RootStackScreen';
-import { API_CALL_STATUS, localStorageKeys, themeColors } from '@utils/constant';
+import { API_CALL_STATUS, SCREENS, STORAGE_KEY, themeColors } from '@utils/constant';
 import { Provider} from 'react-redux';
 import { store } from '@store/store';
 import * as SplashScreenObj from 'expo-splash-screen';
@@ -13,8 +13,8 @@ import { useFonts } from 'expo-font';
 import Toast from 'react-native-toast-message';
 import { setIsLoading } from '@reducer/userSlice';
 import { useAppDispatch } from '@store/store';
-import { ONLOAD_STATUS } from '@utils/constant';
 import { useAppSelector } from '@app/store/hook';
+import { fetchUserThunk } from '@thunk/userThunk';
 SplashScreenObj.preventAutoHideAsync();
 
 const MyTheme = {
@@ -30,23 +30,22 @@ function RootApp({ fontsLoaded }) {
   
   const dispatch = useAppDispatch();
   const { handShakeLoader } = useAppSelector(state => state.user.loadingStatus);
-  const initialRoute = handShakeLoader === API_CALL_STATUS.SUCCESS ? 'dashboard' : 'SignInScreen';
+  const initialRoute = handShakeLoader === API_CALL_STATUS.SUCCESS ? SCREENS.DASHBOARD : SCREENS.SIGN_IN;
   const checkLoginStatus = useCallback(async () => {
     try {
-      const phoneNumber = await getData(localStorageKeys.uniquePhoneNo);
-      const status = await getData(localStorageKeys.loginStatus);
+      const userData = await getData(STORAGE_KEY);
+      const parsedData = JSON.parse(userData);
+      console.log('Retrieved userData:', parsedData);
 
-      if (status === 'Y' && phoneNumber) {
-        dispatch({
-          type: 'user/FETCH_USER_DETAILS',
-          payload: { phoneNo: phoneNumber },
-        });
+      if (parsedData?.phoneNo && parsedData?.loginState) {
+        dispatch(fetchUserThunk(parsedData.phoneNo));
+        dispatch(setIsLoading({key: 'handShakeLoader', status: API_CALL_STATUS.SUCCESS}));
       } else {
-        dispatch(setIsLoading(API_CALL_STATUS.REJECTED));
+        dispatch(setIsLoading({key: 'handShakeLoader', status: API_CALL_STATUS.REJECTED}));
       }
     } catch (e) {
       console.warn('Error checking login status:', e);
-      dispatch(setIsLoading(API_CALL_STATUS.REJECTED));
+      dispatch(setIsLoading({key: 'handShakeLoader', status: API_CALL_STATUS.REJECTED}));
     }
   }, [dispatch]);
 

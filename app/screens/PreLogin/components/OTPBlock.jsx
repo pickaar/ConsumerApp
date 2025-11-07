@@ -10,28 +10,13 @@ import { validateOTPThunk } from '@thunk/userThunk';
 // import { useDispatch } from 'react-redux';
 
 const OTPBlock = () => {
-
     const dispatch = useAppDispatch();
-
     const getOTP = (OTP) => {
+        // await ValidateOTP1()
        dispatch(validateOTPThunk(OTP));
     }
-
     const ValidateOTP1 = (OTP) => {
-        // dispatch({
-        //     type: CALL_SAGA.REQUEST_CREATE_NEW_ACCOUNT,
-        //     serviceId: 101,
-        //     deviceId: '987-23423-234-234-234',
-        //     phoneNo: phoneNo,
-        //     serviceName: 'ValidateOTP'
-        // });
-        // dispatch({
-        //     type: CALL_SAGA.REQUEST_VALIDATE_OTP,
-        //     serviceId: 100,
-        //     serviceName: 'OTPValidate',
-        //     OTP: OTP,
-        //     deviceID: '2354234-2345-2345-234'
-        // })
+      //FCM notification and OTP validation logic will goes here
     }
 
     return (

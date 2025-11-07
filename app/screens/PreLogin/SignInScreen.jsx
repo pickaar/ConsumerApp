@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,21 +6,33 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {  ONLOAD_STATUS, themeColors } from '@utils/constant';
+import { API_CALL_STATUS, SCREENS, STORAGE_KEY, themeColors } from '@utils/constant';
 import pickaarLogo from '@assets/logo.png';
 import * as Animatable from 'react-native-animatable';
 import PhoneNoBlock from '@screens/PreLogin/components/PhoneNoBlock';
 import OTPBlock from '@screens/PreLogin/components/OTPBlock';
 import { useAppSelector } from '@app/store/hook';
+import { storeData } from '@utils/helperfn';
+
 
 export default function SignInScreen(props) {
-  const registerUserLoader = useAppSelector(state => state.user.loadingStatus.registerUserLoader === ONLOAD_STATUS.SUCCESS);
-  const validateOTPLoader = useAppSelector(state => state.user.loadingStatus.validateOTPLoader === ONLOAD_STATUS.SUCCESS);
+  const registerUserLoader = useAppSelector(state => state.user.loadingStatus.registerUserLoader === API_CALL_STATUS.SUCCESS);
+  const validateOTPLoader = useAppSelector(state => state.user.loadingStatus.validateOTPLoader === API_CALL_STATUS.SUCCESS);
+  const userData = useAppSelector(state => state.user.userData);
 
-  if(validateOTPLoader){
-    props.navigation.replace('dashboard');
-  }
-  
+  useEffect(() => {
+    const handleOTPValidation = async () => {
+      if (validateOTPLoader) {
+        console.log('OTP validated successfully, navigating to dashboard.');
+        const parsedUserData = JSON.stringify(userData)
+        console.log('Storing user data:', parsedUserData);
+        await storeData(STORAGE_KEY, parsedUserData);
+        props.navigation.replace(SCREENS.DASHBOARD);
+      }
+    };
+    handleOTPValidation();
+  }, [validateOTPLoader, props.navigation]);
+
   return (
     <View style={styles.container}>
       <View style={styles.topHalf}>
@@ -39,10 +51,10 @@ export default function SignInScreen(props) {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={0}
       >
-        {!registerUserLoader? (
+        {!registerUserLoader ? (
           <PhoneNoBlock />
         ) : (
-          <OTPBlock ValidateOTP={true} />
+          <OTPBlock />
         )}
       </KeyboardAvoidingView>
     </View>

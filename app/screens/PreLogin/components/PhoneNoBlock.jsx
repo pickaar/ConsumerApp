@@ -10,6 +10,7 @@ import { PToast } from '@components/brick/PToast';
 import { useKeyboardStatus } from '@hooks/useKeyboardState';
 import { registerUserThunk } from '@thunk/userThunk';
 import { useAppDispatch } from '@app/store/store';
+import { setPhoneNo } from '@reducer/userSlice';
 
 const proceeBtnObj = {
   label: 'Proceed',
@@ -28,6 +29,7 @@ const PhoneNoBlock = () => {
     const phoneNo = phoneNoValueRef.current;
     if (phoneNo.length > 1 && phoneNo.length < 12) {
       // DO FCM notification here and enable
+      dispatch(setPhoneNo(phoneNo));
       // @ts-ignore
       dispatch(registerUserThunk('+91' + phoneNo));
       setIsProcessing(true);
