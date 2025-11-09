@@ -1,14 +1,13 @@
-import { View, Text, Image, StyleSheet, StatusBar, TouchableWithoutFeedback, TouchableOpacity, ScrollView, FlatList } from "react-native";
-import { DEVICE_HEIGHT, DEVICE_WIDTH } from "../../utils/dimentions";
-import { fonts, pStyles } from "../../utils/theme";
+import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, ScrollView, FlatList } from "react-native";
+import { DEVICE_HEIGHT, DEVICE_WIDTH } from "@utils/constant";
+import { fonts, pStyles } from "@utils/theme";
 import Modal from "react-native-modal";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setModalParam } from "../../store/reducers/modalReducer";
-
-import { themeColors } from "../../utils/constant";
-import PIcon, { PIcons } from "./Icon";
-import { setParam } from "../../store/reducers/userReducer";
+import { setModalParam } from "@store/reducer/modalSlice";
+import { themeColors } from "@utils/constant";
+import PIcon, { PIcons } from "@components/brick/Icon";
+import { setParam } from "@store/reducer/userSlice";
 
 const InforModalContent = ({ closeModal, msg }) => {
 

@@ -2,8 +2,7 @@ import LottieView from 'lottie-react-native';
 import Modal from "react-native-modal";
 import { View, StyleSheet, Text } from "react-native";
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import { DEVICE_WIDTH, DEVICE_HEIGHT } from "../../utils/dimentions";
-import { themeColors } from '../../utils/constant';
+import { DEVICE_WIDTH, DEVICE_HEIGHT ,themeColors} from "@utils/constant";
 
 export const ModalLoader = forwardRef((props, ref) => {
 

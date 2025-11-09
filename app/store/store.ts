@@ -1,6 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './reducer/userSlice';
-import { useDispatch ,useSelector} from 'react-redux';
+import offerSlice from './reducer/offerSlice';
+import { useDispatch } from 'react-redux';
+import modalSlice from './reducer/modalSlice';
+import bookingSlice from './reducer/bookingSlice';
 /**
  * @typedef {object} RootState
  * @property {ReturnType<typeof userSlice>} user
@@ -8,12 +11,13 @@ import { useDispatch ,useSelector} from 'react-redux';
  * // property {ReturnType<typeof someOtherReducer>} someOtherSlice
  */
 
-
-
 // Configure the store. Thunk is automatically added.
 export const store = configureStore({
   reducer: {
     user: userSlice, // Add your slice reducers here
+    offer: offerSlice,
+    modal: modalSlice,
+    booking: bookingSlice,
   },
 });
 

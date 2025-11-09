@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { themeColors } from '../../utils/constant';
-import { DEVICE_HEIGHT, DEVICE_WIDTH } from '../../utils/dimentions';
+import { DEVICE_HEIGHT, DEVICE_WIDTH } from '@utils/constant';
 import { fonts } from '../../utils/theme';
 import PIcon, { PIcons } from './Icon';
+import React, { useCallback, memo } from 'react';
 
 
 export const TitleWithBackBtn = ({ name }) => {
@@ -68,21 +69,24 @@ const Value = (props) => {
         <Text {...props} style={{ fontFamily: fonts.RubikBold, fontSize: 18, color: themeColors.primary }} >{props.children}</Text>
     )
 }
+const PHeadings = memo(({ backBtnPressed, title }) => {
 
-const PHeadings = (props) => {
-
-    const onBackBtnPress = () => props.backBtnPressed();
+    const onBackBtnPress = useCallback(() => {
+        if (typeof backBtnPressed === 'function') {
+            backBtnPressed();
+        }
+    }, [backBtnPressed]);
 
     return (
-        <View style={{ marginLeft: 0, paddingLeft: 0, paddingLeft: DEVICE_WIDTH * 0.03, height: DEVICE_HEIGHT * 0.15, flexDirection: 'column' }}>
+        <View style={{ marginLeft: 0, paddingLeft: DEVICE_WIDTH * 0.03, height: DEVICE_HEIGHT * 0.15, flexDirection: 'column' }}>
             <TouchableOpacity onPress={onBackBtnPress} style={{ marginTop: 10 }}>
-                <PIcon type={PIcons.Feather} name="arrow-left" size={25}></PIcon>
+                <PIcon type={PIcons.Feather} name="arrow-left" size={25} />
             </TouchableOpacity>
             <View style={{ marginTop: 20 }}>
-                <Text style={{ fontSize: 25, fontFamily: fonts.RubikMedium }}> {props.title}</Text>
+                <Text style={{ fontSize: 25, fontFamily: fonts.RubikMedium }}>{title}</Text>
             </View>
-        </View >
-    )
-}
+        </View>
+    );
+});
 
 export { PText, PTitle, PHeadings, Label, Value }

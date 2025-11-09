@@ -12,6 +12,7 @@ import MainTab from '@nav/MainTabNav';
 import { SplashScreen } from '../screens/PreLogin/SplashScreen';
 import { Text, View } from 'react-native';
 import { SCREENS } from '@utils/constant';
+import BookingStackNavScreens from '@nav/BookingNav';
 
 const RootStack = createNativeStackNavigator();
 
@@ -37,33 +38,14 @@ const RootStackNavScreens = ({ initialRouteScreen }) => {
                     cardStyle: { backgroundColor: '#fff' }
                 }} />
 
-
-            {/* <RootStack.Screen
-                name="setting"
-                component={SettingScreenNav}
-                options={{
-
-                    headerShown: false,
-                    cardStyle: { backgroundColor: '#fff' }
-                }} /> */}
-
-            {/* <RootStack.Screen
-                name="feedback"
-                component={FeedbackComponent}
-                options={{
-                    headerLayoutPreset: 'center',
-                    headerShown: true,
-                    title: 'Feedback',
-                    cardStyle: { backgroundColor: '#fff' }
-                }} /> */}
-
-            {/* <RootStack.Screen
-                name="travelBooking"
-                component={TravelStackNavScreens}
+            <RootStack.Screen
+                name={SCREENS.BOOKING}
+                component={BookingStackNavScreens}
                 options={{
                     headerShown: false,
                     cardStyle: { backgroundColor: '#fff' }
-                }} /> */}
+                }} />
+
 
 
         </RootStack.Navigator>

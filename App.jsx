@@ -35,7 +35,6 @@ function RootApp({ fontsLoaded }) {
     try {
       const userData = await getData(STORAGE_KEY);
       const parsedData = JSON.parse(userData);
-      console.log('Retrieved userData:', parsedData);
 
       if (parsedData?.phoneNo && parsedData?.loginState) {
         dispatch(fetchUserThunk(parsedData.phoneNo));

@@ -13,7 +13,8 @@ export const userSlice = createSlice({
       locations: [
         {
           name: "Home",
-          address: null
+          address: null,
+          isPrimary: true
         }
       ]
     },

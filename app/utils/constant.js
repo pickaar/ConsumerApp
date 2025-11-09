@@ -1,3 +1,8 @@
+import { Dimensions } from 'react-native';
+
+export const DEVICE_WIDTH = Dimensions.get('window').width;
+export const DEVICE_HEIGHT = Dimensions.get('window').height;
+
 export const STORAGE_KEY = '@userData';
 
 export const themeColors = {
@@ -47,7 +52,7 @@ export const API_CALL_STATUS = Object.freeze({
 
 
 /**
- * @typedef {'DASHBOARD' |'SIGN_IN' } stackscreens
+ * @typedef {'DASHBOARD' |'SIGN_IN' | 'BOOKING'} stackscreens
  */
 
 /** @type {{[key in stackscreens]: stackscreens}} */
@@ -55,4 +60,7 @@ export const API_CALL_STATUS = Object.freeze({
 export const SCREENS = Object.freeze({
   DASHBOARD: 'DASHBOARD',
   SIGN_IN: 'SIGN_IN',
+  BOOKING: 'BOOKING',
+  BOOKING_GET_DETAILS: 'BOOKING_GET_DETAILS',
+  BOOKING_CONFIRMATION: 'BOOKING_CONFIRMATION',
 });

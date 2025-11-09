@@ -25,7 +25,6 @@ export const registerUserThunk = createAsyncThunk(
   'user/registerUser',
   async (phoneNo, thunkAPI) => {
     try {
-      console.log('Registering User with Phone No :' + phoneNo);
       // const response = await axios.post('/register', { phoneNo});
       const response = await require('../../../assets/mockAPI/registerUserResponse.json');
       return response;
@@ -45,11 +44,9 @@ export const validateOTPThunk = createAsyncThunk(
   'user/validateOTP',
   async (_, thunkAPI) => {
     try {
-      console.log('Validating OTP for user');
       // @ts-ignore
       const state = thunkAPI.getState();
       // @ts-ignore
-      console.log('Phone No from state :' + state?.user?.userData?.phoneNo);
       // const response = await axios.patch('/update', { phoneNo });
       const response = await require('../../../assets/mockAPI/userAPI.json');
 
