@@ -48,6 +48,7 @@ const PickupDateAndTime = () => {
                 textColor="black"
                 onConfirm={handleDateConfirm}
                 onCancel={() => setDatePickerVisibility(false)}
+                minimumDate={new Date()}
             />
             <DateTimePickerModal
                 isVisible={isTimePickerVisible}

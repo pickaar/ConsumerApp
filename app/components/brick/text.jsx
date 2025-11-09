@@ -1,8 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { themeColors } from '../../utils/constant';
-import { DEVICE_HEIGHT, DEVICE_WIDTH } from '@utils/constant';
-import { fonts } from '../../utils/theme';
+import { DEVICE_HEIGHT, DEVICE_WIDTH,themeColors } from '@utils/constant';
+import { fonts } from '@utils/theme';
 import PIcon, { PIcons } from './Icon';
 import React, { useCallback, memo } from 'react';
 
@@ -78,7 +77,7 @@ const PHeadings = memo(({ backBtnPressed, title }) => {
     }, [backBtnPressed]);
 
     return (
-        <View style={{ marginLeft: 0, paddingLeft: DEVICE_WIDTH * 0.03, height: DEVICE_HEIGHT * 0.15, flexDirection: 'column' }}>
+        <View style={{ marginLeft: 0, paddingLeft: DEVICE_WIDTH * 0.03, height: DEVICE_HEIGHT * 0.10, flexDirection: 'column' }}>
             <TouchableOpacity onPress={onBackBtnPress} style={{ marginTop: 10 }}>
                 <PIcon type={PIcons.Feather} name="arrow-left" size={25} />
             </TouchableOpacity>

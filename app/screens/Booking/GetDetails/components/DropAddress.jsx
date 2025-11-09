@@ -1,26 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Label, Value } from "@components/brick/text";
 import { themeColors } from "@utils/constant";
+import AddressModal from "@components/Modal/AddressModal";
+import { useAppSelector } from "@store/hook";
+import { useAppDispatch } from "@store/store";
+import { setAddress } from "@store/reducer/bookingSlice";
 
 const DropAddress = () => {
-    /**
-       * @todo hardcoded for google map development & create common function for all dispatches
-       */
+    const dispatch = useAppDispatch();
+    const [isModalVisible, setModalVisible] = useState(false);
+    const dropAddress = useAppSelector(state => state.booking.dropAddress);
+    const { flatHouseNo, buildingStreet, city, state, pincode } = dropAddress || {};
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+    const handleAddressSave = (newAddress) => {
+        dispatch(setAddress({ addressType: 'drop', address: newAddress }));
+    };
+
+    const editText = dropAddress?.buildingStreet == null ? 'Add' : 'Edit';
+
     return (
         <View style={styles.container}>
-            <Label>Drop Address</Label>
-            <View style={styles.row}>
-                <Value>Perumbakkam, Vellore</Value>
-                <TouchableOpacity
-                    style={styles.editButton}
-                    onPress={() => {
-                        // @todo: handle edit action
-                    }}
-                >
-                    <Text style={styles.editText}>Edit</Text>
+            <View style={{
+                flexDirection: "row",
+            }}>
+                <Label>Drop Address</Label>
+                <TouchableOpacity style={styles.editButton} onPress={toggleModal}>
+                    <Text style={styles.editText}>{editText}</Text>
                 </TouchableOpacity>
             </View>
+
+            <View style={styles.row}>
+                {
+                    dropAddress?.buildingStreet == null ? (
+                        <Text style={{ color: themeColors.gray }}>No drop address added</Text>
+                    ) : <>
+                        <Value><Text numberOfLines={3}
+                            ellipsizeMode="tail">{flatHouseNo}, {buildingStreet}</Text></Value>
+                        <Value><Text numberOfLines={3}
+                            ellipsizeMode="tail">{city}, {state}</Text></Value>
+                        <Value><Text numberOfLines={3}
+                            ellipsizeMode="tail">{pincode}</Text></Value>
+                    </>
+                }
+
+            </View>
+            <AddressModal
+                isVisible={isModalVisible}
+                onClose={toggleModal}
+                onSave={handleAddressSave}
+                initialData={dropAddress} // Pass current address to pre-fill the form
+                title={editText + " Drop Address"}
+            />
         </View>
     );
 };
@@ -29,11 +62,11 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "column",
         justifyContent: "flex-start",
-        marginTop: 20,
+        marginTop: 10,
     },
     row: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: "column",
+        alignItems: "flex-start",
         marginTop: 4,
     },
     editButton: {
@@ -46,7 +79,7 @@ const styles = StyleSheet.create({
     editText: {
         color: themeColors.primary,
         fontWeight: "bold",
-        letterSpacing: 0.5,
+        letterSpacing: 0,
     },
 });
 

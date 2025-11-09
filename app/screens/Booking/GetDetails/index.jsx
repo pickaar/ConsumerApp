@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { View, StyleSheet, StatusBar, ScrollView, Text, KeyboardAvoidingView, Platform } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import { PHeadings } from "@components/brick/text";
-import { themeColors, DEVICE_WIDTH } from "@utils/constant";
-import { loader, setBookingParam } from "@store/reducer/bookingSlice";
+import { themeColors, DEVICE_WIDTH, SCREENS } from "@utils/constant";
 import { ModalLoader } from "@components/brick/loader";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PickUpAddress from '@screens/Booking/GetDetails/components/PickUpAddress';
@@ -15,9 +13,13 @@ import Comments from '@screens/Booking/GetDetails/components/Comments';
 import SingleWomen from '@screens/Booking/GetDetails/components/SingleWomen';
 import BookingForOthers from '@screens/Booking/GetDetails/components/BookingForOther';
 import { PBtn } from '@components/brick/button';
+import Toast from 'react-native-toast-message';
+import { fetchTollDetailsThunk } from '@thunk/bookingThunk';
+import { setBookingParam, loader } from '@store/reducer/bookingSlice';
+import { useAppDispatch } from '@store/store';
+import { useAppSelector } from '@store/hook';
 
-
-const validateField = (param) => param != null && param !== '';
+const validateField = (param) => param != null && Object.keys(param).length > 0;
 
 const styles = StyleSheet.create({
     container: {
@@ -52,33 +54,42 @@ const styles = StyleSheet.create({
 });
 
 export default function GetDetails({ navigation }) {
-    const toastRef = useRef();
     const modalRef = useRef();
-    const dispatch = useDispatch();
-    const pickupAddress = useSelector((state) => state.booking.pickupAddress);
-    const dropAddress = useSelector((state) => state.booking.dropAddress);
-    const loading = useSelector((state) => state.booking.loading);
-    const tollRouteResponse = useSelector((state) => state.booking.tollRouteResponse);
+    const dispatch = useAppDispatch();
+    const pickupAddress = useAppSelector((state) => state.booking.pickupAddress);
+    const dropAddress = useAppSelector((state) => state.booking.dropAddress);
+    const loading = useAppSelector((state) => state.booking.loading);
+    const tollRouteResponse = useAppSelector((state) => state.booking.tollRouteResponse);
 
     useEffect(() => {
         if (modalRef.current) {
-            modalRef.current.handleModal(loading);
+            modalRef.current?.handleModal(loading);
         }
         if (tollRouteResponse) {
             dispatch(setBookingParam({ key: "tollRouteResponse", value: false }));
             setTimeout(() => {
-                navigation.navigate('booking', { screen: 'StepTwo' });
+                navigation.navigate(SCREENS.BOOKING, { screen: SCREENS.BOOKING_CONFIRMATION });
             }, 500);
         }
     }, [loading, tollRouteResponse, dispatch, navigation]);
 
     const stageOneSubmit = useCallback(async () => {
-        if (!validateField(pickupAddress) || !validateField(dropAddress)) {
-            toastRef.current?.show('Please enter valid details to proceed');
+        //hardcoded just for testing
+        if (!validateField(pickupAddress.buildingStreet) || !validateField(dropAddress.buildingStreet)) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Please enter valid details to proceed',
+                position: 'top',
+                visibilityTime: 2000,
+            });
             return;
         }
-        await dispatch(loader({ status: true }));
-        dispatch({ type: types.TOLL_ROUTE_DATA });
+        dispatch(loader({ status: true }));
+        //Remove timer once Toll API is integrated
+        setTimeout(() => {
+            dispatch(fetchTollDetailsThunk());
+        }, 1500);
     }, [pickupAddress, dropAddress, dispatch]);
 
     const backPressed = useCallback(() => navigation.goBack(), [navigation]);
@@ -112,10 +123,11 @@ export default function GetDetails({ navigation }) {
                             <PBtn config={btnConfig} onPress={stageOneSubmit} />
                         </View>
                     </View>
-                    {/* <Toast ref={toastRef} position={'bottom'} /> */}
-                    {/* <ModalLoader ref={modalRef} msg={'Gathering Information. Please wait...'} /> */}
+
                 </ScrollView>
             </KeyboardAvoidingView>
+            <Toast position={'top'} />
+            <ModalLoader ref={modalRef} msg={'Gathering Information. Please wait...'} />
         </SafeAreaView>
     );
 }

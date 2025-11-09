@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import GetDetails from '@screens/Booking/GetDetails';
-// import StepTwo from '@screens/Bookings/bookingStepTwo';
 import { SCREENS } from '@utils/constant';
+import GetDetails from '@screens/Booking/GetDetails';
+import Confirmation from '@screens/Booking/Confirmation';
 
 const BookingStack = createNativeStackNavigator();
 
@@ -17,13 +17,13 @@ const BookingStackNavScreens = () => {
                 }}
             />
 
-            {/* <BookingStack.Screen
-                name={SCREENS.BOOKING_STEP_TWO}
-                component={StepTwo}
+            <BookingStack.Screen
+                name={SCREENS.BOOKING_CONFIRMATION}
+                component={Confirmation}
                 options={{
                     headerShown: false
                 }}
-            /> */}
+            />
 
 
         </BookingStack.Navigator>
