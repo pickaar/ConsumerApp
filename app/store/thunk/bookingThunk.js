@@ -17,3 +17,22 @@ export const fetchTollDetailsThunk = createAsyncThunk(
     }
   }
 );
+
+/**
+ * @Post Booking confirmation call to create a new booking
+ */
+export const createBookingThunk = createAsyncThunk(
+  'booking/createBookingThunk',
+  async ( thunkAPI) => {
+    try {
+      // const state = thunkAPI.getState();
+      // const bookingDetails = state.booking;
+      // const response = await axios.get(`/users/${phoneNumber}`);
+      const response = await require(`../../../assets/mockAPI/bookingConfirmationAPI.json`);
+      return response;
+
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching Booking Confirmation');
+    }
+  }
+);

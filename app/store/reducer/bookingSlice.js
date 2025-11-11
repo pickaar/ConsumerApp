@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchTollDetailsThunk } from "@thunk/bookingThunk";
+import { createBookingThunk } from "@thunk/bookingThunk";
+
 const initialAddress = {
     flatHouseNo: null,
     buildingStreet: null,
@@ -64,33 +66,6 @@ export const bookingSlice = createSlice({
                 state[key] = value;
             }
         },
-        onSuccessfulLevelOneBooking(state, action) {
-            state.bookingLevelOneResponse = action.payload;
-            state.loading = false;
-            state.bookingLevelOneStatus = true;
-
-        },
-        onFailureLevelOneBooking(state, action) {
-            state.bookingLevelOneStatus = true;
-            state.loading = false;
-            state.bookingLevelOneMsg = '';
-
-        },
-        onSuccessNewBooking(state, action) {
-            state.bookingLevelTwoResponse = action.payload;
-            state.loading = false;
-            state.bookingCompletionStatus = true;
-            //Set BookingId 
-            const bookingId = action.payload.data._id;
-            state.bookingList.push(bookingId)
-
-            console.log(action.payload.data._id)
-        },
-        onFailureNewBooking(state, action) {
-            state.bookingCompletionStatus = true;
-            state.loading = false;
-            state.bookingLevelTwoMsg = '';
-        },
         loader(state, action) {
             state.loading = action.payload.status;
         },
@@ -107,6 +82,15 @@ export const bookingSlice = createSlice({
             .addCase(fetchTollDetailsThunk.rejected, (state, action) => {
                 state.tollDetail = {};
                 state.tollRouteResponse = true;
+            })
+            .addCase(createBookingThunk.fulfilled, (state, action) => {
+                state.tollRouteResponse = false;
+                state.bookingLevelTwoResponse = action.payload;
+                state.loading = false;
+                state.bookingCompletionStatus = true;
+            })
+            .addCase(createBookingThunk.rejected, (state, action) => {
+                state.loading = false;
             });
     }
 })

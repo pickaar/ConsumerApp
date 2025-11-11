@@ -1,10 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { fonts } from "@utils/theme";
 import { themeColors } from "@utils/constant";
-import { PIcons } from "@components/brick/Icon";
 import { openGps } from "@utils/maps";
+import PIcon, { PIcons } from "@components/brick/Icon";
 
-const TollDetails = (tolls) => {
+const TollDetails = ({ tolls }) => {
+    console.log("Tolls in TollDetails==>", tolls);
 
     return (
         <View style={{
@@ -21,11 +22,14 @@ const TollDetails = (tolls) => {
                 alignItems: 'center'
             }}>
                 {
-                    tolls.map((obj, index) => {
+                    tolls?.map((obj, index) => {
                         return (
 
                             <View key={index} style={{
-                                flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
                                 borderTopWidth: StyleSheet.hairlineWidth,
                                 borderTopColor: themeColors.gray,
                                 paddingVertical: 10
@@ -34,7 +38,7 @@ const TollDetails = (tolls) => {
                                     <Text style={{
                                         fontSize: 13,
                                         fontFamily: fonts.RubikRegular
-                                    }}>{obj.name} </Text>
+                                    }}>{obj?.name} </Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                                     <View style={{}}>
@@ -43,11 +47,12 @@ const TollDetails = (tolls) => {
                                             fontFamily: fonts.RubikMedium,
                                             color: themeColors.darkGray
                                         }}  >
-                                            {'\u20B9'}{obj.tagCost}
+                                            {'\u20B9'}{obj?.tagCost}
                                         </Text>
                                     </View>
-                                    <TouchableOpacity onPress={() => openGps(obj.lat, obj.lng)}>
-                                        <PIcons style={{ paddingLeft: 5, color: themeColors.infoHighlightColor, opacity: 0.9 }} type={PIcons.Feather} name="map-pin" size={15}></PIcons>
+                                    <TouchableOpacity onPress={() => openGps(obj?.lat, obj?.lng)}>
+                                        <PIcon style={{ paddingLeft: 5, color: themeColors.infoHighlightColor, opacity: 0.9 }}
+                                            type={PIcons.Feather} name="map-pin" size={15}></PIcon>
                                     </TouchableOpacity>
                                 </View>
                             </View>

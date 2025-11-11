@@ -22,7 +22,7 @@ const PrintReviewExtraDetails = () => {
             value: isTollAvailable
         }
     ]
-
+   
     return (
         <>
             <View style={styles.container}>
