@@ -147,8 +147,6 @@ const SecondColBlock = memo(({ item }) => {
     );
 });
 
-// --- Main Exported Component ---
-
 const VendorCard = memo(({ item, cardWidth }) => {
     const colors = [pStyles.recommendedColor, pStyles.premiumColor, pStyles.regularColor, pStyles.economyColor];
     const privileges = ['Recommended', 'Premium', 'Regular', 'Economy'];

@@ -19,7 +19,9 @@ export const themeColors = {
   lightYellow: '#fcb5122e',
   recommendedBgColor: '#099a7dfc',
   chepestBgColor: '#5188f9',
-  infoHighlightColor: '#2667c5'
+  infoHighlightColor: '#2667c5',
+  black: '#000000',
+  lightBlack: '#2a2a2aff',
 }
 
 

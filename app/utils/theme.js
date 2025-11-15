@@ -37,6 +37,9 @@ export const pStyles = {
     primary: themeColors.primary,
     lightGray: themeColors.lightGray,
     darkGray: themeColors.darkGray,
+    black: themeColors.black,
+    lightBlack: themeColors.lightBlack,
+
     gray: themeColors.gray,
     recommendedColor: themeColors.recommendedBgColor,
     premiumColor: themeColors.premiumColor,
