@@ -5,14 +5,24 @@ import ActiveListScreen from '@screens/ActiveBooking/BookingList/ActiveListScree
 import ActiveDetailsScreen from '@screens/ActiveBooking/Details/ActiveDetailsScreen';
 import { SCREENS } from '@utils/constant';
 import ActiveCardList from '@screens/ActiveBooking/Details/ActiveCardList';
+import Feedback from '@screens/ActiveBooking/Details/Feedback';
 
-const BookingStack = createNativeStackNavigator();
+const ActiveBookingStack = createNativeStackNavigator();
 
 const ActiveBookingNavStack = () => {
 
     return (
-        <BookingStack.Navigator>
-            <BookingStack.Screen
+        <ActiveBookingStack.Navigator initialRouteName={SCREENS.MAIN}>
+
+            <ActiveBookingStack.Screen
+                name={SCREENS.MAIN}
+                component={ActiveListScreen}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <ActiveBookingStack.Screen
                 name={SCREENS.BOOKING_LIST}
                 component={ActiveCardList}
                 options={{
@@ -20,7 +30,7 @@ const ActiveBookingNavStack = () => {
                 }}
             />
 
-            <BookingStack.Screen
+            <ActiveBookingStack.Screen
                 name={SCREENS.BOOKING_DETAIL}
                 component={ActiveDetailsScreen}
                 options={{
@@ -28,8 +38,15 @@ const ActiveBookingNavStack = () => {
                 }}
             />
 
+            <ActiveBookingStack.Screen
+                name={SCREENS.FEEDBACK}
+                component={Feedback}
+                options={{
+                    headerShown: false
+                }}
+            />
 
-        </BookingStack.Navigator>
+        </ActiveBookingStack.Navigator>
     )
 }
 export default ActiveBookingNavStack;

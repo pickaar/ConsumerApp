@@ -14,7 +14,6 @@ import OTPBlock from '@screens/PreLogin/components/OTPBlock';
 import { useAppSelector } from '@app/store/hook';
 import { storeData } from '@utils/helperfn';
 
-
 export default function SignInScreen(props) {
   const registerUserLoader = useAppSelector(state => state.user.loadingStatus.registerUserLoader === API_CALL_STATUS.SUCCESS);
   const validateOTPLoader = useAppSelector(state => state.user.loadingStatus.validateOTPLoader === API_CALL_STATUS.SUCCESS);
@@ -27,7 +26,7 @@ export default function SignInScreen(props) {
         const parsedUserData = JSON.stringify(userData)
         console.log('Storing user data:', parsedUserData);
         await storeData(STORAGE_KEY, parsedUserData);
-        props.navigation.replace(SCREENS.DASHBOARD);
+        props.navigation.replace(SCREENS.HOME, { screen: SCREENS.DASHBOARD });
       }
     };
     handleOTPValidation();

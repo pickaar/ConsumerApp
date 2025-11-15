@@ -15,7 +15,7 @@ import { SCREENS } from '@utils/constant';
 const BookNow = (props) => {
 
     const gotoBookNow = () => {
-        props.navigation.navigate(SCREENS.BOOKING, { screen: SCREENS.BOOKING_GET_DETAILS })
+        props.navigation.navigate(SCREENS.DASHBOARD, { screen: SCREENS.BOOKING_GET_DETAILS })
     }
 
     return (

@@ -68,7 +68,7 @@ export default function GetDetails({ navigation }) {
         if (tollRouteResponse) {
             dispatch(setBookingParam({ key: "tollRouteResponse", value: false }));
             setTimeout(() => {
-                navigation.navigate(SCREENS.BOOKING, { screen: SCREENS.BOOKING_CONFIRMATION });
+                navigation.navigate(SCREENS.DASHBOARD, { screen: SCREENS.BOOKING_CONFIRMATION });
             }, 500);
         }
     }, [loading, tollRouteResponse, dispatch, navigation]);

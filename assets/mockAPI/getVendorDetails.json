@@ -1,0 +1,17 @@
+{
+    "userInfo": {
+        "name": "Kameeshwaran Viswanathan",
+        "exp": "3.4 Yrs",
+        "language": "Tamil, Hindi, English",
+        "completedTrip": 120,
+        "badgesScored": 6,
+        "aboutMe": "Some content about the driver goes here",
+        "profileImgSrc": "../../../../assets/driver_avatar.png"
+    },
+    "ratings": {
+        "rating": 4,
+        "completedTrip": 120,
+        "ratingForEach": [85, 75, 45, 15, 5]
+    },
+    "scoredBadgesWithTotal": ["Women Safe 80%", "Polite 100%", "Clean 50%", "Good 100%", "Excellent Driving 100%", "Family Safe 70%"]
+}

@@ -50,7 +50,6 @@ const GotoBookingsListBlock = ({ count,navigation }) => {
 
     const gotoBookingList = () => {
         navigation.navigate(SCREENS.ACTIVE_BOOKING, { screen: SCREENS.BOOKING_LIST, otherParam: 'anything you want here', })
-        // navigation.navigate('active', { screen: 'OrderDetail' })
     }
 
     return (

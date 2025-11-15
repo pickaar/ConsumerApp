@@ -5,6 +5,9 @@ import { useDispatch } from 'react-redux';
 import modalSlice from './reducer/modalSlice';
 import bookingSlice from './reducer/bookingSlice';
 import  quoteSlice  from './reducer/quoteSlice';
+import feedbackSlice from './reducer/feedbackSlice';
+
+
 /**
  * @typedef {object} RootState
  * @property {ReturnType<typeof userSlice>} user
@@ -19,7 +22,8 @@ export const store = configureStore({
     offer: offerSlice,
     modal: modalSlice,
     booking: bookingSlice,
-    quote: quoteSlice
+    quote: quoteSlice,
+    feedback: feedbackSlice
   },
 });
 

@@ -5,59 +5,46 @@ import * as Animatable from 'react-native-animatable';
 import Dashboard from '@screens/Dashboard/Dashboard';
 import { fonts } from '@utils/theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { themeColors } from '../utils/constant';
-import PIcon, { PIcons } from '../components/brick/Icon';
-import { PIconSet } from '../components/brick/PIcon';
-import ActiveListScreen from '@screens/ActiveBooking/BookingList/ActiveListScreen';
-
-const DummyComponent = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Dummy Component</Text>
-  </View>
-);
-const DummyComponenttwo = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Dummy Component two</Text>
-  </View>
-);
-const DummyComponentthree = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Dummy Component three</Text>
-  </View>
-);
+import { SCREENS, themeColors } from '@utils/constant';
+import PIcon, { PIcons } from '@components/brick/Icon';
+import { PIconSet } from '@components/brick/PIcon';
+import BookingStackNavStack from '@nav/BookingStackNavStack';
+import ActiveBookingNavStack from '@nav/ActiveBookingNavStack';
+import DirectBooking from '@screens/DirectBooking/DirectBooking';
+import SettingNavStack from '@nav/SettingNavStack';
 
 const TAB_LIST = [
   {
-    route: 'home',
+    route: SCREENS.DASHBOARD,
     label: 'Home',
     type: PIconSet.Feather,
     activeIcon: 'home',
     inActiveIcon: 'home',
-    component: Dashboard,
+    component: BookingStackNavStack,
   },
   {
-    route: 'Active',
+    route: SCREENS.ACTIVE_BOOKING,
     label: 'Active',
     type: PIcons.Feather,
     activeIcon: 'watch',
     inActiveIcon: 'watch',
-    component: ActiveListScreen
+    component: ActiveBookingNavStack
   },
   {
-    route: 'Direct',
+    route: SCREENS.DIRECT_BOOKING,
     label: 'Direct',
     type: PIcons.Feather,
     activeIcon: 'bold',
     inActiveIcon: 'bold',
-    component: DummyComponent
+    component: DirectBooking
   },
   {
-    route: 'Settings',
+    route: SCREENS.SETTINGS,
     label: 'Settings',
     type: PIcons.Feather,
     activeIcon: 'settings',
     inActiveIcon: 'settings',
-    component: DummyComponentthree
+    component: SettingNavStack
   },
 ];
 

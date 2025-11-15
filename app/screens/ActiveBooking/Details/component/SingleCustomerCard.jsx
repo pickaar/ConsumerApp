@@ -21,7 +21,7 @@ const SingleCustomerCard = React.memo(({ item, from }) => {
     const selectedIndex = useAppSelector((state) => state.quote.selectedIndex);
 
     const data = from === 'DETAIL' ? bookingList?.[selectedIndex] : item;
-    console.log("SingleCustomerCard Data:",data);
+
     if (!data) {
         return null; 
     }

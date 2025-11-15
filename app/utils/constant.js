@@ -13,7 +13,7 @@ export const themeColors = {
   yellow: '#FFCC57',
   gray: '#aeaaaa',
   white: '#ffffff',
-  lightGray: '#ebeaeaa6',
+  lightGray: '#b0aeaea6',
   lightGray2: '#ebeaead6',
   darkGray: '#e7e9ecff',
   lightYellow: '#fcb5122e',
@@ -60,6 +60,8 @@ export const API_CALL_STATUS = Object.freeze({
 /** @type {{[key in stackscreens]: stackscreens}} */
 
 export const SCREENS = Object.freeze({
+  HOME: 'HOME',
+  MAIN: 'MAIN',
   DASHBOARD: 'DASHBOARD',
   SIGN_IN: 'SIGN_IN',
   BOOKING: 'BOOKING',
@@ -68,4 +70,10 @@ export const SCREENS = Object.freeze({
   ACTIVE_BOOKING: 'ACTIVE_BOOKING',
   BOOKING_LIST: 'BOOKING_LIST',
   BOOKING_DETAIL: 'BOOKING_DETAIL',
+  FEEDBACK: 'FEEDBACK',
+  DIRECT_BOOKING: 'DIRECT_BOOKING',
+  SETTINGS: 'SETTINGS',
+  MAIN_SETTINGS: 'MAIN_SETTINGS',
+  LOCATION_SETTINGS: 'LOCATION_SETTINGS',
+  RIDES_SETTINGS: 'RIDES_SETTINGS',
 });

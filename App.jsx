@@ -31,7 +31,7 @@ function RootApp({ fontsLoaded }) {
 
   const dispatch = useAppDispatch();
   const { handShakeLoader } = useAppSelector(state => state.user.loadingStatus);
-  const initialRoute = handShakeLoader === API_CALL_STATUS.SUCCESS ? SCREENS.DASHBOARD : SCREENS.SIGN_IN;
+  const initialRoute = handShakeLoader === API_CALL_STATUS.SUCCESS ? SCREENS.HOME : SCREENS.SIGN_IN;
   const checkLoginStatus = useCallback(async () => {
     try {
       const userData = await getData(STORAGE_KEY);

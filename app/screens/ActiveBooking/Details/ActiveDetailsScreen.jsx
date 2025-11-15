@@ -22,6 +22,8 @@ import { setQuoteParam } from '@reducer/quoteSlice';
 import { useAppDispatch } from '@store/store';
 import { useAppSelector } from '@store/hook';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { setConfig } from '@reducer/modalSlice';
+import { SCREENS } from '@utils/constant';
 
 // --- Helper Components ---
 
@@ -83,7 +85,7 @@ const MultiLineWithInfo = React.memo(({ item }) => {
             ? { modal: modalType, swipeDirection: 'down', animationType: 'slide', modalContent: {} }
             : { msg: modalContent, modal: modalType };
 
-        // dispatch(setConfig({ visible: true, ...config }));
+        dispatch(setConfig({ visible: true, ...config }));
     }, [dispatch]);
 
     return (
@@ -176,7 +178,6 @@ const ContentContainer = ({ moreInfo }) => (
     </View>
 );
 
-// --- Main Screen Component ---
 
 export default function ActiveDetailsScreen({ route, navigation }) {
     const { quoteId } = route.params;
@@ -187,8 +188,7 @@ export default function ActiveDetailsScreen({ route, navigation }) {
 
     useEffect(() => {
         if (detailScreenRedirectTo === 'feedback') {
-            // navigation.navigate('feedback');
-            // Remember to clear the redirect param in redux store after navigation
+            navigation.navigate(SCREENS.ACTIVE_BOOKING, { screen: SCREENS.FEEDBACK });
         }
     }, [detailScreenRedirectTo, navigation]);
 

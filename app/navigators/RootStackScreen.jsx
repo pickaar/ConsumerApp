@@ -4,8 +4,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from '@screens/PreLogin/SignInScreen';
 import MainTab from '@nav/MainTabNav';
 import { SCREENS } from '@utils/constant';
-import BookingStackNavStack from '@nav/BookingStackNavStack';
-import ActiveBookingNavStack from '@nav/ActiveBookingNavStack';
+// import BookingStackNavStack from '@nav/BookingStackNavStack';
+// import ActiveBookingNavStack from '@nav/ActiveBookingNavStack';
+// import Feedback from '@screens/ActiveBooking/Details/Feedback';
+// import DirectBooking from '@screens/DirectBooking/DirectBooking';
 
 const RootStack = createNativeStackNavigator();
 
@@ -23,28 +25,15 @@ const RootStackNavScreens = ({ initialRouteScreen }) => {
             />
 
             <RootStack.Screen
-                name={SCREENS.BOOKING}
-                component={BookingStackNavStack}
-                options={{
-                    headerShown: false,
-                    cardStyle: { backgroundColor: '#fff' }
-                }} />
-            <RootStack.Screen
-                name={SCREENS.DASHBOARD}
+                name={SCREENS.HOME}
                 component={MainTab}
                 options={{
                     headerShown: false,
                     // @ts-ignore
                     cardStyle: { backgroundColor: '#fff' }
                 }} />
-            <RootStack.Screen
-                name={SCREENS.ACTIVE_BOOKING}
-                component={ActiveBookingNavStack}
-                options={{
-                    headerShown: false,
-                    cardStyle: { backgroundColor: '#fff' }
-                }} />
 
+            
         </RootStack.Navigator>
     )
 }
