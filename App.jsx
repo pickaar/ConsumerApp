@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import RootStackNavScreens from '@nav/RootStackScreen';
 import { API_CALL_STATUS, SCREENS, STORAGE_KEY, themeColors } from '@utils/constant';
-import { Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import { store } from '@store/store';
 import * as SplashScreenObj from 'expo-splash-screen';
 import { useEffect, useCallback } from 'react';
@@ -15,6 +15,7 @@ import { setIsLoading } from '@reducer/userSlice';
 import { useAppDispatch } from '@store/store';
 import { useAppSelector } from '@app/store/hook';
 import { fetchUserThunk } from '@thunk/userThunk';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 SplashScreenObj.preventAutoHideAsync();
 
 const MyTheme = {
@@ -27,7 +28,7 @@ const MyTheme = {
 };
 
 function RootApp({ fontsLoaded }) {
-  
+
   const dispatch = useAppDispatch();
   const { handShakeLoader } = useAppSelector(state => state.user.loadingStatus);
   const initialRoute = handShakeLoader === API_CALL_STATUS.SUCCESS ? SCREENS.DASHBOARD : SCREENS.SIGN_IN;
@@ -38,13 +39,13 @@ function RootApp({ fontsLoaded }) {
 
       if (parsedData?.phoneNo && parsedData?.loginState) {
         dispatch(fetchUserThunk(parsedData.phoneNo));
-        dispatch(setIsLoading({key: 'handShakeLoader', status: API_CALL_STATUS.SUCCESS}));
+        dispatch(setIsLoading({ key: 'handShakeLoader', status: API_CALL_STATUS.SUCCESS }));
       } else {
-        dispatch(setIsLoading({key: 'handShakeLoader', status: API_CALL_STATUS.REJECTED}));
+        dispatch(setIsLoading({ key: 'handShakeLoader', status: API_CALL_STATUS.REJECTED }));
       }
     } catch (e) {
       console.warn('Error checking login status:', e);
-      dispatch(setIsLoading({key: 'handShakeLoader', status: API_CALL_STATUS.REJECTED}));
+      dispatch(setIsLoading({ key: 'handShakeLoader', status: API_CALL_STATUS.REJECTED }));
     }
   }, [dispatch]);
 
@@ -99,12 +100,14 @@ export default function App() {
   });
 
   return (
-    <Provider store={store}>
-      <View style={styles.container}>
-        <RootApp fontsLoaded={fontsLoaded} />
-        <Toast />
-      </View>
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <RootApp fontsLoaded={fontsLoaded} />
+          <Toast />
+        </View>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }
 

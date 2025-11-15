@@ -1,0 +1,38 @@
+[
+        {
+            "bookingId": "222222222222",
+            "bookingType": "VEHICLE",
+            "pickupAddress": "Thiru Nagar,Vellore",
+            "dropAddress": "Perumbakkam, Chennai",
+            "pickUpDate": "11/May/2022",
+            "pickUpTime": "11/May/2022",
+            "vehicleType": "SUV",
+            "seaters": 5,
+            "tripType": 0,
+            "tripTypeDetail": "ONE WAY",
+            "returnDate": "12/Aprl/2022",
+            "comments": "",
+            "isBookingForOthers": false,
+            "OthersPhoneNo": null,
+            "OthersName": null,
+            "isSingleWomen": true
+        },
+        {
+            "bookingId": "11111111111",
+            "bookingType": "VEHICLE",
+            "pickupAddress": "Neru, Chitoor",
+            "dropAddress": "Tambaram, Chennai",
+            "pickUpDate": "11/May/2022",
+            "pickUpTime": "11/May/2022",
+            "vehicleType": "HATCHBACK",
+            "seaters": 5,
+            "tripType": 0,
+            "tripTypeDetail": "ROUND",
+            "returnDate": "22/June/2022",
+            "comments": "",
+            "isBookingForOthers": false,
+            "OthersPhoneNo": null,
+            "OthersName": null,
+            "isSingleWomen": true
+        }
+    ]

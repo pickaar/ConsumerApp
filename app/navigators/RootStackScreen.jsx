@@ -2,17 +2,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from '@screens/PreLogin/SignInScreen';
-// import FeedbackComponent from '../screens/ActiveBooking/StepTwo/Feedback';
-// import ActiveBookingStackNavScreens from './activeBookingNav';
-// import BookingStackNavScreens from './bookingNav';
 import MainTab from '@nav/MainTabNav';
-// import TravelStackNavScreens from './travelBooking';
-// import { getData } from '../utils/helpersFn';
-// import { localStorageKeys } from '../utils/constant';
-import { SplashScreen } from '../screens/PreLogin/SplashScreen';
-import { Text, View } from 'react-native';
 import { SCREENS } from '@utils/constant';
-import BookingStackNavScreens from '@nav/BookingNav';
+import BookingStackNavStack from '@nav/BookingStackNavStack';
+import ActiveBookingNavStack from '@nav/ActiveBookingNavStack';
 
 const RootStack = createNativeStackNavigator();
 
@@ -30,6 +23,13 @@ const RootStackNavScreens = ({ initialRouteScreen }) => {
             />
 
             <RootStack.Screen
+                name={SCREENS.BOOKING}
+                component={BookingStackNavStack}
+                options={{
+                    headerShown: false,
+                    cardStyle: { backgroundColor: '#fff' }
+                }} />
+            <RootStack.Screen
                 name={SCREENS.DASHBOARD}
                 component={MainTab}
                 options={{
@@ -37,16 +37,13 @@ const RootStackNavScreens = ({ initialRouteScreen }) => {
                     // @ts-ignore
                     cardStyle: { backgroundColor: '#fff' }
                 }} />
-
             <RootStack.Screen
-                name={SCREENS.BOOKING}
-                component={BookingStackNavScreens}
+                name={SCREENS.ACTIVE_BOOKING}
+                component={ActiveBookingNavStack}
                 options={{
                     headerShown: false,
                     cardStyle: { backgroundColor: '#fff' }
                 }} />
-
-
 
         </RootStack.Navigator>
     )

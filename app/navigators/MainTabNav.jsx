@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { themeColors } from '../utils/constant';
 import PIcon, { PIcons } from '../components/brick/Icon';
 import { PIconSet } from '../components/brick/PIcon';
+import ActiveListScreen from '@screens/ActiveBooking/BookingList/ActiveListScreen';
 
 const DummyComponent = () => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -34,9 +35,30 @@ const TAB_LIST = [
     inActiveIcon: 'home',
     component: Dashboard,
   },
-  { route: 'Active', label: 'Active', type: PIcons.Feather, activeIcon: 'watch', inActiveIcon: 'watch', component: DummyComponenttwo },
-  { route: 'Direct', label: 'Direct', type: PIcons.Feather, activeIcon: 'bold', inActiveIcon: 'bold', component: DummyComponent },
-  { route: 'Settings', label: 'Settings', type: PIcons.Feather, activeIcon: 'settings', inActiveIcon: 'settings', component: DummyComponentthree },
+  {
+    route: 'Active',
+    label: 'Active',
+    type: PIcons.Feather,
+    activeIcon: 'watch',
+    inActiveIcon: 'watch',
+    component: ActiveListScreen
+  },
+  {
+    route: 'Direct',
+    label: 'Direct',
+    type: PIcons.Feather,
+    activeIcon: 'bold',
+    inActiveIcon: 'bold',
+    component: DummyComponent
+  },
+  {
+    route: 'Settings',
+    label: 'Settings',
+    type: PIcons.Feather,
+    activeIcon: 'settings',
+    inActiveIcon: 'settings',
+    component: DummyComponentthree
+  },
 ];
 
 const Tab = createBottomTabNavigator();
@@ -52,7 +74,7 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
 
   const viewRef = useRef(null);
 
-  
+
   useEffect(() => {
     if (viewRef.current) {
       if (!focused) {
@@ -95,14 +117,14 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
             type={item.type}
             size={14}
             name={focused ? item.activeIcon : item.inActiveIcon}
-            color={iconColor} 
+            color={iconColor}
           />
         </Animatable.View>
         <View style={styles.labelContainer}>
           <Text
             style={[
               styles.tabTitle,
-              { color: labelColor }, 
+              { color: labelColor },
               { fontFamily: labelFont },
             ]}
           >

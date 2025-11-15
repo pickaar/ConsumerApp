@@ -5,7 +5,7 @@ import Confirmation from '@screens/Booking/Confirmation';
 
 const BookingStack = createNativeStackNavigator();
 
-const BookingStackNavScreens = () => {
+const BookingStackNavStack = () => {
 
     return (
         <BookingStack.Navigator>
@@ -29,4 +29,4 @@ const BookingStackNavScreens = () => {
         </BookingStack.Navigator>
     )
 }
-export default BookingStackNavScreens;
+export default BookingStackNavStack;

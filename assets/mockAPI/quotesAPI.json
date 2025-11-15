@@ -1,0 +1,888 @@
+{
+        "bookingId": "11111111111",
+        "bookingType": "VEHICLE",
+        "quotesList": [
+            {
+                "quoteId": 965746773,
+                "vendorName": "Kishore",
+                "vendorId": "6546579846354",
+                "vendorStarRating": "4.5",
+                "vendorExp": "12",
+                "vendorCarType": "SEDAN",
+                "vendorCarName": "Honda City",
+                "vendorLuggageCapacity": "350",
+                "bookingPrivilege": "Recommended",
+                "quotedAmtByKM": 19,
+                "save": "14%",
+                "isNegotiable": true,
+                "quotedAproxAmt": "1405",
+                "feedbackDetails": {},
+                "moreInfo": [
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Name",
+                                "value": "Kameeshwaran Viswanathan",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Age",
+                                "value": 33,
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Car Details",
+                                "value": "Ritz",
+                                "type": "multiLineWithInfo",
+                                "info": "Minimal luggage space and compact modal",
+                                "modalType": "CAR_DETAIL_MODAL",
+                                "modalContent": {}
+                            },
+                            {
+                                "key": "Ratings, Feedbacks & Badges",
+                                "type": "singleLine",
+                                "valueType": "redirect",
+                                "navigateTo": "feedback"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Travel Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "type": "multiLine",
+                                "key": "From Address",
+                                "value": "1/13, 2nd New Street, Tiru Nagar, Katpadi, Vellore PinCode - 632006"
+                            },
+                            {
+                                "type": "multiLine",
+                                "key": "To Address",
+                                "value": "S1, Sherwood Apartment, 4th VGP Prabhu Nagar,Perumbakkam, Chennai - 600100",
+                                "style": "{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: themeColors.gray}"
+                            },
+                            {
+                                "key": "Approximate Distance",
+                                "value": "129 Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Approximate Travel Time",
+                                "value": "3 hrs,10 min",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Travel type",
+                                "value": "Outstaion",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "No. Of passangers",
+                                "value": "4 Persons",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Start Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Return Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Driver Quoted Per Km",
+                                "value": "28/Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Extra KM",
+                                "value": "31/Km",
+                                "type": "multiLineWithInfo",
+                                "info": "This charge applicable for additional KM.",
+                                "modalType": "INFO",
+                                "modalContent": "This charge applicable for additional KM."
+                            },
+                            {
+                                "key": "Driver Beta",
+                                "value": " 500",
+                                "type": "multiLineWithInfo",
+                                "info": "Driver beta applicable for Outstation trips only.",
+                                "modalType": "INFO",
+                                "modalContent": "Driver beta applicable for Outstation trips only."
+                            },
+                            {
+                                "key": "Toll Charges",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before crossing Tolls.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before crossing Tolls."
+                            },
+                            {
+                                "key": "State Tax",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before entering other States.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before entering other States."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "quoteId": 634563456,
+                "vendorName": "Aravid",
+                "vendorId": "65465asdf46354",
+                "vendorStarRating": "4.2",
+                "vendorExp": "12",
+                "vendorCarType": "SUV",
+                "vendorCarName": "NEXAN",
+                "vendorLuggageCapacity": "350",
+                "bookingPrivilege": "Recommended",
+                "save": "14%",
+                "isNegotiable": true,
+                "quotedAmtByKM": 31,
+                "quotedAproxAmt": "1405",
+                "feedbackDetails": {},
+                "moreInfo": [
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Name",
+                                "value": "Kameeshwaran Viswanathan",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Age",
+                                "value": 33,
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Car Details",
+                                "value": "Ritz",
+                                "type": "multiLineWithInfo",
+                                "info": "Minimal luggage space and compact modal",
+                                "modalType": "CAR_DETAIL_MODAL",
+                                "modalContent": {}
+                            },
+                            {
+                                "key": "Ratings, Feedbacks & Badges",
+                                "type": "singleLine",
+                                "valueType": "redirect",
+                                "navigateTo": "feedback"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Travel Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "type": "multiLine",
+                                "key": "From Address",
+                                "value": "1/13, 2nd New Street, Tiru Nagar, Katpadi, Vellore PinCode - 632006"
+                            },
+                            {
+                                "type": "multiLine",
+                                "key": "To Address",
+                                "value": "S1, Sherwood Apartment, 4th VGP Prabhu Nagar,Perumbakkam, Chennai - 600100",
+                                "style": "{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: themeColors.gray}"
+                            },
+                            {
+                                "key": "Approximate Distance",
+                                "value": "129 Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Approximate Travel Time",
+                                "value": "3 hrs,10 min",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Travel type",
+                                "value": "Outstaion",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "No. Of passangers",
+                                "value": "4 Persons",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Start Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Return Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Driver Quoted Per Km",
+                                "value": "28/Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Extra KM",
+                                "value": "31/Km",
+                                "type": "multiLineWithInfo",
+                                "info": "This charge applicable for additional KM.",
+                                "modalType": "INFO",
+                                "modalContent": "This charge applicable for additional KM."
+                            },
+                            {
+                                "key": "Driver Beta",
+                                "value": " 500",
+                                "type": "multiLineWithInfo",
+                                "info": "Driver beta applicable for Outstation trips only.",
+                                "modalType": "INFO",
+                                "modalContent": "Driver beta applicable for Outstation trips only."
+                            },
+                            {
+                                "key": "Toll Charges",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before crossing Tolls.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before crossing Tolls."
+                            },
+                            {
+                                "key": "State Tax",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before entering other States.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before entering other States."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "quoteId": 2323452,
+                "vendorName": "Navaneeth",
+                "vendorId": "6546579846354",
+                "vendorStarRating": "4.1",
+                "vendorExp": "3",
+                "vendorCarType": "SEDAN",
+                "vendorCarName": "Ritz",
+                "vendorLuggageCapacity": "350",
+                "bookingPrivilege": "Recommended",
+                "save": "14%",
+                "isNegotiable": true,
+                "quotedAmtByKM": 22,
+                "quotedAproxAmt": "1405",
+                "feedbackDetails": {},
+                "moreInfo": [
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Name",
+                                "value": "Kameeshwaran Viswanathan",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Age",
+                                "value": 33,
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Car Details",
+                                "value": "Ritz",
+                                "type": "multiLineWithInfo",
+                                "info": "Minimal luggage space and compact modal",
+                                "modalType": "CAR_DETAIL_MODAL",
+                                "modalContent": {}
+                            },
+                            {
+                                "key": "Ratings, Feedbacks & Badges",
+                                "type": "singleLine",
+                                "valueType": "redirect",
+                                "navigateTo": "feedback"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Travel Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "type": "multiLine",
+                                "key": "From Address",
+                                "value": "1/13, 2nd New Street, Tiru Nagar, Katpadi, Vellore PinCode - 632006"
+                            },
+                            {
+                                "type": "multiLine",
+                                "key": "To Address",
+                                "value": "S1, Sherwood Apartment, 4th VGP Prabhu Nagar,Perumbakkam, Chennai - 600100",
+                                "style": "{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: themeColors.gray}"
+                            },
+                            {
+                                "key": "Approximate Distance",
+                                "value": "129 Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Approximate Travel Time",
+                                "value": "3 hrs,10 min",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Travel type",
+                                "value": "Outstaion",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "No. Of passangers",
+                                "value": "4 Persons",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Start Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Return Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Driver Quoted Per Km",
+                                "value": "28/Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Extra KM",
+                                "value": "31/Km",
+                                "type": "multiLineWithInfo",
+                                "info": "This charge applicable for additional KM.",
+                                "modalType": "INFO",
+                                "modalContent": "This charge applicable for additional KM."
+                            },
+                            {
+                                "key": "Driver Beta",
+                                "value": " 500",
+                                "type": "multiLineWithInfo",
+                                "info": "Driver beta applicable for Outstation trips only.",
+                                "modalType": "INFO",
+                                "modalContent": "Driver beta applicable for Outstation trips only."
+                            },
+                            {
+                                "key": "Toll Charges",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before crossing Tolls.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before crossing Tolls."
+                            },
+                            {
+                                "key": "State Tax",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before entering other States.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before entering other States."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "quoteId": 12345574567,
+                "vendorName": "Kamesh",
+                "vendorId": "6546579846354",
+                "vendorStarRating": "4.5",
+                "vendorExp": "12",
+                "vendorCarType": "SUV",
+                "vendorCarName": "TATA Ritz",
+                "vendorLuggageCapacity": "250",
+                "bookingPrivilege": "Premium",
+                "save": "14%",
+                "isNegotiable": true,
+                "quotedAmtByKM": 34,
+                "quotedAproxAmt": "1405",
+                "feedbackDetails": {},
+                "moreInfo": [
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Name",
+                                "value": "Kameeshwaran Viswanathan",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Age",
+                                "value": 33,
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Car Details",
+                                "value": "Ritz",
+                                "type": "multiLineWithInfo",
+                                "info": "Minimal luggage space and compact modal",
+                                "modalType": "CAR_DETAIL_MODAL",
+                                "modalContent": {}
+                            },
+                            {
+                                "key": "Ratings, Feedbacks & Badges",
+                                "type": "singleLine",
+                                "valueType": "redirect",
+                                "navigateTo": "feedback"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Travel Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "type": "multiLine",
+                                "key": "From Address",
+                                "value": "1/13, 2nd New Street, Tiru Nagar, Katpadi, Vellore PinCode - 632006"
+                            },
+                            {
+                                "type": "multiLine",
+                                "key": "To Address",
+                                "value": "S1, Sherwood Apartment, 4th VGP Prabhu Nagar,Perumbakkam, Chennai - 600100",
+                                "style": "{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: themeColors.gray}"
+                            },
+                            {
+                                "key": "Approximate Distance",
+                                "value": "129 Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Approximate Travel Time",
+                                "value": "3 hrs,10 min",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Travel type",
+                                "value": "Outstaion",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "No. Of passangers",
+                                "value": "4 Persons",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Start Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Return Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Driver Quoted Per Km",
+                                "value": "28/Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Extra KM",
+                                "value": "31/Km",
+                                "type": "multiLineWithInfo",
+                                "info": "This charge applicable for additional KM.",
+                                "modalType": "INFO",
+                                "modalContent": "This charge applicable for additional KM."
+                            },
+                            {
+                                "key": "Driver Beta",
+                                "value": " 500",
+                                "type": "multiLineWithInfo",
+                                "info": "Driver beta applicable for Outstation trips only.",
+                                "modalType": "INFO",
+                                "modalContent": "Driver beta applicable for Outstation trips only."
+                            },
+                            {
+                                "key": "Toll Charges",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before crossing Tolls.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before crossing Tolls."
+                            },
+                            {
+                                "key": "State Tax",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before entering other States.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before entering other States."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "quoteId": 895342464567,
+                "vendorName": "Santhosh",
+                "vendorId": "6546579846354",
+                "vendorStarRating": "4.7",
+                "vendorExp": "4",
+                "vendorCarType": "SEDAN",
+                "vendorCarName": "Indica",
+                "vendorLuggageCapacity": "350",
+                "bookingPrivilege": "Economy",
+                "save": "14%",
+                "isNegotiable": true,
+                "quotedAmtByKM": 19,
+                "quotedAproxAmt": "1405",
+                "feedbackDetails": {},
+                "moreInfo": [
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Name",
+                                "value": "Kameeshwaran Viswanathan",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Age",
+                                "value": 33,
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Car Details",
+                                "value": "Ritz",
+                                "type": "multiLineWithInfo",
+                                "info": "Minimal luggage space and compact modal",
+                                "modalType": "CAR_DETAIL_MODAL",
+                                "modalContent": {}
+                            },
+                            {
+                                "key": "Ratings, Feedbacks & Badges",
+                                "type": "singleLine",
+                                "valueType": "redirect",
+                                "navigateTo": "feedback"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Travel Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "type": "multiLine",
+                                "key": "From Address",
+                                "value": "1/13, 2nd New Street, Tiru Nagar, Katpadi, Vellore PinCode - 632006"
+                            },
+                            {
+                                "type": "multiLine",
+                                "key": "To Address",
+                                "value": "S1, Sherwood Apartment, 4th VGP Prabhu Nagar,Perumbakkam, Chennai - 600100",
+                                "style": "{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: themeColors.gray}"
+                            },
+                            {
+                                "key": "Approximate Distance",
+                                "value": "129 Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Approximate Travel Time",
+                                "value": "3 hrs,10 min",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Travel type",
+                                "value": "Outstaion",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "No. Of passangers",
+                                "value": "4 Persons",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Start Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Return Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Driver Quoted Per Km",
+                                "value": "28/Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Extra KM",
+                                "value": "31/Km",
+                                "type": "multiLineWithInfo",
+                                "info": "This charge applicable for additional KM.",
+                                "modalType": "INFO",
+                                "modalContent": "This charge applicable for additional KM."
+                            },
+                            {
+                                "key": "Driver Beta",
+                                "value": " 500",
+                                "type": "multiLineWithInfo",
+                                "info": "Driver beta applicable for Outstation trips only.",
+                                "modalType": "INFO",
+                                "modalContent": "Driver beta applicable for Outstation trips only."
+                            },
+                            {
+                                "key": "Toll Charges",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before crossing Tolls.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before crossing Tolls."
+                            },
+                            {
+                                "key": "State Tax",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before entering other States.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before entering other States."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "quoteId": 234234234,
+                "vendorName": "Navaneeth",
+                "vendorId": "6546579846354",
+                "vendorStarRating": "4.1",
+                "vendorExp": "3",
+                "vendorCarType": "SEDAN",
+                "vendorCarName": "Ritz",
+                "vendorLuggageCapacity": "350",
+                "bookingPrivilege": "Regular",
+                "save": "14%",
+                "isNegotiable": true,
+                "quotedAmtByKM": 22,
+                "quotedAproxAmt": "1405",
+                "feedbackDetails": {},
+                "moreInfo": [
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Name",
+                                "value": "Kameeshwaran Viswanathan",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Age",
+                                "value": 33,
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Car Details",
+                                "value": "Ritz",
+                                "type": "multiLineWithInfo",
+                                "info": "Minimal luggage space and compact modal",
+                                "modalType": "CAR_DETAIL_MODAL",
+                                "modalContent": {}
+                            },
+                            {
+                                "key": "Ratings, Feedbacks & Badges",
+                                "type": "singleLine",
+                                "valueType": "redirect",
+                                "navigateTo": "feedback"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Travel Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "type": "multiLine",
+                                "key": "From Address",
+                                "value": "1/13, 2nd New Street, Tiru Nagar, Katpadi, Vellore PinCode - 632006"
+                            },
+                            {
+                                "type": "multiLine",
+                                "key": "To Address",
+                                "value": "S1, Sherwood Apartment, 4th VGP Prabhu Nagar,Perumbakkam, Chennai - 600100",
+                                "style": "{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: themeColors.gray}"
+                            },
+                            {
+                                "key": "Approximate Distance",
+                                "value": "129 Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Approximate Travel Time",
+                                "value": "3 hrs,10 min",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Travel type",
+                                "value": "Outstaion",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "No. Of passangers",
+                                "value": "4 Persons",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Start Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Return Date & Time",
+                                "value": "23, April22 - 08: 30 AM",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Driver & Vehicle Details",
+                        "titleSize": "small",
+                        "list": [
+                            {
+                                "key": "Driver Quoted Per Km",
+                                "value": "28/Km",
+                                "valueType": "text",
+                                "type": "singleLine"
+                            },
+                            {
+                                "key": "Extra KM",
+                                "value": "31/Km",
+                                "type": "multiLineWithInfo",
+                                "info": "This charge applicable for additional KM.",
+                                "modalType": "INFO",
+                                "modalContent": "This charge applicable for additional KM."
+                            },
+                            {
+                                "key": "Driver Beta",
+                                "value": " 500",
+                                "type": "multiLineWithInfo",
+                                "info": "Driver beta applicable for Outstation trips only.",
+                                "modalType": "INFO",
+                                "modalContent": "Driver beta applicable for Outstation trips only."
+                            },
+                            {
+                                "key": "Toll Charges",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before crossing Tolls.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before crossing Tolls."
+                            },
+                            {
+                                "key": "State Tax",
+                                "value": "Excluded",
+                                "type": "multiLineWithInfo",
+                                "info": "You need to pay directly to driver before entering other States.",
+                                "modalType": "INFO",
+                                "modalContent": "You need to pay directly to driver before entering other States."
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }

@@ -2,7 +2,7 @@ import { Dimensions } from 'react-native';
 
 export const DEVICE_WIDTH = Dimensions.get('window').width;
 export const DEVICE_HEIGHT = Dimensions.get('window').height;
-
+export const TAB_BAR_HEIGHT = 50;
 export const STORAGE_KEY = '@userData';
 
 export const themeColors = {
@@ -15,7 +15,7 @@ export const themeColors = {
   white: '#ffffff',
   lightGray: '#ebeaeaa6',
   lightGray2: '#ebeaead6',
-  darkGray: '#484f59',
+  darkGray: '#e7e9ecff',
   lightYellow: '#fcb5122e',
   recommendedBgColor: '#099a7dfc',
   chepestBgColor: '#5188f9',
@@ -63,4 +63,7 @@ export const SCREENS = Object.freeze({
   BOOKING: 'BOOKING',
   BOOKING_GET_DETAILS: 'BOOKING_GET_DETAILS',
   BOOKING_CONFIRMATION: 'BOOKING_CONFIRMATION',
+  ACTIVE_BOOKING: 'ACTIVE_BOOKING',
+  BOOKING_LIST: 'BOOKING_LIST',
+  BOOKING_DETAIL: 'BOOKING_DETAIL',
 });

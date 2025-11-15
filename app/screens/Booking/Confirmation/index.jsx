@@ -26,6 +26,7 @@ import { loader } from "@store/reducer/bookingSlice";
 import { useAppDispatch } from "@store/store";
 import { useAppSelector } from "@store/hook";
 import { createBookingThunk } from "@thunk/bookingThunk";
+import { SCREENS } from "../../../utils/constant";
 
 const MAP_IMAGE = require('@assets/sample_gmap.png');
 const HEADER_FLEX = 0.24;
@@ -74,7 +75,7 @@ export default function Confirmation({ navigation }) {
                         {
                             text: "OK",
                             onPress: () => {
-                                navigation.navigate('dashboard', { screen: 'Active' });
+                                navigation.navigate(SCREENS.DASHBOARD, { screen: SCREENS.BOOKING_LIST });
                             }
                         }
                     ]
