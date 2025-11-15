@@ -1,64 +1,66 @@
 import React, { useState, useCallback } from 'react';
+import PIcon, { PIcons } from "@components/brick/Icon";
+
 // These imports are assumed to be available in the React Native environment,
 // but were causing errors in the isolated runtime. We keep the components 
 // but remove the conflicting import statements.
-// import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, BackHandler } from 'react-native';
-// import { SafeAreaView } from 'react-native-safe-area-context';
-// import { useNavigation } from "@react-navigation/native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, BackHandler, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from "@react-navigation/native";
+import { pStyles } from '../../../utils/theme';
+import { TitleWithBackBtn } from '../../../components/brick/text';
 
 // --- Mocking External Imports for Standalone Execution ---
 // We redefine React Native and Navigation APIs as simple placeholders 
 // to ensure the component structure compiles correctly.
-const View = (props) => <div {...props} style={props.style}>{props.children}</div>;
-const Text = (props) => <span {...props} style={props.style}>{props.children}</span>;
-const TouchableOpacity = (props) => <button {...props} onClick={props.onPress} style={{ ...props.style, border: 'none', background: 'transparent' }}>{props.children}</button>;
+// const View = (props) => <div {...props} style={props.style}>{props.children}</div>;
+// const Text = (props) => <span {...props} style={props.style}>{props.children}</span>;
+// const TouchableOpacity = (props) => <button {...props} onClick={props.onPress} style={{ ...props.style, border: 'none', background: 'transparent' }}>{props.children}</button>;
 // FIX: Updated TextInput mock to use <textarea> when multiline is passed, and destructure RN-specific props.
-const TextInput = ({ multiline, numberOfLines, onChangeText, style, ...props }) => {
-    const Component = multiline ? 'textarea' : 'input';
-    return (
-        <Component 
-            {...props} 
-            onChange={(e) => onChangeText(e.target.value)} 
-            style={style} 
-        />
-    );
-};
-const Alert = { alert: (title, message) => console.log(`ALERT: ${title} - ${message}`) };
-const StyleSheet = { create: (styles) => styles, hairlineWidth: 1 };
-const SafeAreaView = View; // Mocking SafeAreaView as a simple View
-const useNavigation = () => ({ goBack: () => Alert.alert("Navigation", "Going back...") }); // Mocking navigation hook
+// const TextInput = ({ multiline, numberOfLines, onChangeText, style, ...props }) => {
+//     const Component = multiline ? 'textarea' : 'input';
+//     return (
+//         <Component 
+//             {...props} 
+//             onChange={(e) => onChangeText(e.target.value)} 
+//             style={style} 
+//         />
+//     );
+// };
+// const Alert = { alert: (title, message) => console.log(`ALERT: ${title} - ${message}`) };
+// const StyleSheet = { create: (styles) => styles, hairlineWidth: 1 };
+// const SafeAreaView = View; // Mocking SafeAreaView as a simple View
+// const useNavigation = () => ({ goBack: () => Alert.alert("Navigation", "Going back...") }); // Mocking navigation hook
 
 
 // Replace with your actual imports:
 // import { pStyles } from "../../utils/theme";
 // import PIcon, { PIcons } from "../../components/brick/Icon";
 
-const mockPStyles = {
-    // Standard iOS-like color palette
-    fontStyleB: 'System-Bold',
-    fontStyleR: 'System-Regular',
-    fontSizeXL: 22,
-    fontSizeL: 16,
-    gray: '#8E8E93', // iOS Gray
-    darkGray: '#1C1C1E', // iOS Dark Text
-    separatorColor: '#C6C6C8', // iOS Separator
-    systemBackground: '#F2F2F7', // iOS Background
-    systemBlue: '#007AFF',
-};
+// const mockPStyles = {
+//     // Standard iOS-like color palette
+//     fontStyleB: 'System-Bold',
+//     fontStyleR: 'System-Regular',
+//     fontSizeXL: 22,
+//     fontSizeL: 16,
+//     gray: '#8E8E93', // iOS Gray
+//     darkGray: '#1C1C1E', // iOS Dark Text
+//     lightBlack: '#C6C6C8', // iOS Separator
+//     systemBackground: '#F2F2F7', // iOS Background
+//     systemBlue: '#007AFF',
+// };
 
-// Mock Icon component (for demonstration)
-const PIcons = { Feather: 'Feather', FontAwesome: 'FontAwesome' };
-const PIcon = ({ type, name, size, style }) => (
-    <Text style={[{ fontSize: size, color: 'black' }, style]}>
-        {/* Using Emojis as Feather/FontAwesome placeholders for clarity */}
-        {name === 'home' && '🏠'}
-        {name === 'briefcase' && '💼'}
-        {name === 'map' && '📍'}
-        {name === 'angle-right' && '❯'}
-        {name === 'angle-left' && '❮'}
-        {name === 'save' && '💾'}
-    </Text>
-);
+// const PIcon = ({ type, name, size, style }) => (
+//     <Text style={[{ fontSize: size, color: 'black' }, style]}>
+//         {/* Using Emojis as Feather/FontAwesome placeholders for clarity */}
+//         {name === 'home' && '🏠'}
+//         {name === 'briefcase' && '💼'}
+//         {name === 'map' && '📍'}
+//         {name === 'angle-right' && '❯'}
+//         {name === 'angle-left' && '❮'}
+//         {name === 'save' && '💾'}
+//     </Text>
+// );
 
 // --- Initial Address Data ---
 const initialAddresses = [
@@ -74,7 +76,7 @@ const AddressItem = React.memo(({ item, onPress }) => {
     const isPlaceholder = item.address.includes('Tap to add');
 
     return (
-        <TouchableOpacity 
+        <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => onPress(item)}
             style={styles.addressItemContainer}
@@ -105,18 +107,18 @@ const AddressInputView = ({ address, setAddress, onSave, onCancel }) => {
         <View style={styles.inputModalOverlay}>
             <View style={styles.inputModalCard}>
                 <Text style={styles.inputHeader}>Enter Indian Address</Text>
-                
-                <TextInput
+
+                 {/* <TextInput
                     style={styles.addressTextInput}
                     placeholder="Enter your full Indian address here..."
-                    placeholderTextColor={mockPStyles.gray}
+                    placeholderTextColor={pStyles.gray}
                     value={address}
                     onChangeText={setAddress}
                     multiline={true}
                     // FIX: Removed numberOfLines as it's not a standard HTML attribute for textarea
                     // numberOfLines={4} 
                     // autoFocus={true} // Removed for web compatibility
-                />
+                />  */}
 
                 <View style={styles.inputButtonContainer}>
                     <TouchableOpacity onPress={onCancel} style={[styles.inputButton, styles.cancelButton]}>
@@ -135,18 +137,13 @@ const AddressInputView = ({ address, setAddress, onSave, onCancel }) => {
 // --- Main Component ---
 export default function Location() {
     const navigation = useNavigation();
-    
+
     // State to hold all user addresses
     const [addresses, setAddresses] = useState(initialAddresses);
-    
+
     // State to manage the input/editing process
     const [editingAddress, setEditingAddress] = useState(null); // The item being edited (or null)
     const [currentInput, setCurrentInput] = useState(''); // The text currently in the input field
-
-    // Navigation back to Settings
-    const handleBack = useCallback(() => {
-        navigation.goBack();
-    }, [navigation]);
 
     // Handle tapping an address item to start editing
     const handleEditStart = useCallback((item) => {
@@ -154,7 +151,7 @@ export default function Location() {
         // Load existing address into the input, or clear it if it's a placeholder
         setCurrentInput(item.address.includes('Tap to add') ? '' : item.address);
     }, []);
-    
+
     // Handle saving the new address
     const handleSaveAddress = useCallback(() => {
         if (!currentInput.trim()) {
@@ -162,8 +159,8 @@ export default function Location() {
             return;
         }
 
-        setAddresses(prevAddresses => prevAddresses.map(addr => 
-            addr.id === editingAddress.id 
+        setAddresses(prevAddresses => prevAddresses.map(addr =>
+            addr.id === editingAddress.id
                 ? { ...addr, address: currentInput.trim() }
                 : addr
         ));
@@ -173,18 +170,17 @@ export default function Location() {
         setCurrentInput('');
 
         Alert.alert("Success", `${editingAddress.label} address saved successfully!`);
-        
+
     }, [currentInput, editingAddress]);
 
-    // Render the list of addresses
     const renderAddressList = () => (
         <View style={styles.groupBlock}>
             <Text style={styles.groupHeader}>YOUR SAVED LOCATIONS</Text>
             {addresses.map((item, index) => (
                 <View key={item.id}>
-                    <AddressItem 
-                        item={item} 
-                        onPress={handleEditStart} 
+                    <AddressItem
+                        item={item}
+                        onPress={handleEditStart}
                     />
                     {/* Add separator except for the last item */}
                     {index < addresses.length - 1 && <View style={styles.listSeparator} />}
@@ -192,29 +188,23 @@ export default function Location() {
             ))}
         </View>
     );
-    
+
     // Render the default address (Home) as a prominent header banner
     const defaultAddress = addresses.find(a => a.isDefault);
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            {/* Custom iOS-style Header (Back button on the left) */}
             <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={handleBack} style={styles.headerButton}>
-                    <PIcon style={styles.headerBackIcon} type={PIcons.FontAwesome} name="angle-left" size={24} />
-                    <Text style={styles.headerBackText}>Settings</Text>
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Your Locations</Text>
+                <TitleWithBackBtn name="YOUR&nbsp;LOCATION" bgColor={pStyles.white} />
                 <View style={styles.headerButton} /> {/* Placeholder for alignment */}
             </View>
-
+        <ScrollView>
             <View style={styles.container}>
-                
-                {/* Default Address Banner */}
+
                 {defaultAddress && (
                     <View style={styles.defaultAddressBanner}>
                         <Text style={styles.defaultLabel}>Default Address ({defaultAddress.label})</Text>
-                        {/* FIX: Removed numberOfLines */}
+
                         <Text style={styles.defaultAddressText}>
                             {defaultAddress.address}
                         </Text>
@@ -234,6 +224,7 @@ export default function Location() {
                     />
                 )}
             </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -242,14 +233,14 @@ export default function Location() {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: mockPStyles.systemBackground, 
+        backgroundColor: pStyles.white,
     },
     container: {
         flex: 1,
         paddingHorizontal: 15, // Side padding for the groups
         paddingTop: 10,
     },
-    
+
     // --- iOS Navigation Header ---
     headerContainer: {
         flexDirection: 'row',
@@ -259,28 +250,15 @@ const styles = StyleSheet.create({
         height: 44, // Standard navigation bar height
         backgroundColor: 'white',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: mockPStyles.separatorColor,
+        borderBottomColor: pStyles.white,
     },
-    headerTitle: {
-        fontSize: mockPStyles.fontSizeL,
-        fontFamily: mockPStyles.fontStyleB,
-        color: mockPStyles.darkGray,
-    },
+
     headerButton: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 5,
     },
-    headerBackIcon: {
-        color: mockPStyles.systemBlue || '#007AFF',
-        fontSize: 20,
-        marginRight: -4, // Pull icon closer to text
-    },
-    headerBackText: {
-        color: mockPStyles.systemBlue || '#007AFF',
-        fontSize: mockPStyles.fontSizeL,
-        fontFamily: mockPStyles.fontStyleR,
-    },
+
 
     // --- Default Address Banner ---
     defaultAddressBanner: {
@@ -289,25 +267,24 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 20,
         borderWidth: StyleSheet.hairlineWidth,
-        borderColor: mockPStyles.separatorColor,
+        borderColor: pStyles.ligthBlack,
     },
     defaultLabel: {
         fontSize: 12,
-        fontFamily: mockPStyles.fontStyleB,
-        color: mockPStyles.gray,
+        fontFamily: pStyles.fontStyleB,
+        color: pStyles.gray,
         marginBottom: 5,
     },
     defaultAddressText: {
         fontSize: 14,
-        fontFamily: mockPStyles.fontStyleR,
-        color: mockPStyles.darkGray,
+        fontFamily: pStyles.fontStyleR,
+        color: pStyles.black,
     },
 
-    // --- Grouped List Style ---
     groupHeader: {
         fontSize: 13,
-        fontFamily: mockPStyles.fontStyleR,
-        color: mockPStyles.gray,
+        fontFamily: pStyles.fontStyleB,
+        color: pStyles.black,
         paddingLeft: 10,
         marginBottom: 8,
     },
@@ -315,9 +292,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10, // Rounded corners for the group
         overflow: 'hidden', // Ensures separators are contained
-        marginBottom: 20, 
+        marginBottom: 20,
     },
-    
+
     // --- List Item Style ---
     addressItemContainer: {
         flexDirection: 'row',
@@ -330,7 +307,7 @@ const styles = StyleSheet.create({
     iconBlock: {
         width: 30,
         height: 30,
-        borderRadius: 6, 
+        borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: 15,
@@ -343,37 +320,37 @@ const styles = StyleSheet.create({
     },
     addressLabel: {
         fontSize: 16,
-        fontFamily: mockPStyles.fontStyleR,
-        color: mockPStyles.darkGray,
+        fontFamily: pStyles.fontStyleR,
+        color: pStyles.black,
         marginBottom: 2,
     },
     addressText: {
         fontSize: 13,
-        fontFamily: mockPStyles.fontStyleR,
-        color: mockPStyles.darkGray,
+        fontFamily: pStyles.fontStyleR,
+        color: pStyles.black,
     },
     addressPlaceholder: {
-        color: mockPStyles.gray,
+        color: pStyles.gray,
         fontStyle: 'italic',
     },
     arrowIcon: {
-        color: mockPStyles.gray,
+        color: pStyles.gray,
         paddingLeft: 10,
     },
     listSeparator: {
         // Separator starts after the icon block
         height: StyleSheet.hairlineWidth,
-        backgroundColor: mockPStyles.separatorColor,
-        marginLeft: 60, 
+        backgroundColor: pStyles.lightBlack,
+        marginLeft: 60,
     },
 
     // --- Input Modal/Overlay Styles (Simple conditional rendering) ---
     inputModalOverlay: {
         // Mocking absolute fill and fixed positioning for the modal
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-        right: 0, 
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
         bottom: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         alignItems: 'center',
@@ -392,22 +369,22 @@ const styles = StyleSheet.create({
     },
     inputHeader: {
         fontSize: 18,
-        fontFamily: mockPStyles.fontStyleB,
+        fontFamily: pStyles.fontStyleB,
         marginBottom: 15,
         textAlign: 'center',
-        color: mockPStyles.darkGray,
+        color: pStyles.darkGray,
     },
     addressTextInput: {
         minHeight: 80,
-        backgroundColor: mockPStyles.systemBackground,
+        backgroundColor: pStyles.systemBackground,
         borderRadius: 8,
         padding: 10,
         fontSize: 14,
-        fontFamily: mockPStyles.fontStyleR,
-        borderColor: mockPStyles.separatorColor,
+        fontFamily: pStyles.fontStyleR,
+        borderColor: pStyles.lightBlack,
         borderWidth: 1,
         textAlignVertical: 'top',
-        color: mockPStyles.darkGray,
+        color: pStyles.darkGray,
         // Mocking resize behavior for TextInput
         resize: 'vertical',
         width: '100%',
@@ -428,21 +405,21 @@ const styles = StyleSheet.create({
         cursor: 'pointer', // Indicate button functionality
     },
     cancelButton: {
-        backgroundColor: mockPStyles.systemBackground,
+        backgroundColor: pStyles.systemBackground,
         borderWidth: 1,
-        borderColor: mockPStyles.gray,
+        borderColor: pStyles.gray,
     },
     saveButton: {
         backgroundColor: '#007AFF', // System Blue
     },
     cancelText: {
-        color: mockPStyles.darkGray,
-        fontFamily: mockPStyles.fontStyleR,
+        color: pStyles.darkGray,
+        fontFamily: pStyles.fontStyleR,
         fontSize: 16,
     },
     saveText: {
         color: 'white',
-        fontFamily: mockPStyles.fontStyleB,
+        fontFamily: pStyles.fontStyleB,
         fontSize: 16,
     },
 });

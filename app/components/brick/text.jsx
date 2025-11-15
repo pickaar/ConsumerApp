@@ -6,14 +6,14 @@ import PIcon, { PIcons } from './Icon';
 import React, { useCallback, memo } from 'react';
 
 
-export const TitleWithBackBtn = ({ name }) => {
+export const TitleWithBackBtn = ({ name ,bgColor}) => {
     const navigation = useNavigation();
     const onBackBtnPress = () => {
         navigation.goBack();
     }
 
     return (
-        <View style={{ backgroundColor: themeColors.yellow, height: 40, width: '100%', flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ backgroundColor: bgColor || themeColors.yellow, height: 40, width: '100%', flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ paddingLeft: 10, flexDirection: 'row' }}>
                 <TouchableOpacity onPress={onBackBtnPress} style={{}}>
                     <PIcon type={PIcons.Feather} name="arrow-left" size={25}></PIcon>
