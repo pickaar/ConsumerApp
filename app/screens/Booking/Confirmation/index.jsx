@@ -91,7 +91,7 @@ export default function Confirmation({ navigation }) {
 
             <View style={styles.headerContainer}>
                 <TouchableOpacity onPress={backPressed} style={styles.backButton}>
-                    <PIcon type={PIcons.Feather} name="arrow-left" size={25} />
+                    <PIcon type="feather" name="arrow-left" size={25} />
                 </TouchableOpacity>
                 <View style={styles.headerMapContainer}>
                     <Animatable.Image

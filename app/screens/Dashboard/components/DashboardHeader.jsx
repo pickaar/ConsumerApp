@@ -23,7 +23,7 @@ export default function DashboardHeader() {
     return (
         <TouchableOpacity onPress={openAddressPickerModal} style={styles.headerContainer} >
             <View style={{ flex: 1, flexDirection: 'row' }}>
-                <PIcon type={PIcons.Feather} color={themeColors.yellow} name="map-pin" />
+                <PIcon type="feather" color={themeColors.yellow} name="map-pin" />
                 <Text style={styles.addressTxtName}>{primaryAddress?.[0]?.name}</Text>
             </View >
             <View style={{ flex: 1, flexDirection: 'row' }}>

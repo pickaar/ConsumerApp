@@ -13,7 +13,7 @@ const truncateAddress = (address, maxLength = 30) => {
 
 const AddressRow = ({ address, detail, isLast }) => (
     <View style={[styles.addressRow, isLast && styles.addressRowSpacing]}>
-        <PIcon name="circle" type={PIcons.Feather} size={13} style={styles.icon} />
+        <PIcon name="circle" type="feather" size={13} style={styles.icon} />
         <View>
             <Text style={styles.labelOne}>{address}</Text>
             {detail !== false && <Text style={styles.labelTwo}>{detail}</Text>}

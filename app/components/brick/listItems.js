@@ -52,7 +52,7 @@ export const SingleLine = ({ item, index }) => {
                             case 'redirect':
                                 return (
                                     <TouchableOpacity onPress={() => navigateTo(item.navigateTo)}>
-                                        <PIcon style={{ paddingLeft: 5, color: pStyles.gray, opacity: 0.9 }} type={PIcons.Feather} name="arrow-right" size={15}></PIcon>
+                                        <PIcon style={{ paddingLeft: 5, color: pStyles.gray, opacity: 0.9 }} type="feather" name="arrow-right" size={15}></PIcon>
                                     </TouchableOpacity>
                                 )
 
@@ -120,7 +120,7 @@ export const MultiLineWithInfo = ({ item, index }) => {
                             <Text style={[styles.infoTitleValue, {}]}>
                                 {item.value}
                             </Text>
-                            <PIcon style={{ paddingLeft: 5, color: pStyles.infoHighlightColor, opacity: 0.9 }} type={PIcons.Feather} name="info" size={15}></PIcon>
+                            <PIcon style={{ paddingLeft: 5, color: pStyles.infoHighlightColor, opacity: 0.9 }} type="feather" name="info" size={15}></PIcon>
                         </TouchableOpacity>
 
                     </View>

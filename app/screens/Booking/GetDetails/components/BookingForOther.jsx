@@ -74,7 +74,7 @@ const BookingForOthers = () => {
                         <TouchableOpacity onPress={getContact} style={styles.iconButton}>
                             <PIcon
                                 style={styles.icon}
-                                type={PIcons.FontAwesome}
+                                type="fontAwesome"
                                 name="address-book"
                                 size={24} // Increased size for better tap area
                             />

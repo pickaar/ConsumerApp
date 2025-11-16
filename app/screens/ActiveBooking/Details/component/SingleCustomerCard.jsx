@@ -59,7 +59,7 @@ const SingleCustomerCard = React.memo(({ item, from }) => {
             <View style={styles.locationContainer}>
                 {locationInfo.map((info, index) => (
                     <View key={index} style={[styles.row, index > 0 && styles.rowSpacing]}>
-                        <PIcon name="circle" type={PIcons.Feather} size={13} color={themeColors.white} />
+                        <PIcon name="circle" type="feather" size={13} color={themeColors.white} />
                         <View style={styles.textContainer}>
                             <Text style={styles.labelOne}>{info.address}</Text>
                             {info.details && <Text style={styles.labelTwo}>{info.details}</Text>}

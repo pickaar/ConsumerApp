@@ -129,7 +129,7 @@ const Item = ({ item }) => {
         <TouchableWithoutFeedback onPress={() => selectThisAddress(item._id)} key={item._id}>
             <View style={[styles.addressItem, { backgroundColor: item.isPrimary ? themeColors.lightGray2 : themeColors.white }]}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <PIcon type={PIcons.Feather} style={{ color: item.isPrimary ? themeColors.yellow : themeColors.primary }} name="map-pin" />
+                    <PIcon type="feather" style={{ color: item.isPrimary ? themeColors.yellow : themeColors.primary }} name="map-pin" />
                     <Text style={[styles.addressTxtName, { color: item.isPrimary ? themeColors.primary : themeColors.secondary }]}>{item.name}</Text>
                 </View >
                 <View style={{ flex: 2, flexDirection: 'row' }}>

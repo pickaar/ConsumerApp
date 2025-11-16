@@ -47,7 +47,7 @@ const SingleLine = React.memo(({ item, index }) => {
         if (item.valueType === 'redirect') {
             return (
                 <TouchableOpacity onPress={() => navigateTo(item.navigateTo)} style={styles.redirectContainer}>
-                    <PIcon style={styles.redirectIcon} type={PIcons.Feather} name="arrow-right" size={15} />
+                    <PIcon style={styles.redirectIcon} type="feather" name="arrow-right" size={15} />
                 </TouchableOpacity>
             );
         }
@@ -95,7 +95,7 @@ const MultiLineWithInfo = React.memo(({ item }) => {
                     <Text style={styles.infoTitle}>{item.key}</Text>
                     <TouchableOpacity onPress={() => openModal(item.modalType, item.modalContent)} style={styles.infoIconContainer}>
                         <Text style={styles.infoTitleValue}>{item.value}</Text>
-                        <PIcon style={styles.infoIcon} type={PIcons.Feather} name="info" size={15} />
+                        <PIcon style={styles.infoIcon} type="feather" name="info" size={15} />
                     </TouchableOpacity>
                 </View>
                 <View>

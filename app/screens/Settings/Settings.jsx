@@ -11,17 +11,15 @@ import { storeData } from "@utils/helperfn";
 
 const settingListConfig = [
     [ 
-        { name: 'Your Locations', redirectTo: SCREENS.LOCATION_SETTINGS, icon: 'map-pin', type: PIcons.Feather, iconbg: '#34C759' }, // Green
-        { name: 'Your Rides', redirectTo: SCREENS.RIDES_SETTINGS, icon: 'zap', type: PIcons.Feather, iconbg: '#007AFF' }, // Blue
+        { name: 'Your Locations', redirectTo: SCREENS.LOCATION_SETTINGS, icon: 'map-pin', type: "feather", iconbg: '#34C759' }, // Green
+        { name: 'Your Rides', redirectTo: SCREENS.RIDES_SETTINGS, icon: 'zap', type: "feather", iconbg: '#007AFF' }, // Blue
     ],
     [ 
-        { name: 'About Us', redirectTo: SCREENS.ABOUT_US, icon: 'info', type: PIcons.Feather, iconbg: '#FF9500' }, // Orange
-        { name: 'Privacy', redirectTo: SCREENS.PRIVACY, icon: 'lock', type: PIcons.Feather, iconbg: '#FF2D55' }, // Red
-        { name: 'Help', redirectTo: SCREENS.HELP, icon: 'help-circle', type: PIcons.Feather, iconbg: '#5856D6' }, // Indigo
+        { name: 'About Us', redirectTo: SCREENS.ABOUT_US, icon: 'info', type: "feather", iconbg: '#FF9500' }, // Orange
+        { name: 'Privacy', redirectTo: SCREENS.PRIVACY, icon: 'lock', type: "feather", iconbg: '#FF2D55' }, // Red
+        { name: 'Help', redirectTo: SCREENS.HELP, icon: 'help-circle', type: "feather", iconbg: '#5856D6' }, // Indigo
     ],
 ];
-
-// --- Sub-Components ---
 
 const UserProfile = ({ navigation }) => {
     const avatarAnimate = useRef(null);
@@ -53,7 +51,7 @@ const UserProfile = ({ navigation }) => {
             </View>
 
             <View style={styles.profileArrowContainer}>
-                <PIcon style={{ color: pStyles.gray }} type={PIcons.FontAwesome} name="angle-right" size={18} />
+                <PIcon style={{ color: pStyles.gray }} type="fontAwesome" name="angle-right" size={18} />
             </View>
         </TouchableOpacity>
     );
@@ -72,7 +70,7 @@ const ListItem = ({ item, isLast, onPress }) => {
 
             <View style={styles.labelBlock}>
                 <Text style={styles.labelText}>{item.name}</Text>
-                <PIcon style={styles.arrowIcon} type={PIcons.FontAwesome} name="angle-right" size={18} />
+                <PIcon style={styles.arrowIcon} type="fontAwesome" name="angle-right" size={18} />
             </View>
         </TouchableOpacity>
     );

@@ -83,25 +83,21 @@ const AddressItem = React.memo(({ item, onPress }) => {
         >
             {/* Icon Block */}
             <View style={{ ...styles.iconBlock, backgroundColor: item.iconbg }}>
-                <PIcon style={{ color: '#fff' }} type={PIcons.Feather} name={item.icon} size={15} />
+                <PIcon style={{ color: '#fff' }} type="feather" name={item.icon} size={15} />
             </View>
 
-            {/* Label and Address */}
             <View style={styles.addressContent}>
                 <Text style={styles.addressLabel}>{item.label}</Text>
-                {/* FIX: Removed numberOfLines which is a React Native prop not supported on web spans */}
                 <Text style={[styles.addressText, isPlaceholder && styles.addressPlaceholder]}>
                     {item.address}
                 </Text>
             </View>
 
-            {/* Arrow */}
-            <PIcon style={styles.arrowIcon} type={PIcons.FontAwesome} name="angle-right" size={18} />
+            <PIcon style={styles.arrowIcon} type="fontAwesome" name="angle-right" size={18} />
         </TouchableOpacity>
     );
 });
 
-// 2. Address Input View (Shown conditionally)
 const AddressInputView = ({ address, setAddress, onSave, onCancel }) => {
     return (
         <View style={styles.inputModalOverlay}>

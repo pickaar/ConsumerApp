@@ -32,7 +32,7 @@ const BookNow = (props) => {
             </View>
             <View style={{ width: '15%', flexDirection: 'row', justifyContent: 'flex-end' }}>
                 <TouchableOpacity onPress={gotoBookNow}>
-                    <PIcon type={PIconSet.Feather} gradient={false} color={themeColors.primary} name="arrow-right" size={45}></PIcon>
+                    <PIcon type="feather" gradient={false} color={themeColors.primary} name="arrow-right" size={45}></PIcon>
                 </TouchableOpacity>
             </View>
         </View>

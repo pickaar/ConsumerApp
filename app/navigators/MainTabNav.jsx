@@ -16,7 +16,7 @@ const TAB_LIST = [
   {
     route: SCREENS.DASHBOARD,
     label: 'Home',
-    type: "Feather",
+    type: 'feather',
     activeIcon: 'home',
     inActiveIcon: 'home',
     component: BookingStackNavStack,
@@ -24,7 +24,7 @@ const TAB_LIST = [
   {
     route: SCREENS.ACTIVE_BOOKING,
     label: 'Active',
-    type: "Feather",
+    type: 'feather',
     activeIcon: 'watch',
     inActiveIcon: 'watch',
     component: ActiveBookingNavStack
@@ -32,7 +32,7 @@ const TAB_LIST = [
   {
     route: SCREENS.DIRECT_BOOKING,
     label: 'Direct',
-    type: "Feather",
+    type: 'feather',
     activeIcon: 'bold',
     inActiveIcon: 'bold',
     component: DirectBooking
@@ -40,7 +40,7 @@ const TAB_LIST = [
   {
     route: SCREENS.SETTINGS,
     label: 'Settings',
-    type: "Feather",
+    type: 'feather',
     activeIcon: 'settings',
     inActiveIcon: 'settings',
     component: SettingNavStack
@@ -60,6 +60,14 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
 
   const viewRef = useRef(null);
 
+  if (!item || !item.type || !item.activeIcon || !item.inActiveIcon) {
+    console.warn('TabButton rendered with missing item props:', item);
+    return null;
+  }
+  
+  useEffect(() => {
+    console.log('TabButton - Mounted' + item);
+  }, [])
 
   useEffect(() => {
     if (viewRef.current) {
@@ -72,6 +80,7 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
         viewRef.current.animate({ scale: 1.4, rotate: '360deg' });
       }
     }
+    console.log('TabButton - item.type:', item.type);
   }, [focused]);
 
   const handlePress = useCallback(() => {
@@ -86,7 +95,6 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
 
     onPress();
   }, [onPress, focused]);
-
   return (
     <TouchableOpacity
       onPress={handlePress}
@@ -104,7 +112,7 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
             size={14}
             name={focused ? item.activeIcon : item.inActiveIcon}
             color={iconColor}
-          /> 
+          />
         </Animatable.View>
         <View style={styles.labelContainer}>
           <Text
@@ -143,18 +151,21 @@ export default function MainTab() {
       }}
     >
       {TAB_LIST.map((item, index) => {
+        // Destructure properties here to ensure they are available when the button is rendered
+        const { route, component, label, type, activeIcon, inActiveIcon } = item;
+
         return (
           <Tab.Screen
             key={index}
-            name={item.route}
-            component={item.component}
+            name={route}
+            component={component}
             options={{
               tabBarShowLabel: true,
               tabBarButton: props => (
                 <TabButton
                   {...props}
                   item={item}
-                  currentLabel={props.accessibilityState?.selected ? item.label : undefined}
+                  currentLabel={props.accessibilityState?.selected ? label : undefined}
                 />
               ),
             }}

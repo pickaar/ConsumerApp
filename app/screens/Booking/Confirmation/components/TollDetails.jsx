@@ -52,7 +52,7 @@ const TollDetails = ({ tolls }) => {
                                     </View>
                                     <TouchableOpacity onPress={() => openGps(obj?.lat, obj?.lng)}>
                                         <PIcon style={{ paddingLeft: 5, color: themeColors.infoHighlightColor, opacity: 0.9 }}
-                                            type={PIcons.Feather} name="map-pin" size={15}></PIcon>
+                                            type="feather" name="map-pin" size={15}></PIcon>
                                     </TouchableOpacity>
                                 </View>
                             </View>

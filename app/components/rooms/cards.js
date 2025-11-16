@@ -9,14 +9,14 @@ export function CardFromTo() {
             <View style={[styles.container]}>
                 <View style={{ width: '100%', height: 100, padding: 20, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: themeColors.yellow }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <PIcon name="circle" type={PIcons.Feather}  size={13} style={{ color: '#629303' }} />
+                        <PIcon name="circle" type="feather"  size={13} style={{ color: '#629303' }} />
                         <View>
                             <Text style={{ color: themeColors.white, fontFamily: fonts.RubikBold, fontSize: 10, paddingLeft: 5 }}> Thiru Nagar, katpadi, Vellore - 632006</Text>
                             <Text style={{ color: themeColors.yellow, fontFamily: fonts.RubikBold, fontSize: 8, paddingLeft: 5 }}> 14, April 2022 01:30 PM</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 10 }}>
-                        <PIcon name="disc" type={PIcons.Feather} size={13} style={{ color: '#629303' }} />
+                        <PIcon name="disc" type="feather" size={13} style={{ color: '#629303' }} />
                         <View>
                             <Text style={{ color: themeColors.white, fontFamily: fonts.RubikBold, fontSize: 10, paddingLeft: 5 }}> Perumbakkam, Chennai - 600100</Text>
                             <Text style={{ color: themeColors.yellow, fontFamily: fonts.RubikBold, fontSize: 8, paddingLeft: 5 }}> 14, April 2022 04:30 PM </Text>

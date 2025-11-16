@@ -141,7 +141,7 @@ const SecondColBlock = memo(({ item }) => {
                 </View>
             </View>
             <View style={styles.angleRightContainer}>
-                <PIcon style={styles.angleRightIcon} type={PIcons.FontAwesome} name="angle-right" size={15} />
+                <PIcon style={styles.angleRightIcon} type="fontAwesome" name="angle-right" size={15} />
             </View>
         </TouchableOpacity>
     );

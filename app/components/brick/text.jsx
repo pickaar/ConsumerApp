@@ -5,7 +5,6 @@ import { fonts } from '@utils/theme';
 import PIcon, { PIcons } from './Icon';
 import React, { useCallback, memo } from 'react';
 
-
 export const TitleWithBackBtn = ({ name ,bgColor}) => {
     const navigation = useNavigation();
     const onBackBtnPress = () => {
@@ -16,7 +15,7 @@ export const TitleWithBackBtn = ({ name ,bgColor}) => {
         <View style={{ backgroundColor: bgColor || themeColors.yellow, height: 40, width: '100%', flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ paddingLeft: 10, flexDirection: 'row' }}>
                 <TouchableOpacity onPress={onBackBtnPress} style={{}}>
-                    <PIcon type={PIcons.Feather} name="arrow-left" size={25}></PIcon>
+                    <PIcon type="feather" name="arrow-left" size={25}></PIcon>
                 </TouchableOpacity>
                 <View style={{ alignSelf: 'center', justifyContent: 'center', width: '100%', }}>
                     <Text style={{ color: themeColors.primary, fontFamily: fonts.RubikBlack, fontSize: 14, paddingLeft: 5 }}> {name}</Text>
@@ -79,7 +78,7 @@ const PHeadings = memo(({ backBtnPressed, title }) => {
     return (
         <View style={{ marginLeft: 0, paddingLeft: DEVICE_WIDTH * 0.03, height: DEVICE_HEIGHT * 0.10, flexDirection: 'column' }}>
             <TouchableOpacity onPress={onBackBtnPress} style={{ marginTop: 10 }}>
-                <PIcon type={PIcons.Feather} name="arrow-left" size={25} />
+                <PIcon type="feather" name="arrow-left" size={25} />
             </TouchableOpacity>
             <View style={{ marginTop: 20 }}>
                 <Text style={{ fontSize: 25, fontFamily: fonts.RubikMedium }}>{title}</Text>

@@ -66,7 +66,7 @@ const GotoBookingsListBlock = ({ count,navigation }) => {
                         {count}
                         <Text style={styles.bracketsStyles}> )</Text>
                     </Text>
-                    <PIcon type={PIcons.FontAwesome5} size={24} name={'angle-right'} color={pStyles.yellow} />
+                    <PIcon type="fontAwesome5" size={24} name={'angle-right'} color={pStyles.yellow} />
                 </View>
 
             </View>
