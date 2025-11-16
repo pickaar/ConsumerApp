@@ -1,11 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
 import PIcon, { PIcons } from "@components/brick/Icon";
 import { themeColors } from "@utils/constant";
 import { fonts } from "@utils/theme";
 
-// Helper to safely truncate address strings
 const truncateAddress = (address, maxLength = 30) => {
     if (typeof address === 'string' && address.length > maxLength) {
         return `${address.substring(0, maxLength - 3)}...`;
@@ -13,19 +11,16 @@ const truncateAddress = (address, maxLength = 30) => {
     return address;
 };
 
-// Component to render a single address row
 const AddressRow = ({ address, detail, isLast }) => (
     <View style={[styles.addressRow, isLast && styles.addressRowSpacing]}>
         <PIcon name="circle" type={PIcons.Feather} size={13} style={styles.icon} />
         <View>
             <Text style={styles.labelOne}>{address}</Text>
-            {/* Show tripTypeDetail only if detail is explicitly false (i.e., dropAddress) */}
             {detail !== false && <Text style={styles.labelTwo}>{detail}</Text>}
         </View>
     </View>
 );
 
-// Component to render a single detail cell (Vehicle, Seater, Distance)
 const DetailCell = ({ item, isLast }) => (
     <View style={[styles.itemRowTwo, !isLast && styles.itemRowTwoExtra]}>
         <View style={styles.detailCellContent}>
@@ -35,12 +30,8 @@ const DetailCell = ({ item, isLast }) => (
     </View>
 );
 
-
 export default function Card({ item, from, cardWidth, centeringOffset }) {
-    
-    // --- Data Mapping ---
-    
-    // 1. First Row (Pick up / Drop off) Data
+
     const rowOneData = [
         {
             address: truncateAddress(item.pickupAddress),
@@ -52,25 +43,22 @@ export default function Card({ item, from, cardWidth, centeringOffset }) {
         }
     ];
 
-    // 2. Second Row (Vehicle Details) Data
     const rowTwoData = [
         { Key: 'Vehicle', Value: item.vehicleType },
         { Key: 'Seater', Value: item.seaters },
         { Key: 'Distance', Value: item.distance }
     ];
 
-    // --- Render ---
     return (
-        <View 
+        <View
             style={[
                 styles.container,
                 {
                     width: cardWidth,
-                    marginLeft: centeringOffset // Centers the card within the Carousel item slot
+                    marginLeft: centeringOffset
                 }
             ]}
         >
-            {/* Top Section: Addresses and Time */}
             <View style={styles.BookingitemBlockA}>
                 {rowOneData.map((data, index) => (
                     <AddressRow
@@ -82,7 +70,6 @@ export default function Card({ item, from, cardWidth, centeringOffset }) {
                 ))}
             </View>
 
-            {/* Bottom Section: Vehicle Details */}
             <View style={styles.itemRowTwoContainer}>
                 {rowTwoData.map((data, index) => (
                     <DetailCell
@@ -96,13 +83,12 @@ export default function Card({ item, from, cardWidth, centeringOffset }) {
     )
 }
 
-
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         backgroundColor: themeColors.primary,
-        borderRadius: 15, // This provides the standard rounded corners
-        height: 150, 
+        borderRadius: 15, 
+        height: 150,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

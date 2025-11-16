@@ -1,4 +1,7 @@
 import React from 'react';
+import { View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -10,8 +13,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Foundation from 'react-native-vector-icons/Foundation';
-import { Icon } from 'react-native-gradient-icon';
-import { themeColors } from '../../utils/constant';
+import { themeColors } from '../../utils/constant'; 
 
 export const PIconSet = {
     MaterialCommunityIcons,
@@ -25,44 +27,52 @@ export const PIconSet = {
     SimpleLineIcons,
     Octicons,
     Foundation,
-}
+};
 
-const PIcon= ({ type, name, color, size = 16, style, gradient = false }) => {
-    const fontSize = 24;
-    const Tag = type;
+const PIcon = ({ type, name, color, size = 24, style, gradient = false }) => {
+    const Tag = PIconSet[type];
+    
+    const defaultGradientColors = [themeColors.primary, themeColors.yellow];
+
+    if (!Tag || !name) {
+        return null; 
+    }
 
     if (gradient) {
         return (
-            <>
-                {type && name && (
-                    <Icon
-                        size={size || fontSize}
-                        
-                        start={{ x: 0, y: 1 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={[
-                            { color: themeColors.primary, offset: "0", opacity: "1" },
-                            { color: themeColors.yellow, offset: "1", opacity: "1" },
-                        ]}
-                        name={name} style={style} />
-                )}
-            </>
-        )
-    } else {
+            <MaskedView
+                maskElement={
+                    <Tag 
+                        name={name} 
+                        size={size} 
+                        color="black" 
+                        style={style} 
+                    />
+                }
+            >
+                <LinearGradient
+                    colors={defaultGradientColors}
+                    start={{ x: 0, y: 1 }} 
+                    end={{ x: 1, y: 1 }}
+                    style={{ 
+                        width: size, 
+                        height: size, 
+                        }}
+                />
+            </MaskedView>
+        );
+    } 
+    
+    else {
         return (
-            <>
-                {type && name && (
-                    <Tag name={name} size={size || fontSize} color={color} style={style} />
-                )}
-            </>
-        )
+            <Tag 
+                name={name} 
+                size={size} 
+                color={color || themeColors.black} 
+                style={style} 
+            />
+        );
     }
-}
-const PIcon2 = () => {
-    const fontSize = 24;
-    const Tag = type;
-    return (
-        <></>
-    )
-}
-export default PIcon
+};
+
+export default PIcon;

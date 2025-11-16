@@ -7,7 +7,6 @@ import { fonts } from '@utils/theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SCREENS, themeColors } from '@utils/constant';
 import PIcon, { PIcons } from '@components/brick/Icon';
-import { PIconSet } from '@components/brick/PIcon';
 import BookingStackNavStack from '@nav/BookingStackNavStack';
 import ActiveBookingNavStack from '@nav/ActiveBookingNavStack';
 import DirectBooking from '@screens/DirectBooking/DirectBooking';
@@ -17,7 +16,7 @@ const TAB_LIST = [
   {
     route: SCREENS.DASHBOARD,
     label: 'Home',
-    type: PIconSet.Feather,
+    type: "Feather",
     activeIcon: 'home',
     inActiveIcon: 'home',
     component: BookingStackNavStack,
@@ -25,7 +24,7 @@ const TAB_LIST = [
   {
     route: SCREENS.ACTIVE_BOOKING,
     label: 'Active',
-    type: PIcons.Feather,
+    type: "Feather",
     activeIcon: 'watch',
     inActiveIcon: 'watch',
     component: ActiveBookingNavStack
@@ -33,7 +32,7 @@ const TAB_LIST = [
   {
     route: SCREENS.DIRECT_BOOKING,
     label: 'Direct',
-    type: PIcons.Feather,
+    type: "Feather",
     activeIcon: 'bold',
     inActiveIcon: 'bold',
     component: DirectBooking
@@ -41,7 +40,7 @@ const TAB_LIST = [
   {
     route: SCREENS.SETTINGS,
     label: 'Settings',
-    type: PIcons.Feather,
+    type: "Feather",
     activeIcon: 'settings',
     inActiveIcon: 'settings',
     component: SettingNavStack
@@ -105,7 +104,7 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
             size={14}
             name={focused ? item.activeIcon : item.inActiveIcon}
             color={iconColor}
-          />
+          /> 
         </Animatable.View>
         <View style={styles.labelContainer}>
           <Text

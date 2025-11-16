@@ -16,6 +16,7 @@ import { useAppDispatch } from '@store/store';
 import { useAppSelector } from '@app/store/hook';
 import { fetchUserThunk } from '@thunk/userThunk';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { AntDesign, Entypo, Feather, FontAwesome, FontAwesome5, Foundation, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons, SimpleLineIcons } from '@expo/vector-icons';
 SplashScreenObj.preventAutoHideAsync();
 
 const MyTheme = {
@@ -67,7 +68,19 @@ function RootApp({ fontsLoaded }) {
 }
 
 export default function App() {
+
   const [fontsLoaded] = useFonts({
+    ...Feather.font,
+    ...MaterialCommunityIcons.font,
+    ...MaterialIcons.font,
+    ...Ionicons.font,
+    ...FontAwesome.font,
+    ...AntDesign.font,
+    ...Entypo.font,
+    ...SimpleLineIcons.font,
+    ...Octicons.font,
+    ...Foundation.font,
+
     // @ts-ignore
     'Rubik-Black': require('./assets/fonts/Rubik-Black.ttf'),
     // @ts-ignore
