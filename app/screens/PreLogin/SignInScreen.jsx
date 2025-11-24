@@ -22,9 +22,7 @@ export default function SignInScreen(props) {
   useEffect(() => {
     const handleOTPValidation = async () => {
       if (validateOTPLoader) {
-        // console.log('OTP validated successfully, navigating to dashboard.');
         const parsedUserData = JSON.stringify(userData)
-        // console.log('Storing user data:', parsedUserData);
         await storeData(STORAGE_KEY, parsedUserData);
         props.navigation.replace(SCREENS.HOME, { screen: SCREENS.DASHBOARD });
       }

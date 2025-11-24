@@ -37,7 +37,7 @@ function RootApp({ fontsLoaded }) {
     try {
       const userData = await getData(STORAGE_KEY);
       const parsedData = JSON.parse(userData);
-
+      
       if (parsedData?.phoneNo && parsedData?.loginState) {
         dispatch(fetchUserThunk(parsedData.phoneNo));
         dispatch(setIsLoading({ key: 'handShakeLoader', status: API_CALL_STATUS.SUCCESS }));

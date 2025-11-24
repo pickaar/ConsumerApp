@@ -39,5 +39,9 @@
         "projectId": "c5cb5c28-66a0-4898-8f92-7fcb5c9da2fb"
       }
     }
-  }
+  },
+  "extra": {
+      "API_BASE_URL": "${process.env.EXPO_API_BASE_URL}",
+      "SENTRY_DSN": "${process.env.SENTRY_DSN}"
+    }
 }

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         flex: 1,
         alignItems: 'flex-start',
-        height: 100
+        // height: 50
     },
     addressTxtName: {
         paddingHorizontal: 5,

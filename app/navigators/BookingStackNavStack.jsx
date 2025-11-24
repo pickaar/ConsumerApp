@@ -9,29 +9,23 @@ const BookingStack = createNativeStackNavigator();
 const BookingStackNavStack = () => {
 
     return (
-        <BookingStack.Navigator initialRouteName={SCREENS.MAIN}>
+        <BookingStack.Navigator initialRouteName={SCREENS.MAIN} screenOptions={{ headerShown: false }}>
             <BookingStack.Screen
                 name={SCREENS.MAIN}
                 component={Dashboard}
-                options={{
-                    headerShown: false
-                }}
+              
             />
 
             <BookingStack.Screen
                 name={SCREENS.BOOKING_GET_DETAILS}
                 component={GetDetails}
-                options={{
-                    headerShown: false
-                }}
+               
             />
 
             <BookingStack.Screen
                 name={SCREENS.BOOKING_CONFIRMATION}
                 component={Confirmation}
-                options={{
-                    headerShown: false
-                }}
+              
             />
 
 

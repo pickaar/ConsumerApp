@@ -2,19 +2,18 @@ import React, { useRef, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert, BackHandler } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from 'lottie-react-native';
-import { CommonActions, useNavigation } from "@react-navigation/native";
-
+import { getData } from '@utils/helperfn';
 import { pStyles } from "@utils/theme";
 import PIcon, { PIcons } from "@components/brick/Icon";
-import { localStorageKeys, SCREENS } from "@utils/constant";
+import { localStorageKeys, SCREENS, STORAGE_KEY } from "@utils/constant";
 import { storeData } from "@utils/helperfn";
 
 const settingListConfig = [
-    [ 
+    [
         { name: 'Your Locations', redirectTo: SCREENS.LOCATION_SETTINGS, icon: 'map-pin', type: "feather", iconbg: '#34C759' }, // Green
         { name: 'Your Rides', redirectTo: SCREENS.RIDES_SETTINGS, icon: 'zap', type: "feather", iconbg: '#007AFF' }, // Blue
     ],
-    [ 
+    [
         { name: 'About Us', redirectTo: SCREENS.ABOUT_US, icon: 'info', type: "feather", iconbg: '#FF9500' }, // Orange
         { name: 'Privacy', redirectTo: SCREENS.PRIVACY, icon: 'lock', type: "feather", iconbg: '#FF2D55' }, // Red
         { name: 'Help', redirectTo: SCREENS.HELP, icon: 'help-circle', type: "feather", iconbg: '#5856D6' }, // Indigo
@@ -30,7 +29,7 @@ const UserProfile = ({ navigation }) => {
     }, [])
 
     return (
-        <TouchableOpacity 
+        <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => navigation.navigate('profileScreen')} // Assuming you have a profile screen
             style={styles.profileBlock}
@@ -59,9 +58,9 @@ const UserProfile = ({ navigation }) => {
 
 const ListItem = ({ item, isLast, onPress }) => {
     return (
-        <TouchableOpacity 
-            activeOpacity={0.8} 
-            onPress={() => onPress(item.redirectTo)} 
+        <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => onPress(item.redirectTo)}
             style={[styles.listItem, isLast ? styles.noBorder : styles.separator]}
         >
             <View style={{ ...styles.iconBlock, backgroundColor: item.iconbg }}>
@@ -78,7 +77,7 @@ const ListItem = ({ item, isLast, onPress }) => {
 
 const SettingList = ({ navigation }) => {
     const navigateTo = (route) => {
-        navigation.navigate(SCREENS.SETTINGS,{screen: route});
+        navigation.navigate(SCREENS.SETTINGS, { screen: route });
     }
 
     return (
@@ -118,7 +117,23 @@ export default function Settings({ navigation }) {
                 {
                     text: "Logout", // Use a strong word like Logout
                     onPress: async () => {
-                        await storeData(localStorageKeys.loginStatus, 'N');
+                        console.log('Logging out user...');
+                        const currentUserData = {
+                            userID: null,
+                            phoneNo: null,
+                            userName: null,
+                            profileImage: null,
+                            loginState: true,
+                            locations: [
+                                {
+                                    name: "Home",
+                                    address: null,
+                                    isPrimary: true
+                                }
+                            ]
+                        };
+                        const updatedUserData = JSON.stringify(currentUserData);
+                        await storeData(STORAGE_KEY, updatedUserData);
                         exitApp();
                     },
                     style: 'destructive' // iOS style for destructive action
@@ -134,7 +149,7 @@ export default function Settings({ navigation }) {
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerTitle}>Settings</Text>
                 </View>
-                
+
                 {/* Scrollable Content (since the list can grow) */}
                 <View style={styles.contentArea}>
 
@@ -145,8 +160,8 @@ export default function Settings({ navigation }) {
                     <SettingList navigation={navigation} />
 
                     {/* 4. Logout Button (Standalone) */}
-                    <TouchableOpacity 
-                        onPress={logout} 
+                    <TouchableOpacity
+                        onPress={logout}
                         style={styles.logoutContainer}
                         activeOpacity={0.8}
                     >
@@ -162,27 +177,27 @@ export default function Settings({ navigation }) {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#f2f2f7', 
+        backgroundColor: '#f2f2f7',
     },
     container: {
         flex: 1,
         backgroundColor: '#f2f2f7',
     },
     headerContainer: {
-        height: 80, 
+        height: 80,
         justifyContent: 'flex-end',
         paddingHorizontal: 15,
         paddingBottom: 10,
     },
     headerTitle: {
-        fontSize: pStyles.fontSizeXXL + 5, 
-        fontFamily: pStyles.fontStyleB, 
+        fontSize: pStyles.fontSizeXXL + 5,
+        fontFamily: pStyles.fontStyleB,
         color: 'black',
     },
 
     contentArea: {
         flex: 1,
-        paddingHorizontal: 15, 
+        paddingHorizontal: 15,
         paddingTop: 10,
     },
 
@@ -192,11 +207,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingVertical: 10,
         paddingHorizontal: 10,
-        borderRadius: 10, 
-        marginBottom: 20, 
-        
+        borderRadius: 10,
+        marginBottom: 20,
+
         borderWidth: StyleSheet.hairlineWidth,
-        borderColor: '#EFEFF4', 
+        borderColor: '#EFEFF4',
     },
     profileAvatarContainer: {
         width: 60,
@@ -219,7 +234,7 @@ const styles = StyleSheet.create({
     profileDetail: {
         fontSize: 12,
         fontFamily: pStyles.fontStyleR,
-        color: pStyles.gray || '#8E8E93', 
+        color: pStyles.gray || '#8E8E93',
     },
     profileArrowContainer: {
         paddingHorizontal: 10,
@@ -230,9 +245,9 @@ const styles = StyleSheet.create({
     },
     groupBlock: {
         backgroundColor: 'white',
-        borderRadius: 10, 
-        overflow: 'hidden', 
-        marginBottom: 20, 
+        borderRadius: 10,
+        overflow: 'hidden',
+        marginBottom: 20,
     },
 
     listItem: {
@@ -245,7 +260,7 @@ const styles = StyleSheet.create({
     iconBlock: {
         width: 28,
         height: 28,
-        borderRadius: 6, 
+        borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: 10,
@@ -267,7 +282,7 @@ const styles = StyleSheet.create({
         color: pStyles.gray || '#8E8E93',
         paddingRight: 5,
     },
-  
+
     separator: {
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#C6C6C8', // Subtle separator color
@@ -282,7 +297,7 @@ const styles = StyleSheet.create({
         height: 44,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10, 
+        marginTop: 10,
     },
     logoutText: {
         fontSize: 16,

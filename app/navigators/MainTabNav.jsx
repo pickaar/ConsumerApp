@@ -160,6 +160,7 @@ export default function MainTab() {
             name={route}
             component={component}
             options={{
+              headerShown: false,
               tabBarShowLabel: true,
               tabBarButton: props => (
                 <TabButton

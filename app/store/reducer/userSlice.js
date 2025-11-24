@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserThunk, registerUserThunk, validateOTPThunk } from '@thunk/userThunk';
+import { fetchUserThunk, createUserThunk, validateOTPThunk, sendOTPThunk } from '@thunk/userThunk';
 import { API_CALL_STATUS, ONLOAD_STATUS } from '@utils/constant';
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -9,7 +10,7 @@ export const userSlice = createSlice({
       phoneNo: null,
       userName: null,
       profileImage: null,
-      loginState: true,
+      loginState: false,
       locations: [
         {
           name: "Home",
@@ -24,6 +25,7 @@ export const userSlice = createSlice({
       validateOTPLoader: API_CALL_STATUS.IDLE
     },
     error: null,
+    errorMessage: ''
   },
 
   reducers: {
@@ -33,27 +35,36 @@ export const userSlice = createSlice({
     },
     setPhoneNo(state, action) {
       state.userData.phoneNo = action.payload;
+    },
+    setError(state, action) {
+      state.error = action.payload;
+    },
+    setErrorMessage(state, action) {
+      state.errorMessage = action.payload;
     }
   },
 
   extraReducers: builder => {
     builder
-      .addCase(registerUserThunk.fulfilled, (state, action) => {
+
+      .addCase(sendOTPThunk.fulfilled, (state, action) => {
         state.loadingStatus.registerUserLoader = API_CALL_STATUS.SUCCESS;
       })
-      .addCase(registerUserThunk.rejected, (state, action) => {
+      .addCase(sendOTPThunk.rejected, (state, action) => {
         state.loadingStatus.registerUserLoader = API_CALL_STATUS.REJECTED;
       })
 
 
-      .addCase(validateOTPThunk.fulfilled, (state, action) => {
+      .addCase(createUserThunk.fulfilled, (state, action) => {
         state.loadingStatus.validateOTPLoader = API_CALL_STATUS.SUCCESS;
         state.userData.loginState = true;
       })
-      .addCase(validateOTPThunk.rejected, (state, action) => {
+      .addCase(createUserThunk.rejected, (state, action) => {
+        state.userData.loginState = false;
+        state.error = true;
+        state.errorMessage = action.payload.message || 'Error with OTP validation';
         state.loadingStatus.validateOTPLoader = API_CALL_STATUS.REJECTED;
       })
-
 
       .addCase(fetchUserThunk.fulfilled, (state, action) => {
         state.userData = action.payload;
@@ -65,6 +76,6 @@ export const userSlice = createSlice({
   },
 });
 
-const { setIsLoading,setPhoneNo } = userSlice.actions;
-export { setIsLoading,setPhoneNo };
+const { setIsLoading, setPhoneNo, setError, setErrorMessage } = userSlice.actions;
+export { setIsLoading, setPhoneNo, setError, setErrorMessage };
 export default userSlice.reducer;

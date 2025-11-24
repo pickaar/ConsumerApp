@@ -6,9 +6,8 @@ module.exports = function (api) {
       [
         'module-resolver',
         {
-          root: ['./app'], // The base directory for all modules
+          root: ['./app'],
           alias: {
-            // Define your aliases here:
             '@components': './app/components',
             '@screens': './app/screens',
             '@utils': './app/utils',
@@ -18,11 +17,19 @@ module.exports = function (api) {
             '@store': './app/store',
             '@app': './app',
             '@nav': './app/navigators',
-            '@assets': './assets', // Can point outside the root if needed
+            '@assets': './assets',
           },
         },
-       'react-native-reanimated/plugin',
+      ], 
+      [
+        'module:react-native-dotenv',
+        {
+          moduleName: '@env',
+          path: '.env',
+        },
       ],
-    ],
-  };
-};
+
+      'react-native-reanimated/plugin',
+    ], 
+  }; 
+}; 

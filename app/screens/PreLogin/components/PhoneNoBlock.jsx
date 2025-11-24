@@ -8,9 +8,9 @@ import { PInputOutlined } from '@components/brick/inputs';
 import { fonts } from '@utils/theme';
 import { PToast } from '@components/brick/PToast';
 import { useKeyboardStatus } from '@hooks/useKeyboardState';
-import { registerUserThunk } from '@thunk/userThunk';
 import { useAppDispatch } from '@app/store/store';
 import { setPhoneNo } from '@reducer/userSlice';
+import { sendOTPThunk } from '@thunk/userThunk';
 
 const proceeBtnObj = {
   label: 'Proceed',
@@ -31,7 +31,7 @@ const PhoneNoBlock = () => {
       // DO FCM notification here and enable
       dispatch(setPhoneNo(phoneNo));
       // @ts-ignore
-      dispatch(registerUserThunk('+91' + phoneNo));
+      dispatch(sendOTPThunk(phoneNo));
       setIsProcessing(true);
     } else {
       PToast({

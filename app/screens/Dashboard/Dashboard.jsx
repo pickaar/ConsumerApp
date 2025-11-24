@@ -11,6 +11,7 @@ import { fetchOfferThunk } from '@thunk/offerThunk';
 import { Line, LineWithTxt } from '@components/brick/hr';
 import { ModalComponent } from '@components/Modal';
 import { SCREENS } from '@utils/constant';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BookNow = (props) => {
 
@@ -49,34 +50,37 @@ export default function Dashboard(props) {
     }, [dispatch])
 
     return (
-        <View style={styles.container}>
-            <StatusBar backgroundColor={themeColors.white} barStyle="dark-content" />
-            <View style={{ height: 40 }}>
-                <DashboardHeader />
-            </View>
+        <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.white }}>
+            <View style={styles.container}>
+                <StatusBar backgroundColor={themeColors.white} barStyle="dark-content" />
+                <View style={{ height: 40 }}>
+                    <DashboardHeader />
+                </View>
 
-            {/* TITLE NAVIGATE TO BOOKING PAGE */}
-            <BookNow navigation={props.navigation} />
+                {/* TITLE NAVIGATE TO BOOKING PAGE */}
+                <BookNow navigation={props.navigation} />
 
-            <OfferBanners navigation={props.navigation} />
-            <Line />
+                <OfferBanners navigation={props.navigation} />
+                <Line />
 
-            <LineWithTxt txt={'Tours'} />
+                <LineWithTxt txt={'Tours'} />
 
-            <ModalComponent />
+                <ModalComponent />
 
-        </View >
+            </View >
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         padding: 10,
     },
     titleBlock: {
         justifyContent: 'space-around',
         flexDirection: 'row',
-        paddingVertical: 30
+        paddingVertical: 10
     },
     mainTitle: {
         fontSize: 23,
