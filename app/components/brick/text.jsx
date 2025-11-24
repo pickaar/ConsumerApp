@@ -78,7 +78,7 @@ const PHeadings = memo(({ backBtnPressed, title }) => {
     return (
         <View style={{ marginLeft: 0, paddingLeft: DEVICE_WIDTH * 0.03, height: DEVICE_HEIGHT * 0.10, flexDirection: 'column' }}>
             <TouchableOpacity onPress={onBackBtnPress} style={{ marginTop: 10 }}>
-                <PIcon type="feather" name="arrow-left" size={25} />
+                <PIcon type="feather" color={themeColors.black} name="arrow-left" size={25} />
             </TouchableOpacity>
             <View style={{ marginTop: 20 }}>
                 <Text style={{ fontSize: 25, fontFamily: fonts.RubikMedium }}>{title}</Text>

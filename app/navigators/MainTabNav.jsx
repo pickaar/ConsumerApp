@@ -64,10 +64,6 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
     console.warn('TabButton rendered with missing item props:', item);
     return null;
   }
-  
-  useEffect(() => {
-    console.log('TabButton - Mounted' + item);
-  }, [])
 
   useEffect(() => {
     if (viewRef.current) {
@@ -80,7 +76,6 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
         viewRef.current.animate({ scale: 1.4, rotate: '360deg' });
       }
     }
-    console.log('TabButton - item.type:', item.type);
   }, [focused]);
 
   const handlePress = useCallback(() => {
