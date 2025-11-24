@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { EXPO_API_BASE_URL } from '@env';
+import { STORAGE_KEY ,USER_DATA_SLICE_INITIAL_STATE} from '@utils/constant';
+import { storeData } from '@utils/helperfn';
 
 const API_BASE_URL = EXPO_API_BASE_URL;
 
@@ -11,12 +13,20 @@ export const fetchUserThunk = createAsyncThunk(
   'user/fetchUser',
   async (phoneNo, thunkAPI) => {
     try {
-      // console.log('URL-->', `${API_BASE_URL}/api/cust/user/fetchUser/${phoneNo}`);
-      // const response = await axios.get(`${API_BASE_URL}/api/cust/user/fetchUser/${phoneNo}`);
-      // const response = await require(`../../../assets/mockAPI/existingUserAPI.json`);
-      // console.log('Fetched User Data: ', response.data);
-      console.log('Fetched User Data: ', response.data);
-      return response;
+      const response = await axios.get(`${API_BASE_URL}/api/cust/user/fetchUser/${phoneNo}`);
+      if (response.status === 404) {
+        const currentUserData = {...USER_DATA_SLICE_INITIAL_STATE};
+        const updatedUserData = JSON.stringify(currentUserData);
+        await storeData(STORAGE_KEY, updatedUserData);
+        return thunkAPI.rejectWithValue(response?.message);
+      }
+
+      if (response.status === 200) {
+        const userData = { ...response.data };
+        const parsedUserData = JSON.stringify(userData)
+        await storeData(STORAGE_KEY, parsedUserData);
+        return userData;
+      }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching user');
     }
@@ -47,7 +57,7 @@ export const sendOTPThunk = createAsyncThunk(
  */
 export const createUserThunk = createAsyncThunk(
   'user/createUser',
-  async ({otp, phoneNo}, thunkAPI) => {
+  async ({ otp, phoneNo }, thunkAPI) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/api/cust/user/createUser`, { otp, phoneNo });
 
@@ -65,7 +75,7 @@ export const createUserThunk = createAsyncThunk(
 
 /**
  * @Patch call to update user status after OTP validation
- * Now PhoneNo and loginState will be updated
+ * Now PhoneNo and status will be updated
 */
 export const validateOTPThunk = createAsyncThunk(
   'user/validateOTP',

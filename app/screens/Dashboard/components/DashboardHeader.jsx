@@ -11,7 +11,6 @@ export default function DashboardHeader() {
     const locations = useAppSelector((state) => state.user.userData?.locations);
     const primaryAddress = locations?.filter(address => address.isPrimary);
     const maxVisibleLimit = 40;
-
     function openAddressPickerModal() {
         // dispatch(setConfig({
         //     visible: true,
@@ -24,12 +23,12 @@ export default function DashboardHeader() {
         <TouchableOpacity onPress={openAddressPickerModal} style={styles.headerContainer} >
             <View style={{ flex: 1, flexDirection: 'row' }}>
                 <PIcon type="feather" color={themeColors.yellow} name="map-pin" />
-                <Text style={styles.addressTxtName}>{primaryAddress?.[0]?.name}</Text>
+                <Text style={styles.addressTxtName}>{primaryAddress?.name}</Text>
             </View >
             <View style={{ flex: 1, flexDirection: 'row' }}>
-                <Text style={styles.addressTxtValue}  > {((primaryAddress?.[0]?.address)?.length > maxVisibleLimit) ?
-                    (((primaryAddress?.[0]?.address).substring(0, maxVisibleLimit - 3)) + '...') :
-                    primaryAddress?.[0]?.address}</Text>
+                <Text style={styles.addressTxtValue}  > {((primaryAddress?.address)?.length > maxVisibleLimit) ?
+                    (((primaryAddress?.address).substring(0, maxVisibleLimit - 3)) + '...') :
+                    primaryAddress?.address}</Text>
             </View>
         </TouchableOpacity >
     )

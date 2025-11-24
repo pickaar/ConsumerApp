@@ -3,7 +3,7 @@
   "phoneNo": 9879879879,
   "userName": "Vanitha Kameeshwaran",
   "profileImage": "",
-  "loginState": true,
+  "status": true,
   "locations": [
     {
       "name": "Home",

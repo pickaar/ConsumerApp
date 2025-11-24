@@ -5,7 +5,7 @@ import LottieView from 'lottie-react-native';
 import { getData } from '@utils/helperfn';
 import { pStyles } from "@utils/theme";
 import PIcon, { PIcons } from "@components/brick/Icon";
-import { localStorageKeys, SCREENS, STORAGE_KEY } from "@utils/constant";
+import { localStorageKeys, SCREENS, STORAGE_KEY,USER_DATA_SLICE_INITIAL_STATE } from "@utils/constant";
 import { storeData } from "@utils/helperfn";
 
 const settingListConfig = [
@@ -118,20 +118,7 @@ export default function Settings({ navigation }) {
                     text: "Logout", // Use a strong word like Logout
                     onPress: async () => {
                         console.log('Logging out user...');
-                        const currentUserData = {
-                            userID: null,
-                            phoneNo: null,
-                            userName: null,
-                            profileImage: null,
-                            loginState: true,
-                            locations: [
-                                {
-                                    name: "Home",
-                                    address: null,
-                                    isPrimary: true
-                                }
-                            ]
-                        };
+                        const currentUserData = {...USER_DATA_SLICE_INITIAL_STATE};
                         const updatedUserData = JSON.stringify(currentUserData);
                         await storeData(STORAGE_KEY, updatedUserData);
                         exitApp();

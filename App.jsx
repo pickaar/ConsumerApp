@@ -32,15 +32,12 @@ function RootApp({ fontsLoaded }) {
 
   const dispatch = useAppDispatch();
   const { handShakeLoader } = useAppSelector(state => state.user.loadingStatus);
-  const initialRoute = handShakeLoader === API_CALL_STATUS.SUCCESS ? SCREENS.HOME : SCREENS.SIGN_IN;
   const checkLoginStatus = useCallback(async () => {
     try {
       const userData = await getData(STORAGE_KEY);
       const parsedData = JSON.parse(userData);
-      
-      if (parsedData?.phoneNo && parsedData?.loginState) {
+      if (parsedData?.phoneNo && parsedData?.status) {
         dispatch(fetchUserThunk(parsedData.phoneNo));
-        dispatch(setIsLoading({ key: 'handShakeLoader', status: API_CALL_STATUS.SUCCESS }));
       } else {
         dispatch(setIsLoading({ key: 'handShakeLoader', status: API_CALL_STATUS.REJECTED }));
       }
@@ -58,12 +55,23 @@ function RootApp({ fontsLoaded }) {
     SplashScreenObj.hideAsync();
   }, [handShakeLoader]);
 
-  if (handShakeLoader === API_CALL_STATUS.IDLE || !fontsLoaded) return <SplashScreen />;
+  let initialRoute = null;
+  if (handShakeLoader === API_CALL_STATUS.REJECTED) {
+    initialRoute = SCREENS.SIGN_IN;
+  } else if (handShakeLoader === API_CALL_STATUS.SUCCESS) {
+    initialRoute = SCREENS.HOME;
+  }
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <RootStackNavScreens initialRouteScreen={initialRoute} />
-    </NavigationContainer>
+    <>
+      {
+        initialRoute === null || handShakeLoader === API_CALL_STATUS.IDLE || !fontsLoaded ?
+          <SplashScreen /> :
+
+          <NavigationContainer theme={MyTheme}>
+            <RootStackNavScreens initialRouteScreen={initialRoute} />
+          </NavigationContainer>
+      }</>
   );
 }
 

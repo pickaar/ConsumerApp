@@ -3,7 +3,7 @@
   "phoneNo": 9879879879,
   "userName": null,
   "profileImage": null,
-  "loginState": true,
+  "status": true,
   "locations": [
     {
       "name": "Home",

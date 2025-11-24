@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserThunk, createUserThunk, validateOTPThunk, sendOTPThunk } from '@thunk/userThunk';
+import { fetchUserThunk, createUserThunk,  sendOTPThunk } from '@thunk/userThunk';
 import { API_CALL_STATUS, ONLOAD_STATUS } from '@utils/constant';
 
 export const userSlice = createSlice({
@@ -10,12 +10,22 @@ export const userSlice = createSlice({
       phoneNo: null,
       userName: null,
       profileImage: null,
-      loginState: false,
+      status: false,
+      emailId: null,
+      emergencyContacts: [],
+      createdOn: null,
       locations: [
         {
           name: "Home",
           address: null,
-          isPrimary: true
+          isPrimary: true,
+          flatHouseNo: '',
+          buildingStreet: '',
+          locality: '',
+          landmark: '',
+          city: '',
+          state: '',
+          pincode: '',
         }
       ]
     },
@@ -46,7 +56,6 @@ export const userSlice = createSlice({
 
   extraReducers: builder => {
     builder
-
       .addCase(sendOTPThunk.fulfilled, (state, action) => {
         state.loadingStatus.registerUserLoader = API_CALL_STATUS.SUCCESS;
       })
@@ -57,20 +66,32 @@ export const userSlice = createSlice({
 
       .addCase(createUserThunk.fulfilled, (state, action) => {
         state.loadingStatus.validateOTPLoader = API_CALL_STATUS.SUCCESS;
-        state.userData.loginState = true;
+        state.userData.status = true;
       })
       .addCase(createUserThunk.rejected, (state, action) => {
-        state.userData.loginState = false;
+        state.userData.status = false;
         state.error = true;
         state.errorMessage = action.payload.message || 'Error with OTP validation';
         state.loadingStatus.validateOTPLoader = API_CALL_STATUS.REJECTED;
       })
 
       .addCase(fetchUserThunk.fulfilled, (state, action) => {
-        state.userData = action.payload;
+        state.loadingStatus.handShakeLoader = API_CALL_STATUS.SUCCESS;
+        const { phoneNo, status, userName, emailId, profileImage, emergencyContacts, createdOn,
+          locations
+        } = action.payload;
+        state.userData.phoneNo = phoneNo;
+        state.userData.status = status;
+        state.userData.userName = userName;
+        state.userData.emailId = emailId;
+        state.userData.profileImage = profileImage;
+        state.userData.emergencyContacts = emergencyContacts;
+        state.userData.createdOn = createdOn;
+        state.userData.locations = locations;
+
       })
       .addCase(fetchUserThunk.rejected, (state, action) => {
-        state.error = action.payload;
+        state.loadingStatus.handShakeLoader = API_CALL_STATUS.REJECTED;
       });
 
   },

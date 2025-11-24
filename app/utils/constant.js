@@ -77,3 +77,29 @@ export const SCREENS = Object.freeze({
   LOCATION_SETTINGS: 'LOCATION_SETTINGS',
   RIDES_SETTINGS: 'RIDES_SETTINGS',
 });
+
+
+export const USER_DATA_SLICE_INITIAL_STATE = {
+  userID: null,
+  phoneNo: null,
+  userName: null,
+  profileImage: null,
+  status: false,
+  emailId: null,
+  emergencyContacts: [],
+  createdOn: null,
+  locations: [
+    {
+      name: "Home",
+      address: null,
+      isPrimary: true,
+      flatHouseNo: '',
+      buildingStreet: '',
+      locality: '',
+      landmark: '',
+      city: '',
+      state: '',
+      pincode: '',
+    }
+  ]
+}
