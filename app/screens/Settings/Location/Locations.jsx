@@ -170,7 +170,7 @@ export default function Location(props) {
 
     // Render the default address (Home) as a prominent header banner
     const primaryAddress = locations.find(a => a.isPrimary);
-    console.log('primaryAddress', primaryAddress);
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.headerContainer}>

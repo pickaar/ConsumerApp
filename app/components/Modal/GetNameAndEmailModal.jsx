@@ -13,7 +13,8 @@ import {
 import { useAppDispatch } from '../../store/store';
 import { updateUserThunk } from '../../store/thunk/userThunk';
 import { useAppSelector } from '../../store/hook';
-import { setUserNameAndEmail } from '../../store/reducer/userSlice';
+import { setIsLoading, setUserNameAndEmail } from '../../store/reducer/userSlice';
+import { API_CALL_STATUS } from '../../utils/constant';
 
 const { height } = Dimensions.get('window');
 
@@ -60,7 +61,7 @@ const GetNameAndEmailModal = ({ closeModal }) => {
 
         setIsProgress(true);
         dispatch(setUserNameAndEmail({ userName: name.trim(), emailId: email.trim() }));
-        dispatch(setIsLoading({ updateUserLoader: API_CALL_STATUS.PENDING }));
+        dispatch(setIsLoading({ key: 'updateUserLoader', status: API_CALL_STATUS.PENDING }));
         dispatch(updateUserThunk({ phoneNo, userName: name.trim(), emailId: email.trim() }));
     };
 
