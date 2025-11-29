@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { EXPO_API_BASE_URL } from '@env';
-import { STORAGE_KEY ,USER_DATA_SLICE_INITIAL_STATE} from '@utils/constant';
+import { STORAGE_KEY, USER_DATA_SLICE_INITIAL_STATE } from '@utils/constant';
 import { storeData } from '@utils/helperfn';
 
 const API_BASE_URL = EXPO_API_BASE_URL;
@@ -15,18 +15,29 @@ export const fetchUserThunk = createAsyncThunk(
     try {
       const response = await axios.get(`${API_BASE_URL}/api/cust/user/fetchUser/${phoneNo}`);
       if (response.status === 404) {
-        const currentUserData = {...USER_DATA_SLICE_INITIAL_STATE};
-        const updatedUserData = JSON.stringify(currentUserData);
-        await storeData(STORAGE_KEY, updatedUserData);
         return thunkAPI.rejectWithValue(response?.message);
       }
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching user');
+    }
+  }
+);
 
-      if (response.status === 200) {
-        const userData = { ...response.data };
-        const parsedUserData = JSON.stringify(userData)
-        await storeData(STORAGE_KEY, parsedUserData);
-        return userData;
+/**
+ * @Patch call to update user data based on phone number
+ */
+export const updateUserThunk = createAsyncThunk(
+  'user/updateUser',
+  async ({ phoneNo, userName, emailId, ...rest }, thunkAPI) => {
+    try {
+      const response = await axios.patch(`${API_BASE_URL}/api/cust/user/updateUser`, { phoneNo, userName, emailId, ...rest });
+      if (response.status === 404) {
+        return thunkAPI.rejectWithValue(response?.message);
       }
+      console.log('Update User Response:', response.data);
+      
+      return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching user');
     }

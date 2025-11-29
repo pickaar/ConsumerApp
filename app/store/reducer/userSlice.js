@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserThunk, createUserThunk,  sendOTPThunk } from '@thunk/userThunk';
+import { fetchUserThunk, createUserThunk, sendOTPThunk, updateUserThunk } from '@thunk/userThunk';
 import { API_CALL_STATUS, ONLOAD_STATUS } from '@utils/constant';
 
 export const userSlice = createSlice({
@@ -26,13 +26,39 @@ export const userSlice = createSlice({
           city: '',
           state: '',
           pincode: '',
+        },
+        {
+          name: "Work",
+          address: null,
+          isPrimary: false,
+          flatHouseNo: '',
+          buildingStreet: '',
+          locality: '',
+          landmark: '',
+          city: '',
+          state: '',
+          pincode: '',
+        },
+        {
+          name: "Other",
+          address: null,
+          isPrimary: false,
+          flatHouseNo: '',
+          buildingStreet: '',
+          locality: '',
+          landmark: '',
+          city: '',
+          state: '',
+          pincode: '',
         }
       ]
     },
     loadingStatus: {
       handShakeLoader: ONLOAD_STATUS.IDLE,
       registerUserLoader: API_CALL_STATUS.IDLE,
-      validateOTPLoader: API_CALL_STATUS.IDLE
+      validateOTPLoader: API_CALL_STATUS.IDLE,
+      updateUserLoader: API_CALL_STATUS.IDLE,
+      updateLocationLoader: API_CALL_STATUS.IDLE,
     },
     error: null,
     errorMessage: ''
@@ -43,6 +69,11 @@ export const userSlice = createSlice({
       const { key, status } = action.payload;
       state.loadingStatus[key] = status;
     },
+    setUserNameAndEmail(state, action) {
+      const { userName, emailId } = action.payload;
+      state.userData.userName = userName;
+      state.userData.emailId = emailId;
+    },
     setPhoneNo(state, action) {
       state.userData.phoneNo = action.payload;
     },
@@ -51,7 +82,36 @@ export const userSlice = createSlice({
     },
     setErrorMessage(state, action) {
       state.errorMessage = action.payload;
+    },
+    setLocation(_State, action) {
+      const { name, address, isPrimary, flatHouseNo, buildingStreet, locality, landmark, city, state, pincode } = action.payload;
+      const locationIndex = _State.userData.locations.findIndex(loc => loc.name.trim() === name.trim());
+      const newLocation = {
+        name,
+        address,
+        isPrimary,
+        flatHouseNo,
+        buildingStreet,
+        locality,
+        landmark,
+        city,
+        state,
+        pincode,
+      };
+      if (isPrimary) {
+        // Set all other locations to isPrimary false
+        _State.userData.locations = _State.userData.locations.map(loc => ({
+          ...loc,
+          isPrimary: false
+        }));
+      }
+      if (locationIndex !== -1) {
+        _State.userData.locations[locationIndex] = newLocation;
+      } else {
+        _State.userData.locations.push(newLocation);
+      }
     }
+
   },
 
   extraReducers: builder => {
@@ -75,11 +135,27 @@ export const userSlice = createSlice({
         state.loadingStatus.validateOTPLoader = API_CALL_STATUS.REJECTED;
       })
 
+      .addCase(updateUserThunk.fulfilled, (state, action) => {
+        if (state.loadingStatus.updateUserLoader === API_CALL_STATUS.PENDING)
+          state.loadingStatus.updateUserLoader = API_CALL_STATUS.SUCCESS;
+        if (state.loadingStatus.updateLocationLoader === API_CALL_STATUS.PENDING)
+          state.loadingStatus.updateLocationLoader = API_CALL_STATUS.SUCCESS;
+
+      })
+      .addCase(updateUserThunk.rejected, (state, action) => {
+         if (state.loadingStatus.updateUserLoader === API_CALL_STATUS.PENDING)
+          state.loadingStatus.updateUserLoader = API_CALL_STATUS.REJECTED;
+        if (state.loadingStatus.updateLocationLoader === API_CALL_STATUS.PENDING)
+          state.loadingStatus.updateLocationLoader = API_CALL_STATUS.REJECTED;
+      })
+
       .addCase(fetchUserThunk.fulfilled, (state, action) => {
         state.loadingStatus.handShakeLoader = API_CALL_STATUS.SUCCESS;
-        const { phoneNo, status, userName, emailId, profileImage, emergencyContacts, createdOn,
+        const { _id, phoneNo, status, userName, emailId, profileImage, emergencyContacts, createdOn,
           locations
         } = action.payload;
+        // console.log('fetchUserThunk action.payload', action.payload);
+        state.userData.userID = _id;
         state.userData.phoneNo = phoneNo;
         state.userData.status = status;
         state.userData.userName = userName;
@@ -87,7 +163,10 @@ export const userSlice = createSlice({
         state.userData.profileImage = profileImage;
         state.userData.emergencyContacts = emergencyContacts;
         state.userData.createdOn = createdOn;
-        state.userData.locations = locations;
+        if (locations && Array.isArray(locations) && locations.length > 0) {
+          state.userData.locations = locations;
+        }
+        // state.userData.locations = locations;
 
       })
       .addCase(fetchUserThunk.rejected, (state, action) => {
@@ -97,6 +176,6 @@ export const userSlice = createSlice({
   },
 });
 
-const { setIsLoading, setPhoneNo, setError, setErrorMessage } = userSlice.actions;
-export { setIsLoading, setPhoneNo, setError, setErrorMessage };
+const { setIsLoading, setPhoneNo, setError, setErrorMessage, setUserNameAndEmail, setLocation } = userSlice.actions;
+export { setIsLoading, setPhoneNo, setError, setErrorMessage, setUserNameAndEmail, setLocation };
 export default userSlice.reducer;

@@ -15,7 +15,7 @@ export const TitleWithBackBtn = ({ name ,bgColor}) => {
         <View style={{ backgroundColor: bgColor || themeColors.yellow, height: 40, width: '100%', flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ paddingLeft: 10, flexDirection: 'row' }}>
                 <TouchableOpacity onPress={onBackBtnPress} style={{}}>
-                    <PIcon type="feather" name="arrow-left" size={25}></PIcon>
+                    <PIcon type="feather" name="arrow-left" color={themeColors.primary} size={25}></PIcon>
                 </TouchableOpacity>
                 <View style={{ alignSelf: 'center', justifyContent: 'center', width: '100%', }}>
                     <Text style={{ color: themeColors.primary, fontFamily: fonts.RubikBlack, fontSize: 14, paddingLeft: 5 }}> {name}</Text>

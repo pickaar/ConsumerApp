@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, StatusBar, Text } from "react-native";
+import { useCallback, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity, StatusBar, Text, Alert } from "react-native";
 import { themeColors } from '@utils/constant';
 import { fonts } from '@utils/theme';
 import { PIconSet } from '@components/brick/PIcon';
@@ -12,6 +12,8 @@ import { Line, LineWithTxt } from '@components/brick/hr';
 import { ModalComponent } from '@components/Modal';
 import { SCREENS } from '@utils/constant';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getData } from '../../utils/helperfn';
+import { useAppSelector } from '@store/hook';
 
 const BookNow = (props) => {
 
@@ -42,12 +44,34 @@ const BookNow = (props) => {
 
 export default function Dashboard(props) {
     const dispatch = useAppDispatch();
+    const userData = useAppSelector(state => state.user.userData)
+    const locations = useAppSelector(state => state.user.userData.locations);
+    const primaryLocation = locations.find(location => location.isPrimary);
+
     useEffect(() => {
         const getOffers = async () => {
             dispatch(fetchOfferThunk());
         }
         getOffers();
     }, [dispatch])
+
+    useEffect(() => {
+        const isProfileIncomplete = !userData.userName || !userData.emailId;
+
+        if (isProfileIncomplete) {
+            Alert.alert(
+                "Complete Your Profile",
+                "Please set your name and primary location to continue using the app.",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => props.navigation.navigate(SCREENS.SETTINGS)
+                    },
+                    { text: "Cancel", style: "cancel" }
+                ]
+            );
+        }
+    }, [userData, primaryLocation, props.navigation]);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.white }}>

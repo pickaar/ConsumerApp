@@ -7,6 +7,7 @@ import { SCREENS } from '@utils/constant';
 import ActiveCardList from '@screens/ActiveBooking/Details/ActiveCardList';
 import Settings from '@screens/Settings/Settings';
 import Location from '@screens/Settings/Location/Locations';
+import AddressInputComponent from '@screens/Settings/Location/AddressInputComponent';
 
 const SettingStack = createNativeStackNavigator();
 
@@ -25,6 +26,14 @@ const SettingNavStack = () => {
             <SettingStack.Screen
                 name={SCREENS.LOCATION_SETTINGS}
                 component={Location}
+                options={{
+                    headerShown: false
+                }}
+            />
+
+            <SettingStack.Screen
+                name={SCREENS.LOCATION_SETTINGS_ADD_LOCATION}
+                component={AddressInputComponent}
                 options={{
                     headerShown: false
                 }}

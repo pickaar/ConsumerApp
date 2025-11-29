@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, ScrollView, FlatList } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, ScrollView, FlatList, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import { DEVICE_HEIGHT, DEVICE_WIDTH } from "@utils/constant";
 import { fonts, pStyles } from "@utils/theme";
 import Modal from "react-native-modal";
@@ -8,6 +8,9 @@ import { setModalParam } from "@store/reducer/modalSlice";
 import { themeColors } from "@utils/constant";
 import PIcon, { PIcons } from "@components/brick/Icon";
 import { setParam } from "@store/reducer/userSlice";
+import { PInputFilled, PInputOutlined } from "../brick/inputs";
+import GetNameAndEmailModal from "./GetNameAndEmailModal";
+import { AddressInputModalContent } from "../../screens/Settings/Location/AddressInputComponent";
 
 const InforModalContent = ({ closeModal, msg }) => {
 
@@ -189,7 +192,6 @@ export const ModalComponent = (prop) => {
     const modalContent = useSelector((state) => state.modal.modalContent)
     const [showModal, setInfoModalVisible] = useState(isVisible);
 
-
     useEffect(() => {
         setInfoModalVisible(isVisible);
     }, [isVisible])
@@ -219,6 +221,8 @@ export const ModalComponent = (prop) => {
             {modalName == 'CAR_DETAIL_MODAL' && <CarModalContent closeModal={closeModal} modalContent={modalContent} />}
 
             {modalName == 'ADDRESS_PICKER' && <AddressPickerContent closeModal={closeModal} />}
+
+            {modalName == 'GET_NAME_EMAIL' && <GetNameAndEmailModal closeModal={closeModal} />}
         </Modal>
     )
 }

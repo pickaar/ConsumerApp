@@ -36,6 +36,7 @@ function RootApp({ fontsLoaded }) {
     try {
       const userData = await getData(STORAGE_KEY);
       const parsedData = JSON.parse(userData);
+      // console.log('From Device: ', parsedData);
       if (parsedData?.phoneNo && parsedData?.status) {
         dispatch(fetchUserThunk(parsedData.phoneNo));
       } else {

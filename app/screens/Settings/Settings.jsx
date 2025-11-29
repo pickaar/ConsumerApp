@@ -5,8 +5,14 @@ import LottieView from 'lottie-react-native';
 import { getData } from '@utils/helperfn';
 import { pStyles } from "@utils/theme";
 import PIcon, { PIcons } from "@components/brick/Icon";
-import { localStorageKeys, SCREENS, STORAGE_KEY,USER_DATA_SLICE_INITIAL_STATE } from "@utils/constant";
+import { localStorageKeys, SCREENS, STORAGE_KEY, USER_DATA_SLICE_INITIAL_STATE } from "@utils/constant";
 import { storeData } from "@utils/helperfn";
+import { useAppSelector } from "@store/hook";
+import { useAppDispatch } from "../../store/store";
+import { ModalComponent } from "../../components/Modal";
+import { setConfig } from "@reducer/modalSlice";
+import { API_CALL_STATUS } from "../../utils/constant";
+import { setIsLoading, setUserNameAndEmail } from "../../store/reducer/userSlice";
 
 const settingListConfig = [
     [
@@ -20,8 +26,10 @@ const settingListConfig = [
     ],
 ];
 
-const UserProfile = ({ navigation }) => {
+const UserProfile = () => {
     const avatarAnimate = useRef(null);
+    const dispatch = useAppDispatch();
+    const userData = useAppSelector(state => state.user.userData);
     useEffect(() => {
         if (avatarAnimate.current) {
             avatarAnimate.current.play(87, 147);
@@ -31,7 +39,7 @@ const UserProfile = ({ navigation }) => {
     return (
         <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => navigation.navigate('profileScreen')} // Assuming you have a profile screen
+            onPress={() => dispatch(setConfig({ visible: true, modal: 'GET_NAME_EMAIL' }))} 
             style={styles.profileBlock}
         >
             <View style={styles.profileAvatarContainer}>
@@ -44,9 +52,9 @@ const UserProfile = ({ navigation }) => {
                 />
             </View>
             <View style={styles.profileContentContainer}>
-                <Text style={styles.profileName}>Kameshwaran</Text>
-                <Text style={styles.profileDetail}>9739377457</Text>
-                <Text style={styles.profileDetail}>Kameeshwaran.han@gmail.com</Text>
+                <Text style={styles.profileName}>{userData.userName}</Text>
+                <Text style={styles.profileDetail}>{userData.phoneNo}</Text>
+                <Text style={styles.profileDetail}>{userData.emailId}</Text>
             </View>
 
             <View style={styles.profileArrowContainer}>
@@ -103,7 +111,9 @@ const SettingList = ({ navigation }) => {
 // --- Main Settings Screen ---
 export default function Settings({ navigation }) {
     const exitApp = () => BackHandler.exitApp();
-
+    const dispatch = useAppDispatch();
+    const userData = useAppSelector(state => state.user.userData);
+    const updateUserLoader = useAppSelector(state => state.user.loadingStatus.updateUserLoader);
     const logout = () => {
         Alert.alert(
             "Confirmation",
@@ -118,7 +128,7 @@ export default function Settings({ navigation }) {
                     text: "Logout", // Use a strong word like Logout
                     onPress: async () => {
                         console.log('Logging out user...');
-                        const currentUserData = {...USER_DATA_SLICE_INITIAL_STATE};
+                        const currentUserData = { ...USER_DATA_SLICE_INITIAL_STATE };
                         const updatedUserData = JSON.stringify(currentUserData);
                         await storeData(STORAGE_KEY, updatedUserData);
                         exitApp();
@@ -128,6 +138,27 @@ export default function Settings({ navigation }) {
             ]
         );
     }
+
+    useEffect(() => {
+        const isProfileIncomplete = !userData.userName || !userData.emailId;
+        if (isProfileIncomplete) {
+            const config = { swipeDirection: 'down', animationType: 'slide', modalContent: {} };
+            dispatch(setConfig({ visible: true, modal: 'GET_NAME_EMAIL', ...config }));
+        }
+    }, [userData.userName, userData.emailId, dispatch]);
+
+    useEffect(() => {
+        if (updateUserLoader === API_CALL_STATUS.SUCCESS) {
+            Alert.alert('Profile Updated', 'Your profile has been successfully updated.');
+            dispatch(setConfig({ visible: false, modal: '' }));
+            dispatch(setIsLoading({updateUserLoader: API_CALL_STATUS.IDLE}));
+        } else if (updateUserLoader === API_CALL_STATUS.REJECTED) {
+            dispatch(setUserNameAndEmail({ userName: '', emailId: '' }));
+            Alert.alert('Profile Update Failed', 'There was an error updating your profile. Please try again.');
+            dispatch(setConfig({ visible: false, modal: '' }));
+            dispatch(setIsLoading({updateUserLoader: API_CALL_STATUS.IDLE}));
+        }
+    }, [updateUserLoader, dispatch]);
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -156,6 +187,7 @@ export default function Settings({ navigation }) {
                     </TouchableOpacity>
 
                 </View>
+                <ModalComponent />
             </View>
         </SafeAreaView>
     );

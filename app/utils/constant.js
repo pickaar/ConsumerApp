@@ -4,6 +4,7 @@ export const DEVICE_WIDTH = Dimensions.get('window').width;
 export const DEVICE_HEIGHT = Dimensions.get('window').height;
 export const TAB_BAR_HEIGHT = 50;
 export const STORAGE_KEY = '@userData';
+export const STORAGE_KEY_FIRST_TIME = '@OnLoadFirstTime';
 
 export const themeColors = {
   // primary: '#2A2A2A',
@@ -75,6 +76,7 @@ export const SCREENS = Object.freeze({
   SETTINGS: 'SETTINGS',
   MAIN_SETTINGS: 'MAIN_SETTINGS',
   LOCATION_SETTINGS: 'LOCATION_SETTINGS',
+  LOCATION_SETTINGS_ADD_LOCATION: 'LOCATION_SETTINGS_ADD_LOCATION',
   RIDES_SETTINGS: 'RIDES_SETTINGS',
 });
 

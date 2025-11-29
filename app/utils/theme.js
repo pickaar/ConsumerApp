@@ -47,6 +47,8 @@ export const pStyles = {
     economyColor: '#5188f9',
     infoHighlightColor: '#2667c5',
 
+    danger: '#e74c3c',
+
     txtMediumWhite: {
         fontSize: 16,
         fontFamily: fonts.RubikMedium,

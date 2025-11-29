@@ -9,6 +9,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from "@react-navigation/native";
 import { pStyles } from '../../../utils/theme';
 import { TitleWithBackBtn } from '../../../components/brick/text';
+import { useAppSelector } from '../../../store/hook';
+import { setConfig, setModalParam } from '../../../store/reducer/modalSlice';
+import { useAppDispatch } from '../../../store/store';
+import { ModalComponent } from '../../../components/Modal';
+import { SCREENS } from '../../../utils/constant';
 
 // --- Mocking External Imports for Standalone Execution ---
 // We redefine React Native and Navigation APIs as simple placeholders 
@@ -73,7 +78,8 @@ const initialAddresses = [
 
 // 1. Individual Address Row
 const AddressItem = React.memo(({ item, onPress }) => {
-    const isPlaceholder = item.address.includes('Tap to add');
+    const iconList = { Home: 'home', Work: 'briefcase', Other: 'map' }[item.name] || 'home';
+    const iconBgColor = { Home: '#007AFF', Work: '#FF9500', Other: '#34C759' }[item.name] || '#007AFF';
 
     return (
         <TouchableOpacity
@@ -82,14 +88,14 @@ const AddressItem = React.memo(({ item, onPress }) => {
             style={styles.addressItemContainer}
         >
             {/* Icon Block */}
-            <View style={{ ...styles.iconBlock, backgroundColor: item.iconbg }}>
-                <PIcon style={{ color: '#fff' }} type="feather" name={item.icon} size={15} />
+            <View style={{ ...styles.iconBlock, backgroundColor: iconBgColor }}>
+                <PIcon style={{ color: '#fff' }} type="feather" name={iconList} size={15} />
             </View>
 
             <View style={styles.addressContent}>
-                <Text style={styles.addressLabel}>{item.label}</Text>
-                <Text style={[styles.addressText, isPlaceholder && styles.addressPlaceholder]}>
-                    {item.address}
+                <Text style={styles.addressLabel}>{item.name}</Text>
+                <Text style={[styles.addressText && styles.addressPlaceholder]}>
+                    {item.address || 'Tap to add your address here...'}
                 </Text>
             </View>
 
@@ -98,44 +104,11 @@ const AddressItem = React.memo(({ item, onPress }) => {
     );
 });
 
-const AddressInputView = ({ address, setAddress, onSave, onCancel }) => {
-    return (
-        <View style={styles.inputModalOverlay}>
-            <View style={styles.inputModalCard}>
-                <Text style={styles.inputHeader}>Enter Indian Address</Text>
-
-                 {/* <TextInput
-                    style={styles.addressTextInput}
-                    placeholder="Enter your full Indian address here..."
-                    placeholderTextColor={pStyles.gray}
-                    value={address}
-                    onChangeText={setAddress}
-                    multiline={true}
-                    // FIX: Removed numberOfLines as it's not a standard HTML attribute for textarea
-                    // numberOfLines={4} 
-                    // autoFocus={true} // Removed for web compatibility
-                />  */}
-
-                <View style={styles.inputButtonContainer}>
-                    <TouchableOpacity onPress={onCancel} style={[styles.inputButton, styles.cancelButton]}>
-                        <Text style={styles.cancelText}>Cancel</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={onSave} style={[styles.inputButton, styles.saveButton]}>
-                        <Text style={styles.saveText}>Save Address</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>
-    );
-};
-
-
 // --- Main Component ---
-export default function Location() {
-    const navigation = useNavigation();
-
-    // State to hold all user addresses
-    const [addresses, setAddresses] = useState(initialAddresses);
+export default function Location(props) {
+    // const navigation = useNavigation();
+    const dispatch = useAppDispatch();
+    const locations = useAppSelector(state => state.user.userData.locations);
 
     // State to manage the input/editing process
     const [editingAddress, setEditingAddress] = useState(null); // The item being edited (or null)
@@ -143,83 +116,86 @@ export default function Location() {
 
     // Handle tapping an address item to start editing
     const handleEditStart = useCallback((item) => {
-        setEditingAddress(item);
+        // setEditingAddress(item.name);
+        props.navigation.navigate(SCREENS.SETTINGS, { screen: SCREENS.LOCATION_SETTINGS_ADD_LOCATION, params: { label: item.name } });
+        // dispatch(setConfig({
+        //     msg: '',
+        //     visible: true,
+        //     modal: "GET_LOCATION_DETAILS", //CAR_DETAIL_MODAL
+        //     swipeDirection: 'down',
+        //     animationType: 'slide',
+        //     modalContent: {}
+        // }));
+
         // Load existing address into the input, or clear it if it's a placeholder
-        setCurrentInput(item.address.includes('Tap to add') ? '' : item.address);
+        // setCurrentInput(item.address.includes('Tap to add') ? '' : item.address);
     }, []);
 
     // Handle saving the new address
-    const handleSaveAddress = useCallback(() => {
-        if (!currentInput.trim()) {
-            Alert.alert("Error", "Please enter a valid address.");
-            return;
-        }
+    // const handleSaveAddress = useCallback(() => {
+    //     if (!currentInput.trim()) {
+    //         Alert.alert("Error", "Please enter a valid address.");
+    //         return;
+    //     }
 
-        setAddresses(prevAddresses => prevAddresses.map(addr =>
-            addr.id === editingAddress.id
-                ? { ...addr, address: currentInput.trim() }
-                : addr
-        ));
+    //     setAddresses(prevAddresses => prevAddresses.map(addr =>
+    //         addr.id === editingAddress.id
+    //             ? { ...addr, address: currentInput.trim() }
+    //             : addr
+    //     ));
 
-        // Reset state after saving
-        setEditingAddress(null);
-        setCurrentInput('');
+    //     // Reset state after saving
+    //     setEditingAddress(null);
+    //     setCurrentInput('');
 
-        Alert.alert("Success", `${editingAddress.label} address saved successfully!`);
+    //     Alert.alert("Success", `${editingAddress.label} address saved successfully!`);
 
-    }, [currentInput, editingAddress]);
+    // }, [currentInput, editingAddress]);
 
     const renderAddressList = () => (
         <View style={styles.groupBlock}>
             <Text style={styles.groupHeader}>YOUR SAVED LOCATIONS</Text>
-            {addresses.map((item, index) => (
-                <View key={item.id}>
+            {locations.map((item, index) => (
+                <View key={index}>
                     <AddressItem
                         item={item}
                         onPress={handleEditStart}
                     />
                     {/* Add separator except for the last item */}
-                    {index < addresses.length - 1 && <View style={styles.listSeparator} />}
+                    {index < locations.length - 1 && <View style={styles.listSeparator} />}
                 </View>
             ))}
         </View>
     );
 
     // Render the default address (Home) as a prominent header banner
-    const defaultAddress = addresses.find(a => a.isDefault);
-
+    const primaryAddress = locations.find(a => a.isPrimary);
+    console.log('primaryAddress', primaryAddress);
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.headerContainer}>
-                <TitleWithBackBtn name="YOUR&nbsp;LOCATION" bgColor={pStyles.white} />
-                <View style={styles.headerButton} /> {/* Placeholder for alignment */}
+                <TitleWithBackBtn name="YOUR LOCATION" bgColor={pStyles.white} />
+                {/* <View style={styles.headerButton} /> Placeholder for alignment */}
             </View>
-        <ScrollView>
-            <View style={styles.container}>
+            <ScrollView>
+                <View style={styles.container}>
 
-                {defaultAddress && (
-                    <View style={styles.defaultAddressBanner}>
-                        <Text style={styles.defaultLabel}>Default Address ({defaultAddress.label})</Text>
+                    {primaryAddress && (
+                        <View style={styles.defaultAddressBanner}>
+                            <Text style={styles.defaultLabel}>Primary Address ({primaryAddress.name})</Text>
 
-                        <Text style={styles.defaultAddressText}>
-                            {defaultAddress.address}
-                        </Text>
-                    </View>
-                )}
+                            <Text style={styles.defaultAddressText}>
+                                {primaryAddress.address}
+                            </Text>
+                        </View>
+                    )}
 
-                {/* Main Address List */}
-                {renderAddressList()}
+                    {/* Main Address List */}
+                    {renderAddressList()}
 
-                {/* Input Modal/Overlay */}
-                {editingAddress && (
-                    <AddressInputView
-                        address={currentInput}
-                        setAddress={setCurrentInput}
-                        onSave={handleSaveAddress}
-                        onCancel={() => { setEditingAddress(null); setCurrentInput(''); }}
-                    />
-                )}
-            </View>
+                   
+                </View>
+                <ModalComponent />
             </ScrollView>
         </SafeAreaView>
     );
