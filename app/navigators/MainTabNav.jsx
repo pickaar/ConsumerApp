@@ -11,6 +11,7 @@ import BookingStackNavStack from '@nav/BookingStackNavStack';
 import ActiveBookingNavStack from '@nav/ActiveBookingNavStack';
 import DirectBooking from '@screens/DirectBooking/DirectBooking';
 import SettingNavStack from '@nav/SettingNavStack';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const TAB_LIST = [
   {
@@ -124,47 +125,87 @@ const TabButton = React.memo(({ accessibilityStates, ...props }) => {
     </TouchableOpacity>
   );
 });
+const getTabBarVisibility = (route) => {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? SCREENS.DASHBOARD;
+
+  if (routeName === SCREENS.BOOKING_GET_DETAILS ||
+    routeName === SCREENS.BOOKING_CONFIRMATION ||
+    routeName === SCREENS.BOOKING_LIST ||
+    routeName === SCREENS.BOOKING_DETAIL ||
+    routeName === SCREENS.FEEDBACK ||
+    routeName === SCREENS.LOCATION_SETTINGS ||
+    routeName === SCREENS.LOCATION_SETTINGS_ADD_LOCATION) {
+    return 'none'; // Hide tab bar
+  }
+  return 'flex'; // Show tab bar
+};
 
 export default function MainTab() {
   const insets = useSafeAreaInsets();
   const TAB_BAR_HEIGHT = 50;
   const totalTabBarHeight = TAB_BAR_HEIGHT + insets.bottom;
-  const tabBarStyle = {
+  const BASE_TAB_BAR_STYLE = {
     bottom: 0,
     margin: 0,
     height: totalTabBarHeight,
     position: 'absolute',
     backgroundColor: themeColors.primary,
     paddingBottom: insets.bottom,
+    borderTopWidth: 0,
+    elevation: 0,
   };
 
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: tabBarStyle,
-      }}
-    >
+    <Tab.Navigator>
       {TAB_LIST.map((item, index) => {
-        // Destructure properties here to ensure they are available when the button is rendered
-        const { route, component, label, type, activeIcon, inActiveIcon } = item;
 
+        const { route, component, label, type, activeIcon, inActiveIcon } = item;
+        // const isBookingStack = route === SCREENS.DASHBOARD;
         return (
           <Tab.Screen
             key={index}
             name={route}
             component={component}
-            options={{
-              headerShown: false,
-              tabBarShowLabel: true,
-              tabBarButton: props => (
-                <TabButton
-                  {...props}
-                  item={item}
-                  currentLabel={props.accessibilityState?.selected ? label : undefined}
-                />
-              ),
+            options={({ route }) => {
+
+              // Determine visibility for the BookingStack tab
+              const visibility = getTabBarVisibility(route)
+              // Other tabs are always visible
+
+              return {
+                tabBarShowLabel: false,
+                headerShown: false,
+                // 💡 FIX: Merge BASE_TAB_BAR_STYLE with the conditional display property.
+                tabBarStyle: {
+                  ...BASE_TAB_BAR_STYLE,
+                  display: visibility, // 'flex' or 'none'
+                },
+
+                tabBarButton: props => (
+                  <TabButton
+                    {...props}
+                    item={item}
+                    currentLabel={props.accessibilityState?.selected ? label : undefined}
+                  />
+                ),
+              };
             }}
+          // options={({ route }) => ({
+          //   tabBarShowLabel: false,
+          //   headerShown: false,
+          //   tabBarStyle: {
+          //     display: getTabBarVisibility(route),
+          //     // ... include your other tabBarStyle properties
+          //     tabBarButton: props => (
+          //       <TabButton
+          //         {...props}
+          //         item={item}
+          //         currentLabel={props.accessibilityState?.selected ? label : undefined}
+          //       />
+          //     ),
+          //   },
+          //   // ...
+          // })}
           />
         );
       })}

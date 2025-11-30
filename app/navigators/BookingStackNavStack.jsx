@@ -5,7 +5,6 @@ import Confirmation from '@screens/Booking/Confirmation';
 import Dashboard from '@screens/Dashboard/Dashboard';
 
 const BookingStack = createNativeStackNavigator();
-
 const BookingStackNavStack = () => {
 
     return (
@@ -13,22 +12,18 @@ const BookingStackNavStack = () => {
             <BookingStack.Screen
                 name={SCREENS.MAIN}
                 component={Dashboard}
-              
             />
 
             <BookingStack.Screen
                 name={SCREENS.BOOKING_GET_DETAILS}
                 component={GetDetails}
-               
             />
 
             <BookingStack.Screen
                 name={SCREENS.BOOKING_CONFIRMATION}
                 component={Confirmation}
-              
             />
-
-
+            
         </BookingStack.Navigator>
     )
 }

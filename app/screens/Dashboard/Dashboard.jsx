@@ -78,7 +78,7 @@ export default function Dashboard(props) {
             <View style={styles.container}>
                 <StatusBar backgroundColor={themeColors.white} barStyle="dark-content" />
                 <View style={{ height: 40 }}>
-                    <DashboardHeader />
+                    <DashboardHeader navigation={props.navigation} />
                 </View>
 
                 {/* TITLE NAVIGATE TO BOOKING PAGE */}

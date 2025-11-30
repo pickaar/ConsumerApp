@@ -1,22 +1,17 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { themeColors } from "@utils/constant";
+import { themeColors,SCREENS } from "@utils/constant";
 import { fonts } from '@utils/theme';
 import PIcon, { PIcons } from '@components/brick/Icon';
 import { useAppSelector } from "@store/hook";
 import { useAppDispatch } from "@store/store";
-// import { setConfig } from "@store/reducers/modalReducer";
 
-export default function DashboardHeader() {
+export default function DashboardHeader({ navigation }) {
     const dispatch = useAppDispatch();
     const locations = useAppSelector((state) => state.user.userData?.locations);
-    const primaryAddress = locations?.filter(address => address.isPrimary);
+    const primaryAddress = locations?.filter(address => address.isPrimary)[0];
     const maxVisibleLimit = 40;
     function openAddressPickerModal() {
-        // dispatch(setConfig({
-        //     visible: true,
-        //     modal: 'ADDRESS_PICKER', //ADDRESS_PICKER
-        //     animationType: 'fade'
-        // }))
+        navigation.navigate(SCREENS.SETTINGS,{screen:SCREENS.LOCATION_SETTINGS});
     }
 
     return (
@@ -50,6 +45,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         fontFamily: fonts.RubikLight,
         fontSize: 11,
-        color: themeColors.darkGray
+        color: themeColors.primary
     }
 })
