@@ -22,11 +22,13 @@ import PrintReviewBookingDetails from "@screens/Booking/Confirmation/components/
 import PrintReviewExtraDetails from "@screens/Booking/Confirmation/components/PrintReviewExtraDetails";
 import { DEVICE_HEIGHT, DEVICE_WIDTH, themeColors } from "@utils/constant";
 import { fonts } from "@utils/theme";
-import { loader } from "@store/reducer/bookingSlice"; 
+import { loader } from "@store/reducer/bookingSlice";
 import { useAppDispatch } from "@store/store";
 import { useAppSelector } from "@store/hook";
 import { createBookingThunk } from "@thunk/bookingThunk";
 import { SCREENS } from "../../../utils/constant";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { PHeadings } from "../../../components/brick/text";
 
 const MAP_IMAGE = require('@assets/sample_gmap.png');
 const HEADER_FLEX = 0.24;
@@ -86,66 +88,68 @@ export default function Confirmation({ navigation }) {
     }, [loading, bookingCompletionStatus, navigation]);
 
     return (
-        <View style={styles.rootContainer}>
-            <StatusBar translucent={true} backgroundColor={'transparent'} barStyle="dark-content" />
-
-            <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={backPressed} style={styles.backButton}>
-                    <PIcon type="feather" name="arrow-left" size={25} />
-                </TouchableOpacity>
-                <View style={styles.headerMapContainer}>
-                    <Animatable.Image
-                        animation="bounceIn"
-                        duration={1500}
-                        style={styles.headerImg}
-                        source={MAP_IMAGE}
-                    />
-                </View>
-            </View>
-
+        <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.white }}>
             <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-                <View style={styles.contentContainer}>
-                    <View style={styles.reviewTitleContainer}>
-                        <Text style={styles.reviewTitle}>Review</Text>
-                    </View>
+                <View style={styles.rootContainer}>
+                    <StatusBar translucent={true} backgroundColor={'transparent'} barStyle="dark-content" />
 
-                    <PrintReviewBookingDetails />
-                    <PrintReviewExtraDetails />
-
-                    <CheckBox
-                        style={styles.checkbox}
-                        onClick={handleCheckboxClick}
-                        isChecked={termAndCondition}
-                        rightText={"Please accept Terms and Condition"}
-                        rightTextStyle={styles.checkboxText}
-                    />
-
-                    <View style={styles.buttonContainer}>
-                        <PBtn
-                            config={{
-                                icon: {
-                                    isRequired: false
-                                },
-                                label: 'Confirm',
-                                customStyles: {
-                                    container: styles.confirmButton
-                                }
-                            }}
-                            onPress={stageOneSubmit}
+                    {/* <View style={styles.headerContainer}>
+                    <TouchableOpacity onPress={backPressed} style={styles.backButton}>
+                        <PIcon type="feather" name="arrow-left" size={25} />
+                    </TouchableOpacity>
+                    <View style={styles.headerMapContainer}>
+                        <Animatable.Image
+                            animation="bounceIn"
+                            duration={1500}
+                            style={styles.headerImg}
+                            source={MAP_IMAGE}
                         />
                     </View>
+                </View> */}
+
+                    <View style={styles.contentContainer}>
+                        <PHeadings title="Review" backBtnPressed={backPressed} />
+
+
+                        <PrintReviewBookingDetails />
+                        <PrintReviewExtraDetails />
+
+                        <CheckBox
+                            style={styles.checkbox}
+                            onClick={handleCheckboxClick}
+                            isChecked={termAndCondition}
+                            rightText={"Please accept Terms and Condition"}
+                            rightTextStyle={styles.checkboxText}
+                        />
+
+                        <View style={styles.buttonContainer}>
+                            <PBtn
+                                config={{
+                                    icon: {
+                                        isRequired: false
+                                    },
+                                    label: 'Confirm',
+                                    customStyles: {
+                                        container: styles.confirmButton
+                                    }
+                                }}
+                                onPress={stageOneSubmit}
+                            />
+                        </View>
+                    </View>
+
+                    <ModalLoader ref={modalRef} msg={'Booking is in process. Please wait...'} />
+                    <Toast position={'top'} />
                 </View>
             </ScrollView>
-
-            <ModalLoader ref={modalRef} msg={'Booking is in process. Please wait...'} />
-            <Toast position={'top'} />
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
+        alignItems: 'center',
         backgroundColor: themeColors.white,
     },
     headerContainer: {
@@ -192,10 +196,10 @@ const styles = StyleSheet.create({
         width: DEVICE_WIDTH,
         justifyContent: "center",
         alignItems: 'center',
-        marginVertical: 40,
+        marginVertical: 10,
     },
     confirmButton: {
-        width: '80%',
+        width: '90%',
     },
     // Keeping original styles in case they are used by imported components
     container: {

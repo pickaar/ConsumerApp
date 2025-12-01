@@ -10,6 +10,8 @@ const initialAddress = {
     city: null,
     state: null,
     pincode: null,
+    address: null,
+    coordinates: [],
 }
 const initialState = {
     pickupAddress: initialAddress,
@@ -34,7 +36,7 @@ const initialState = {
     bookingLevelOneResponse: {},
     loading: false,
     bookingErrMSG: '',
-    tollRouteResponse: false,
+    tollRouteResponse: null,
     bookingLevelOneStatus: false,
     bookingLevelOneMsg: '',
     bookingLevelTwoResponse: {},
@@ -72,16 +74,17 @@ export const bookingSlice = createSlice({
     }, extraReducers: (builder) => {
         builder
             .addCase(fetchTollDetailsThunk.fulfilled, (state, action) => {
-                debugger
+                console.log('Toll Details Fetched:', action.payload);
                 state.tollDetail = action.payload;
                 state.distance = action.payload?.distance || "NA";
                 state.duration = action.payload?.duration || "NA";
+                state.isTollAvailable = action.payload?.tollAvailable || false;
                 state.tollRouteResponse = true;
                 state.loading = false;
             })
             .addCase(fetchTollDetailsThunk.rejected, (state, action) => {
                 state.tollDetail = {};
-                state.tollRouteResponse = true;
+                state.tollRouteResponse = false;
             })
             .addCase(createBookingThunk.fulfilled, (state, action) => {
                 state.tollRouteResponse = false;

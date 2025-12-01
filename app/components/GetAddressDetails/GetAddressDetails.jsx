@@ -1,29 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Keyboard, SafeAreaView } from 'react-native';
-// Removed Modal and KeyboardAvoidingView imports
-// Note: We'll keep the required imports for component styles and logic
-import { themeColors } from '@utils/constant'; 
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Keyboard } from 'react-native';
+import { themeColors } from '@utils/constant';
 import { PBtn } from '@components/brick/button';
 import Toast from 'react-native-toast-message';
 import { TextField } from 'rn-material-ui-textfield';
-import { EXPO_GOOGLE_PLACES_API_KEY } from '@env'; 
+import { EXPO_GOOGLE_PLACES_API_KEY } from '@env';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const GOOGLE_PLACES_API_KEY = EXPO_GOOGLE_PLACES_API_KEY; 
+import { DEVICE_WIDTH, SCREENS } from '@utils/constant';
+import { fonts } from '../../utils/theme';
+import PIcon from '../brick/Icon';
 
-// State structure and extractAddressComponent function remain the same
+
+const GOOGLE_PLACES_API_KEY = EXPO_GOOGLE_PLACES_API_KEY;
+
 const initialAddressState = {
-    // ... initial state fields ...
-    flatHouseNo: '',      
-    buildingStreet: '',   
-    locality: '',         
-    landmark: '',         
-    city: '',             
-    state: '',            
-    pincode: '',          
-    address: '',          
-    latitude: null,       
-    longitude: null,      
+    flatHouseNo: '',
+    buildingStreet: '',
+    locality: '',
+    landmark: '',
+    city: '',
+    state: '',
+    pincode: '',
+    address: '',
+    latitude: null,
+    longitude: null,
 };
 
 const extractAddressComponent = (components, type) => {
@@ -31,28 +33,35 @@ const extractAddressComponent = (components, type) => {
     return component ? component.long_name : null;
 };
 
-// Renamed from AddressModal to AddAddressScreen
-const AddAddressScreen = ({ navigation, route }) => { 
-    // We assume navigation/route props are passed by React Navigation
-    
-    // Replace initialData/onClose/onSave with route params or context if needed
-    const initialData = route.params?.initialData || {}; 
-    const onSave = route.params?.onSave || (() => {});
-    
+export const GetAddressDetails = ({ route, navigation }) => {
+
+    const {
+        initialData = {},
+        redirectTo = 'previous',
+        title = 'Add Address',
+        type = '',
+    } = route.params || {};
+
     const [address, setAddress] = useState(initialAddressState);
     const [errors, setErrors] = useState({});
-    const placesRef = useRef(null); 
+    const [searchKey, setSearchKey] = useState(0);
+
+    const placesRef = useRef(null);
     const flatHouseNoRef = useRef(null);
-    const landmarkRef = useRef(null); 
+    const landmarkRef = useRef(null);
 
     useEffect(() => {
-        // Initialization logic for when the screen mounts
-        setAddress({ ...initialAddressState, ...initialData });
-        setErrors({}); 
-        setTimeout(() => {
-            placesRef.current?.focus();
-        }, 50); 
-    }, [initialData]);
+        if (initialData && initialData.address !== address.address) {
+            setAddress({ ...initialAddressState, ...initialData });
+            setErrors({});
+            setSearchKey(prev => prev + 1);
+            setTimeout(() => {
+                if (!initialData.address) {
+                    placesRef.current?.focus();
+                }
+            }, 50);
+        }
+    }, [initialData.address]);
 
     const handleChange = (fieldName, value) => {
         setAddress(prev => ({ ...prev, [fieldName]: value }));
@@ -67,29 +76,22 @@ const AddAddressScreen = ({ navigation, route }) => {
             return;
         }
 
-        // FIX: Hiding suggestions list after selection remains important
-        if (placesRef.current) {
-            placesRef.current.setAddressText('');
-            setTimeout(() => {
-                placesRef.current.setAddressText(data.description);
-                placesRef.current.blur(); 
-            }, 10); 
-        }
+        setSearchKey(prev => prev + 1);
 
         const components = details.address_components;
+
         const newAddressData = {
-            // ... (data extraction logic) ...
             city: extractAddressComponent(components, 'locality'),
             state: extractAddressComponent(components, 'administrative_area_level_1'),
             pincode: extractAddressComponent(components, 'postal_code'),
-            
+
             buildingStreet: details.formatted_address || data.description,
             locality: extractAddressComponent(components, 'sublocality_level_1') || extractAddressComponent(components, 'locality'),
-            
+
             address: data.description,
             latitude: details.geometry.location.lat,
             longitude: details.geometry.location.lng,
-            
+
             flatHouseNo: address.flatHouseNo,
             landmark: address.landmark,
         };
@@ -98,11 +100,10 @@ const AddAddressScreen = ({ navigation, route }) => {
 
         setTimeout(() => {
             flatHouseNoRef.current?.focus();
-        }, 100);
+        }, 150);
     };
 
     const validate = () => {
-        // ... (validation logic remains the same) ...
         let newErrors = {};
         let isValid = true;
         if (!address.address?.trim()) { newErrors.address = 'Please select a complete address from the list'; isValid = false; }
@@ -114,8 +115,22 @@ const AddAddressScreen = ({ navigation, route }) => {
 
     const handleSave = () => {
         if (validate()) {
-            onSave(address);
-            navigation.goBack(); // Go back to the previous screen instead of calling onClose
+            if (redirectTo === 'GET_DETAILS_SCREEN') {
+                navigation.navigate(SCREENS.HOME, {
+                    screen: SCREENS.DASHBOARD,
+                    params: {
+                        screen: SCREENS.BOOKING_GET_DETAILS,
+                        params: {
+                            updatedAddress: address,
+                            type: type,
+                        }
+                    }
+                });
+
+            } else {
+                navigation.goBack();
+            }
+
             Toast.show({ type: 'success', text1: 'Address Saved!', text2: 'Your address has been updated successfully.' });
         } else {
             Toast.show({ type: 'error', text1: 'Validation Error', text2: 'Please complete all required fields.' });
@@ -127,23 +142,16 @@ const AddAddressScreen = ({ navigation, route }) => {
         icon: { isRequired: false },
     };
 
-    return (
-        <SafeAreaView style={styles.screenContainer}>
-            {/* The header is now part of the screen or handled by the navigator */}
-            {/* If using a custom header: */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton}>
-                    <Text style={styles.closeButtonText}>X</Text>
-                </TouchableOpacity>
-                <Text style={styles.headerText}>{route.params?.title || 'Add Address'}</Text>
-            </View>
+    const onBackBtnPress = () => {
+        navigation.goBack();
+    }
 
-            {/* SCROLLVIEW NOW WRAPS ALL CONTENT */}
-            <ScrollView contentContainerStyle={styles.scrollViewContent} keyboardShouldPersistTaps="handled">
-                
-                {/* 🔑 GOOGLE PLACES AUTOCOMPLETE FIELD - MOVED BACK INSIDE SCROLLVIEW */}
+    const ListHeaderComponent = () => (
+        <View style={styles.contentWrapper}>
+            <View style={styles.autocompleteWrapper}>
                 <Text style={styles.inputLabel}>Search Address</Text>
                 <GooglePlacesAutocomplete
+                    key={searchKey}
                     ref={placesRef}
                     placeholder={address.address || 'Start typing your address...'}
                     fetchDetails={true}
@@ -154,46 +162,48 @@ const AddAddressScreen = ({ navigation, route }) => {
                         components: 'country:in',
                     }}
                     styles={{
-                        container: styles.autocompleteContainer, // Revert to standard container styles
+                        container: styles.autocompleteContainer,
                         textInput: styles.autocompleteInput,
-                        // listView no longer needs absolute positioning hacks
+                        listView: styles.listView
                     }}
                     onFocus={() => { if (!address.address) setAddress(initialAddressState); }}
                 />
                 {errors.address && <Text style={styles.errorText}>{errors.address}</Text>}
-                
-                {/* MANUAL INPUT FIELDS - No need for a spacer */}
-                <TextField
-                    ref={flatHouseNoRef}
-                    label="Flat/House No. (Optional)"
-                    placeholder="Flat/House No. (Optional)"
-                    value={address.flatHouseNo}
-                    onChangeText={(text) => handleChange('flatHouseNo', text)}
-                    error={errors.flatHouseNo}
-                    containerStyle={styles.inputContainer}
-                    returnKeyType="next"
-                    onSubmitEditing={() => landmarkRef.current?.focus()}
-                />
+            </View>
 
-                <TextField
-                    ref={landmarkRef}
-                    label="Landmark (Optional)"
-                    placeholder="Landmark (Optional)"
-                    value={address.landmark}
-                    onChangeText={(text) => handleChange('landmark', text)}
-                    containerStyle={styles.inputContainer}
-                    returnKeyType="done"
-                    onSubmitEditing={Keyboard.dismiss}
-                />
+           <View style={{ marginTop: 10 }}>
+            <TextField
+                ref={flatHouseNoRef}
+                label="Flat/House No. (Optional)"
+                placeholder="Flat/House No. (Optional)"
+                value={address.flatHouseNo}
+                onChangeText={(text) => handleChange('flatHouseNo', text)}
+                error={errors.flatHouseNo}
+                containerStyle={styles.inputContainer}
+                returnKeyType="next"
+                onSubmitEditing={() => landmarkRef.current?.focus()}
+            />
 
-                {/* DISPLAY/READ-ONLY FIELDS */}
+            <TextField
+                ref={landmarkRef}
+                label="Landmark (Optional)"
+                placeholder="Landmark (Optional)"
+                value={address.landmark}
+                onChangeText={(text) => handleChange('landmark', text)}
+                containerStyle={styles.inputContainer}
+                returnKeyType="done"
+                onSubmitEditing={Keyboard.dismiss}
+            />
+           </View>
+
+            <View style={{ marginTop: 40 }}>
                 <Text style={styles.displayLabel}>--- Extracted Address Details ---</Text>
-                {/* ... (All other TextFields for Extracted Data) ... */}
+
                 <TextField
                     label="Building/Street Name"
                     value={address.buildingStreet || 'N/A'}
                     editable={false}
-                    containerStyle={styles.displayContainer}
+                    containerStyle={[ styles.displayContainer, { marginTop: 20 } ]}
                 />
                 <TextField
                     label="Locality"
@@ -223,76 +233,73 @@ const AddAddressScreen = ({ navigation, route }) => {
                     editable={false}
                     containerStyle={styles.displayContainer}
                 />
+            </View>
 
-                <View style={styles.cityPincodeRow}>
-                    <TextField
-                        label="Latitude"
-                        value={address.latitude ? address.latitude.toFixed(5) : 'N/A'}
-                        editable={false}
-                        containerStyle={[styles.displayContainer, { flex: 1, marginRight: 10 }]}
-                    />
-                    <TextField
-                        label="Longitude"
-                        value={address.longitude ? address.longitude.toFixed(5) : 'N/A'}
-                        editable={false}
-                        containerStyle={[styles.displayContainer, { flex: 1 }]}
-                    />
-                </View>
+            <View style={styles.buttonWrapper}>
+                <PBtn config={saveButtonConfig} onPress={handleSave} />
+            </View>
+        </View>
+    );
 
-                <View style={styles.buttonWrapper}>
-                    <PBtn config={saveButtonConfig} onPress={handleSave} />
+    return (
+        <SafeAreaView style={styles.screenContainer}>
+            <View style={styles.customHeader}>
+                <TouchableOpacity onPress={onBackBtnPress} style={{ marginTop: 10 }}>
+                    <PIcon type="feather" color={themeColors.black} name="arrow-left" size={25} />
+                </TouchableOpacity>
+                <View style={{ marginTop: 12, marginLeft: 15 }}>
+                    <Text style={{ fontSize: 15, fontFamily: fonts.RubikMedium }}>{title}</Text>
                 </View>
-            </ScrollView>
+            </View>
+
+            <FlatList
+                data={[{ key: 'all-content' }]} 
+                renderItem={() => null} 
+                keyExtractor={(item) => item.key}
+                ListHeaderComponent={ListHeaderComponent}
+                keyboardShouldPersistTaps="handled"
+                contentContainerStyle={styles.listContentContainer}
+                style={styles.listContainer}
+            />
         </SafeAreaView>
     );
 };
 
-// Simplified Styles
 const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     },
-    header: {
+    customHeader: {
         flexDirection: 'row',
         alignItems: 'center',
+        width: DEVICE_WIDTH,
+        height: 70,
         paddingHorizontal: 15,
-        paddingVertical: 10,
-        justifyContent: 'flex-end', // Aligns X button to the right
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
     },
-    headerText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: themeColors.primary,
-        position: 'absolute',
-        left: 50, // Center text title visually
+    listContainer: {
+        flex: 1,
     },
-    closeButton: {
-        padding: 5,
+    listContentContainer: {
+        paddingBottom: 40,
     },
-    closeButtonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: themeColors.secondary,
+    contentWrapper: {
+        paddingHorizontal: 15,
     },
-    scrollViewContent: {
-        padding: 22,
-        paddingBottom: 40, // Ensure space below the button
+    autocompleteWrapper: {
+        zIndex: 100,
     },
-    // --- Autocomplete Standard Styles ---
     inputLabel: {
         fontSize: 12,
         color: themeColors.secondary,
         marginTop: 10,
     },
     autocompleteContainer: {
-        // Standard styles needed when not using absolute positioning
-        flex: 0,
         position: 'relative',
-        zIndex: 10, // Keep zIndex for dropdown overlay
-        marginBottom: 20, 
+        zIndex: 10,
+        marginBottom: 20,
     },
     autocompleteInput: {
         height: 48,
@@ -302,7 +309,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1.5,
         borderColor: themeColors.secondary,
     },
-    // --- TextField Styles ---
+    listView: {
+        zIndex: 100,
+    },
     inputContainer: {
         marginBottom: 5,
         marginTop: 2,
@@ -311,12 +320,11 @@ const styles = StyleSheet.create({
         tintColor: themeColors.primary,
         textColor: themeColors.primary,
     },
-    // ... (rest of displayContainer, cityPincodeRow, etc. styles remain the same)
     displayContainer: {
         marginTop: 2,
         marginBottom: 1,
-        height: 60, 
-        baseColor: themeColors.disabled, 
+        height: 60,
+        baseColor: themeColors.disabled,
         tintColor: themeColors.disabled,
         textColor: themeColors.primary,
         backgroundColor: '#f5f5f5',
@@ -328,7 +336,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: themeColors.secondary,
         textAlign: 'center',
-        marginVertical: 15, // Reduced margin
+        marginVertical: 15,
     },
     cityPincodeRow: {
         flexDirection: 'row',
@@ -345,5 +353,3 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     }
 });
-
-export default AddAddressScreen;

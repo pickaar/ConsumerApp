@@ -1,60 +1,59 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Label, Value } from "@components/brick/text";
 import { themeColors } from "@utils/constant";
-import AddressModal from "@components/Modal/AddressModal";
-import { useAppSelector } from "@store/hook";
-import { useAppDispatch } from "@store/store";
 import { setAddress } from "@store/reducer/bookingSlice";
+import { SCREENS } from "@utils/constant";
+import { useAppDispatch } from "@store/store";
+import { useAppSelector } from "@store/hook";
 
-const PickUpAddress = () => {
+const PickUpAddress = ({ navigation, route }) => {
     const dispatch = useAppDispatch();
-    const [isModalVisible, setModalVisible] = useState(false);
     const pickupAddress = useAppSelector(state => state.booking.pickupAddress);
-    const { flatHouseNo, buildingStreet, city, state, pincode } = pickupAddress || {};
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
+    const { address } = pickupAddress || {};
+
+    const isAddressPresent = pickupAddress?.buildingStreet != null;
+    const editText = isAddressPresent ? 'Edit' : 'Add';
+
+    const handlePress = () => {
+        navigation.navigate(SCREENS.ADDRESS_MODAL_SCREEN, {
+            initialData: pickupAddress,
+            redirectTo: 'GET_DETAILS_SCREEN',
+            title: `${editText} Pickup Address`,
+            type: 'pickup',
+        });
     };
-    const handleAddressSave = (newAddress) => {
-        dispatch(setAddress({ addressType: 'pickup', address: newAddress }));
-    };
-    const editText = pickupAddress?.buildingStreet == null ? 'Add' : 'Edit';
+
+    useEffect(() => {
+        const { updatedAddress, type } = route.params || {};
+        if (updatedAddress) {
+            dispatch(setAddress({ addressType: type, address: updatedAddress }));
+            navigation.setParams({ updatedAddress: undefined, type: undefined });
+        }
+    }, [route.params?.updatedAddress, dispatch, navigation]);
 
     return (
         <View style={styles.container}>
-            <View style={{
-                flexDirection: "row",
-            }}>
+            <View style={styles.header}>
                 <Label>
                     <Text>Pickup Address</Text>
                 </Label>
-                <TouchableOpacity style={styles.editButton} onPress={toggleModal}>
+                <TouchableOpacity style={styles.editButton} onPress={handlePress}>
                     <Text style={styles.editText}>{editText}</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.row}>
-                {
-                    pickupAddress?.buildingStreet == null ? (
-                        <Text style={{ color: themeColors.gray }}>No pickup address added</Text>
-                    ) : <>
-                        <Value><Text numberOfLines={3}
-                            ellipsizeMode="tail">{flatHouseNo}, {buildingStreet}</Text></Value>
-                        <Value><Text numberOfLines={3}
-                            ellipsizeMode="tail">{city}, {state}</Text></Value>
-                        <Value><Text numberOfLines={3}
-                            ellipsizeMode="tail">{pincode}</Text></Value>
-                    </>
-                }
-
+                {isAddressPresent ? (
+                    <Value>
+                        <Text numberOfLines={3} ellipsizeMode="tail">
+                            {address}
+                        </Text>
+                    </Value>
+                ) : (
+                    <Text style={styles.placeholderText}>No pickup address added</Text>
+                )}
             </View>
-            <AddressModal
-                isVisible={isModalVisible}
-                onClose={toggleModal}
-                onSave={handleAddressSave}
-                initialData={pickupAddress} 
-                title={editText + " Pickup Address"}
-            />
         </View>
     );
 };
@@ -64,6 +63,10 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "flex-start",
         marginTop: 15,
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
     },
     row: {
         flexDirection: "column",
@@ -81,6 +84,9 @@ const styles = StyleSheet.create({
         color: themeColors.primary,
         fontWeight: "bold",
         letterSpacing: 0,
+    },
+    placeholderText: {
+        color: themeColors.gray
     },
 });
 

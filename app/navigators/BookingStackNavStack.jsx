@@ -23,6 +23,8 @@ const BookingStackNavStack = () => {
                 name={SCREENS.BOOKING_CONFIRMATION}
                 component={Confirmation}
             />
+
+            
             
         </BookingStack.Navigator>
     )

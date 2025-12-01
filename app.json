@@ -41,7 +41,9 @@
     }
   },
   "extra": {
-      "API_BASE_URL": "${process.env.EXPO_API_BASE_URL}",
+      "EXPO_USER_BASE_URL": "${process.env.EXPO_USER_BASE_URL}",
+      "EXPO_BOOKING_BASE_URL": "${process.env.EXPO_BOOKING_BASE_URL}",
+      "EXPO_GOOGLE_PLACES_API_KEY": "${process.env.EXPO_GOOGLE_PLACES_API_KEY}",
       "SENTRY_DSN": "${process.env.SENTRY_DSN}"
     }
 }

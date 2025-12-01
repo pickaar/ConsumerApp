@@ -1,72 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Label, Value } from "@components/brick/text";
 import { themeColors } from "@utils/constant";
-import AddressModal from "@components/Modal/AddressModal";
-import { useAppSelector } from "@store/hook";
-import { useAppDispatch } from "@store/store";
 import { setAddress } from "@store/reducer/bookingSlice";
+import { SCREENS } from "@utils/constant";
+import { useAppDispatch } from "@store/store";
+import { useAppSelector } from "@store/hook";
 
-const DropAddress = () => {
+const DropAddress = ({ navigation, route }) => {
     const dispatch = useAppDispatch();
-    const [isModalVisible, setModalVisible] = useState(false);
     const dropAddress = useAppSelector(state => state.booking.dropAddress);
-    const { flatHouseNo, buildingStreet, city, state, pincode } = dropAddress || {};
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-    const handleAddressSave = (newAddress) => {
-        dispatch(setAddress({ addressType: 'drop', address: newAddress }));
-    };
+    const { address } = dropAddress || {};
 
-    const editText = dropAddress?.buildingStreet == null ? 'Add' : 'Edit';
+    const hasAddress = dropAddress?.buildingStreet != null;
+    const editText = hasAddress ? 'Edit' : 'Add';
+
+    useEffect(() => {
+        const { updatedAddress, type } = route.params ?? {};
+        if (updatedAddress && type === 'drop') {
+            dispatch(setAddress({ addressType: type, address: updatedAddress }));
+            navigation.setParams({ updatedAddress: undefined, type: undefined });
+        }
+    }, [route.params, dispatch, navigation]);
+
+    const handleEditAddress = () => {
+        navigation.navigate(SCREENS.ADDRESS_MODAL_SCREEN, {
+            initialData: dropAddress,
+            redirectTo: 'GET_DETAILS_SCREEN',
+            type: 'drop',
+            title: `${editText} Drop Address`
+        });
+    };
 
     return (
         <View style={styles.container}>
-            <View style={{
-                flexDirection: "row",
-            }}>
+            <View style={styles.header}>
                 <Label>Drop Address</Label>
-                <TouchableOpacity style={styles.editButton} onPress={toggleModal}>
+                <TouchableOpacity style={styles.editButton} onPress={handleEditAddress}>
                     <Text style={styles.editText}>{editText}</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.row}>
-                {
-                    dropAddress?.buildingStreet == null ? (
-                        <Text style={{ color: themeColors.gray }}>No drop address added</Text>
-                    ) : <>
-                        <Value><Text numberOfLines={3}
-                            ellipsizeMode="tail">{flatHouseNo}, {buildingStreet}</Text></Value>
-                        <Value><Text numberOfLines={3}
-                            ellipsizeMode="tail">{city}, {state}</Text></Value>
-                        <Value><Text numberOfLines={3}
-                            ellipsizeMode="tail">{pincode}</Text></Value>
-                    </>
-                }
-
+                {hasAddress ? (
+                    <Value>
+                        <Text numberOfLines={3} ellipsizeMode="tail">
+                            {address}
+                        </Text>
+                    </Value>
+                ) : (
+                    <Text style={styles.noAddressText}>No drop address added</Text>
+                )}
             </View>
-            <AddressModal
-                isVisible={isModalVisible}
-                onClose={toggleModal}
-                onSave={handleAddressSave}
-                initialData={dropAddress} // Pass current address to pre-fill the form
-                title={editText + " Drop Address"}
-            />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "column",
-        justifyContent: "flex-start",
         marginTop: 10,
     },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
     row: {
-        flexDirection: "column",
-        alignItems: "flex-start",
         marginTop: 4,
     },
     editButton: {
@@ -79,7 +77,9 @@ const styles = StyleSheet.create({
     editText: {
         color: themeColors.primary,
         fontWeight: "bold",
-        letterSpacing: 0,
+    },
+    noAddressText: {
+        color: themeColors.gray,
     },
 });
 

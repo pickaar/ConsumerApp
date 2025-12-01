@@ -41,7 +41,7 @@ const PrintReviewExtraDetails = () => {
                     }
                 </View>
             </View>
-            <TollDetails tolls={tolls} />
+            {/* <TollDetails tolls={tolls} /> */}
         </>
     )
 

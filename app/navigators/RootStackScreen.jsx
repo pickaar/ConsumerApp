@@ -4,10 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from '@screens/PreLogin/SignInScreen';
 import MainTab from '@nav/MainTabNav';
 import { SCREENS } from '@utils/constant';
-// import BookingStackNavStack from '@nav/BookingStackNavStack';
-// import ActiveBookingNavStack from '@nav/ActiveBookingNavStack';
-// import Feedback from '@screens/ActiveBooking/Details/Feedback';
-// import DirectBooking from '@screens/DirectBooking/DirectBooking';
+import { GetAddressDetails } from '@components/GetAddressDetails/GetAddressDetails';
 
 const RootStack = createNativeStackNavigator();
 
@@ -33,7 +30,14 @@ const RootStackNavScreens = ({ initialRouteScreen }) => {
                     cardStyle: { backgroundColor: '#fff' }
                 }} />
 
-            
+            <RootStack.Screen
+                name={SCREENS.ADDRESS_MODAL_SCREEN}
+                component={GetAddressDetails}
+                options={{
+                    headerShown:false
+                }}
+            />
+
         </RootStack.Navigator>
     )
 }

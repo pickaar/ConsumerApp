@@ -19,7 +19,6 @@ const PrintReviewBookingDetails = () => {
         OthersPhoneNo,
         isBookingForOthers,
     } = useAppSelector((state) => state.booking);
-
     const reviewData = useMemo(() => {
         const data = [
             {
@@ -53,7 +52,7 @@ const PrintReviewBookingDetails = () => {
         if (isSingleWomen) {
             data.push({
                 label: "Single Women",
-                value: vehicleType || "",
+                value: isSingleWomen ? "Yes" : "No",
             });
         }
 

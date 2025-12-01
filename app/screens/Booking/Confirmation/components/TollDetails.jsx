@@ -5,7 +5,7 @@ import { openGps } from "@utils/maps";
 import PIcon, { PIcons } from "@components/brick/Icon";
 
 const TollDetails = ({ tolls }) => {
-    console.log("Tolls in TollDetails==>", tolls);
+    // console.log("Tolls in TollDetails==>", tolls);
 
     return (
         <View style={{

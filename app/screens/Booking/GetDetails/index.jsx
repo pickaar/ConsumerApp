@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import { View, StyleSheet, StatusBar, ScrollView, Text, KeyboardAvoidingView, Platform } from "react-native";
+import { View, StyleSheet, StatusBar, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { PHeadings } from "@components/brick/text";
-import { themeColors, DEVICE_WIDTH, SCREENS } from "@utils/constant";
+import { themeColors, DEVICE_WIDTH } from "@utils/constant";
 import { ModalLoader } from "@components/brick/loader";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PickUpAddress from '@screens/Booking/GetDetails/components/PickUpAddress';
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function GetDetails({ navigation }) {
+export default function GetDetails({ navigation, route }) {
     const modalRef = useRef();
     const dispatch = useAppDispatch();
     const pickupAddress = useAppSelector((state) => state.booking.pickupAddress);
@@ -62,19 +62,22 @@ export default function GetDetails({ navigation }) {
     const tollRouteResponse = useAppSelector((state) => state.booking.tollRouteResponse);
 
     useEffect(() => {
-        if (modalRef.current) {
-            modalRef.current?.handleModal(loading);
-        }
         if (tollRouteResponse) {
             dispatch(setBookingParam({ key: "tollRouteResponse", value: false }));
-            setTimeout(() => {
-                navigation.navigate(SCREENS.DASHBOARD, { screen: SCREENS.BOOKING_CONFIRMATION });
-            }, 500);
+        }
+        if (tollRouteResponse === false) {
+            dispatch(setBookingParam({ key: "tollRouteResponse", value: null }));
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Unable to fetch route details. Please try again.',
+                position: 'top',
+                visibilityTime: 2000,
+            });
         }
     }, [loading, tollRouteResponse, dispatch, navigation]);
 
     const stageOneSubmit = useCallback(async () => {
-        //hardcoded just for testing
         if (!validateField(pickupAddress.buildingStreet) || !validateField(dropAddress.buildingStreet)) {
             Toast.show({
                 type: 'error',
@@ -86,10 +89,9 @@ export default function GetDetails({ navigation }) {
             return;
         }
         dispatch(loader({ status: true }));
-        //Remove timer once Toll API is integrated
-        setTimeout(() => {
-            dispatch(fetchTollDetailsThunk());
-        }, 1500);
+        const fromAddress = pickupAddress.address || '';
+        const toAddress = dropAddress.address || '';
+        dispatch(fetchTollDetailsThunk({ fromAddress, toAddress }));
     }, [pickupAddress, dropAddress, dispatch]);
 
     const backPressed = useCallback(() => navigation.goBack(), [navigation]);
@@ -111,8 +113,8 @@ export default function GetDetails({ navigation }) {
                     <PHeadings title="On Boarding" backBtnPressed={backPressed} />
                     <View style={styles.container}>
 
-                        <PickUpAddress />
-                        <DropAddress />
+                        <PickUpAddress navigation={navigation} route={route} />
+                        <DropAddress navigation={navigation} route={route} />
                         <PickupDateAndTime />
                         <TripType />
                         <VehicleType />
