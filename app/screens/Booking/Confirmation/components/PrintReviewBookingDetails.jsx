@@ -23,12 +23,12 @@ const PrintReviewBookingDetails = () => {
         const data = [
             {
                 label: "Pickup Address",
-                value: pickupAddress?.flatHouseNo + pickupAddress?.buildingStreet || "" + pickupAddress?.locality || "" + pickupAddress?.landmark || "" + pickupAddress?.city || "" + pickupAddress?.landmark || "" + pickupAddress?.city || ""
+                value: pickupAddress?.address || "",
 
             },
             {
                 label: "Drop Address",
-                value: dropAddress?.flatHouseNo + dropAddress?.buildingStreet || "" + dropAddress?.locality || "" + dropAddress?.landmark || "" + dropAddress?.city || "" + dropAddress?.landmark || "" + dropAddress?.city || ""
+                value: dropAddress?.address || ""
 
             },
             {
@@ -45,7 +45,7 @@ const PrintReviewBookingDetails = () => {
             },
             {
                 label: "Trip Type",
-                value: tripType === 0 ? "ONE WAY TRIP" : "ROUND TRIP",
+                value: tripType === 1 ? "ONE WAY TRIP" : "ROUND TRIP",
             },
         ];
 

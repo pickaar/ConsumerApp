@@ -18,6 +18,7 @@ const DropAddress = ({ navigation, route }) => {
     useEffect(() => {
         const { updatedAddress, type } = route.params ?? {};
         if (updatedAddress && type === 'drop') {
+            console.log("Updated Address Drop:", updatedAddress);
             dispatch(setAddress({ addressType: type, address: updatedAddress }));
             navigation.setParams({ updatedAddress: undefined, type: undefined });
         }

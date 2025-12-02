@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchTollDetailsThunk } from "@thunk/bookingThunk";
 import { createBookingThunk } from "@thunk/bookingThunk";
+import { API_CALL_STATUS } from "../../utils/constant";
 
 const initialAddress = {
     flatHouseNo: null,
@@ -24,17 +25,17 @@ const initialState = {
     tripTypeDetail: 'ONE WAY',
     returnDate: null,
     comments: '',
-    distance: '',
-    duration: '',
+    distance: {text: '', value: 0},
+    duration: {text: '', value: 0},
     isTollAvailable: false,
-    tollDetail: {},
     isBookingForOthers: false,
     OthersPhoneNo: null,
     OthersName: null,
     isSingleWomen: false,
 
     bookingLevelOneResponse: {},
-    loading: false,
+    tollLoader: null,
+    confirmationLoader: null,
     bookingErrMSG: '',
     tollRouteResponse: null,
     bookingLevelOneStatus: false,
@@ -68,32 +69,38 @@ export const bookingSlice = createSlice({
                 state[key] = value;
             }
         },
-        loader(state, action) {
-            state.loading = action.payload.status;
+        setTollLoader(state, action) {
+            state.tollLoader = action.payload.status;
+        },
+         setConfirmationLoader(state, action) {
+            state.confirmationLoader = action.payload.status;
         },
     }, extraReducers: (builder) => {
         builder
+            .addCase(fetchTollDetailsThunk.pending, (state) => {
+                state.tollLoader = API_CALL_STATUS.PENDING;
+            })
             .addCase(fetchTollDetailsThunk.fulfilled, (state, action) => {
-                console.log('Toll Details Fetched:', action.payload);
-                state.tollDetail = action.payload;
+            
                 state.distance = action.payload?.distance || "NA";
                 state.duration = action.payload?.duration || "NA";
                 state.isTollAvailable = action.payload?.tollAvailable || false;
-                state.tollRouteResponse = true;
-                state.loading = false;
+                // state.tollRouteResponse = true;
+                state.tollLoader = API_CALL_STATUS.SUCCESS;
             })
             .addCase(fetchTollDetailsThunk.rejected, (state, action) => {
-                state.tollDetail = {};
-                state.tollRouteResponse = false;
+                state.tollLoader = API_CALL_STATUS.REJECTED;
+
+            })
+            .addCase(createBookingThunk.pending, (state) => {
+                state.confirmationLoader = API_CALL_STATUS.PENDING;
             })
             .addCase(createBookingThunk.fulfilled, (state, action) => {
-                state.tollRouteResponse = false;
                 state.bookingLevelTwoResponse = action.payload;
-                state.loading = false;
-                state.bookingCompletionStatus = true;
+                state.confirmationLoader = API_CALL_STATUS.SUCCESS;
             })
             .addCase(createBookingThunk.rejected, (state, action) => {
-                state.loading = false;
+                state.confirmationLoader = API_CALL_STATUS.REJECTED;
             });
     }
 })
@@ -108,7 +115,8 @@ export const {
     onFailureNewBooking,
     onSuccessTollRoute,
     onFailureTollRoute,
-    loader
+    setTollLoader,
+    setConfirmationLoader
 } = bookingSlice.actions
 
 export default bookingSlice.reducer

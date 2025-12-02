@@ -46,7 +46,7 @@ export default function Card({ item, from, cardWidth, centeringOffset }) {
     const rowTwoData = [
         { Key: 'Vehicle', Value: item.vehicleType },
         { Key: 'Seater', Value: item.seaters },
-        { Key: 'Distance', Value: item.distance }
+        { Key: 'Distance', Value: item.distance.text }
     ];
 
     return (

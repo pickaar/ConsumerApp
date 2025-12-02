@@ -21,6 +21,15 @@ const PickupDateAndTime = () => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
+    React.useEffect(() => {
+        if (!dateObj) {
+            dispatch(setBookingParam({ key: "pickUpDate", value: format(new Date(), "dd/MM/yyyy") }));
+        }
+        if (!timeObj) {
+            dispatch(setBookingParam({ key: "pickUpTime", value: format(new Date(), "hh:mm:ss") }));
+        }
+    }, []);
+
     const handleDateConfirm = (date) => {
         dispatch(setBookingParam({ key: "pickUpDate", value: format(date, "dd/MM/yyyy") }));
         setDatePickerVisibility(false);

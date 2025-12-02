@@ -2,24 +2,22 @@ import { StyleSheet, View } from "react-native";
 import { Label, Value } from "@components/brick/text";
 import { useAppSelector } from "@store/hook";
 import { DEVICE_WIDTH, themeColors } from "@utils/constant";
-import TollDetails from "@screens/Booking/Confirmation/components/TollDetails";
 
 const PrintReviewExtraDetails = () => {
-    const extraBookingDetails = useAppSelector((state) => state.booking.tollDetail);
-    const { status, hasTolls, duration, distance, route, tolls } = extraBookingDetails || '';
-    const isTollAvailable = (hasTolls) ? 'Yes' : 'No';
+    const {distance,duration,isTollAvailable} = useAppSelector((state) => state.booking);
+    const isTollAvailableText = isTollAvailable ? 'Yes' : 'No';
     const reviewData = [
         {
             label: 'Approximate Distance',
-            value: distance
+            value: distance.text
         },
         {
             label: 'Approximate Duration',
-            value: duration
+            value: duration.text
         },
         {
             label: 'This Route has Tolls?',
-            value: isTollAvailable
+            value: isTollAvailableText
         }
     ]
    

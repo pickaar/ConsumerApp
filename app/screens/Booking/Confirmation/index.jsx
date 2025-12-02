@@ -22,23 +22,23 @@ import PrintReviewBookingDetails from "@screens/Booking/Confirmation/components/
 import PrintReviewExtraDetails from "@screens/Booking/Confirmation/components/PrintReviewExtraDetails";
 import { DEVICE_HEIGHT, DEVICE_WIDTH, themeColors } from "@utils/constant";
 import { fonts } from "@utils/theme";
-import { loader } from "@store/reducer/bookingSlice";
+import { setConfirmationLoader } from "@store/reducer/bookingSlice";
 import { useAppDispatch } from "@store/store";
 import { useAppSelector } from "@store/hook";
 import { createBookingThunk } from "@thunk/bookingThunk";
-import { SCREENS } from "../../../utils/constant";
+import { API_CALL_STATUS, SCREENS } from "../../../utils/constant";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PHeadings } from "../../../components/brick/text";
 
-const MAP_IMAGE = require('@assets/sample_gmap.png');
+// const MAP_IMAGE = require('@assets/sample_gmap.png');
 const HEADER_FLEX = 0.24;
 const CONTENT_PADDING = DEVICE_WIDTH * 0.03;
 
 export default function Confirmation({ navigation }) {
-    const modalRef = useRef(null);
+    const modalRefconf = useRef(null);
     const dispatch = useAppDispatch();
 
-    const loading = useAppSelector((state) => state.booking.loading);
+    const confirmationLoader = useAppSelector((state) => state.booking.confirmationLoader);
     const bookingCompletionStatus = useAppSelector((state) => state.booking.bookingCompletionStatus);
 
     const [termAndCondition, setTermAndCondition] = useState(false);
@@ -47,17 +47,21 @@ export default function Confirmation({ navigation }) {
         navigation.goBack();
     }, [navigation]);
 
-    const stageOneSubmit = useCallback(async () => {
+    const stageTwoSubmit = useCallback(async () => {
         if (!termAndCondition) {
             Toast.show({
                 type: 'error',
-                text1: 'Please accept Terms & Conditions to proceed.',
-                position: 'bottom',
+                text1: 'Please accept Terms & Conditions.',
+                position: 'top',
                 visibilityTime: 2000,
+                topOffset: Platform.OS === 'ios' ? 90 : 60,
+                text1Style: { 
+                fontSize: 14, // Increase the size for the main text (text1)
+                fontWeight: 'bold' 
+            },
             });
             return;
         }
-        await dispatch(loader({ status: true }));
         dispatch(createBookingThunk());
     }, [termAndCondition, dispatch]);
 
@@ -66,10 +70,26 @@ export default function Confirmation({ navigation }) {
     }, []);
 
     useEffect(() => {
-        modalRef.current?.handleModal(loading);
+        const loading = confirmationLoader === API_CALL_STATUS.PENDING ? true : false;
+        if (modalRefconf.current) {
+            modalRefconf.current?.handleModal(loading);
+        }
 
-        if (bookingCompletionStatus) {
-            const timer = setTimeout(() => {
+        if (confirmationLoader === API_CALL_STATUS.REJECTED) {
+            dispatch(setConfirmationLoader({ status: API_CALL_STATUS.IDLE }));
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Unable to process your booking at the moment. Please try calling the customer care directly from Direct screen.',
+                position: 'top',
+                visibilityTime: 3000,
+            });
+
+        }
+        if (confirmationLoader === API_CALL_STATUS.SUCCESS) {
+            console.log("Booking Completed, navigating to Dashboard.");
+           
+            // const timer = setTimeout(() => {
                 Alert.alert(
                     "Info",
                     "Your booking order has been placed successfully. Please get more details in Active screen.",
@@ -77,15 +97,24 @@ export default function Confirmation({ navigation }) {
                         {
                             text: "OK",
                             onPress: () => {
-                                navigation.navigate(SCREENS.DASHBOARD, { screen: SCREENS.BOOKING_LIST });
+                                console.log("Navigating to Dashboard after booking completion.");
+                                navigation.navigate(SCREENS.HOME, {
+                                    screen: SCREENS.ACTIVE_BOOKING,
+                                    params: {
+                                        screen: SCREENS.MAIN,
+
+                                    }
+                                });
+                                // navigation.navigate(SCREENS.DASHBOARD, { screen: SCREENS.BOOKING_LIST });
                             }
                         }
                     ]
                 );
-            }, 500);
-            return () => clearTimeout(timer);
+            // }, 500);
+             dispatch(setConfirmationLoader({ status: API_CALL_STATUS.IDLE }));
+            // return () => clearTimeout(timer);
         }
-    }, [loading, bookingCompletionStatus, navigation]);
+    }, [confirmationLoader, navigation]);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.white }}>
@@ -113,7 +142,11 @@ export default function Confirmation({ navigation }) {
 
                         <PrintReviewBookingDetails />
                         <PrintReviewExtraDetails />
-
+                        <View style={{ paddingLeft: 40, paddingRight: 20, marginTop: 5, marginBottom: 10 }}>
+                            <Text style={{ fontSize: 12, color: 'gray', paddingBottom: 5 }}>* Parking should be arranged by the customer.</Text>
+                            <Text style={{ fontSize: 12, color: 'gray', paddingBottom: 5 }}>* Toll charges are excluded.</Text>
+                            <Text style={{ fontSize: 12, color: 'gray', paddingBottom: 5 }}>* Driver night stay is charged separately.</Text>
+                        </View>
                         <CheckBox
                             style={styles.checkbox}
                             onClick={handleCheckboxClick}
@@ -133,15 +166,15 @@ export default function Confirmation({ navigation }) {
                                         container: styles.confirmButton
                                     }
                                 }}
-                                onPress={stageOneSubmit}
+                                onPress={stageTwoSubmit}
                             />
                         </View>
                     </View>
 
-                    <ModalLoader ref={modalRef} msg={'Booking is in process. Please wait...'} />
-                    <Toast position={'top'} />
+                    <ModalLoader ref={modalRefconf} msg={'Booking is in process. Please wait...'} />
                 </View>
             </ScrollView>
+            <Toast position={'top'} />
         </SafeAreaView>
     );
 }

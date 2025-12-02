@@ -15,9 +15,10 @@ import BookingForOthers from '@screens/Booking/GetDetails/components/BookingForO
 import { PBtn } from '@components/brick/button';
 import Toast from 'react-native-toast-message';
 import { fetchTollDetailsThunk } from '@thunk/bookingThunk';
-import { setBookingParam, loader } from '@store/reducer/bookingSlice';
+import { setBookingParam, setTollLoader } from '@store/reducer/bookingSlice';
 import { useAppDispatch } from '@store/store';
 import { useAppSelector } from '@store/hook';
+import { API_CALL_STATUS, SCREENS } from '../../../utils/constant';
 
 const validateField = (param) => param != null && Object.keys(param).length > 0;
 
@@ -58,15 +59,16 @@ export default function GetDetails({ navigation, route }) {
     const dispatch = useAppDispatch();
     const pickupAddress = useAppSelector((state) => state.booking.pickupAddress);
     const dropAddress = useAppSelector((state) => state.booking.dropAddress);
-    const loading = useAppSelector((state) => state.booking.loading);
-    const tollRouteResponse = useAppSelector((state) => state.booking.tollRouteResponse);
+    const tollLoader = useAppSelector((state) => state.booking.tollLoader);
+    // const tollRouteResponse = useAppSelector((state) => state.booking.tollRouteResponse);
 
     useEffect(() => {
-        if (tollRouteResponse) {
-            dispatch(setBookingParam({ key: "tollRouteResponse", value: false }));
+        console.log("Loading State Changed:", tollLoader,);
+        const showModal = tollLoader === API_CALL_STATUS.PENDING ? true : false;
+        if (modalRef.current) {
+            modalRef.current?.handleModal(showModal);
         }
-        if (tollRouteResponse === false) {
-            dispatch(setBookingParam({ key: "tollRouteResponse", value: null }));
+        if (tollLoader === API_CALL_STATUS.REJECTED) {
             Toast.show({
                 type: 'error',
                 text1: 'Error',
@@ -74,11 +76,27 @@ export default function GetDetails({ navigation, route }) {
                 position: 'top',
                 visibilityTime: 2000,
             });
+            dispatch(setTollLoader({ status: API_CALL_STATUS.IDLE }));
         }
-    }, [loading, tollRouteResponse, dispatch, navigation]);
+
+        if (tollLoader === API_CALL_STATUS.SUCCESS) {
+            dispatch(setTollLoader({ status: API_CALL_STATUS.IDLE }));
+            setTimeout(() => {
+                navigation.navigate(SCREENS.HOME, {
+                    screen: SCREENS.DASHBOARD,
+                    params: {
+                        screen: SCREENS.BOOKING_CONFIRMATION,
+
+                    }
+                });
+            }, 500);
+        }
+
+    }, [tollLoader, dispatch, navigation]);
 
     const stageOneSubmit = useCallback(async () => {
-        if (!validateField(pickupAddress.buildingStreet) || !validateField(dropAddress.buildingStreet)) {
+
+        if (!validateField(pickupAddress.address) || !validateField(dropAddress.address)) {
             Toast.show({
                 type: 'error',
                 text1: 'Error',
@@ -88,9 +106,8 @@ export default function GetDetails({ navigation, route }) {
             });
             return;
         }
-        dispatch(loader({ status: true }));
-        const fromAddress = pickupAddress.address || '';
-        const toAddress = dropAddress.address || '';
+        const fromAddress = pickupAddress.coordinates || [];
+        const toAddress = dropAddress.coordinates || [];
         dispatch(fetchTollDetailsThunk({ fromAddress, toAddress }));
     }, [pickupAddress, dropAddress, dispatch]);
 

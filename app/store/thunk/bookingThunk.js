@@ -9,7 +9,7 @@ const selectBookingData = (state) => {
     pickupAddress, dropAddress, pickUpDate, pickUpTime,
     vehicleType, seaters, tripType, tripTypeDetail,
     returnDate, comments, distance, duration,
-    isTollAvailable, tollDetail, isBookingForOthers,
+    isTollAvailable, isBookingForOthers,
     OthersPhoneNo, OthersName, isSingleWomen,
   } = state.booking;
   const { phoneNo, userName, emailId } = state.user.userData;
@@ -19,7 +19,7 @@ const selectBookingData = (state) => {
     pickupAddress, dropAddress, pickUpDate, pickUpTime,
     vehicleType, seaters, tripType, tripTypeDetail,
     returnDate, comments, distance, duration,
-    isTollAvailable, tollDetail, isBookingForOthers,
+    isTollAvailable, isBookingForOthers,
     OthersPhoneNo, OthersName, isSingleWomen,
     user: { phoneNo, userName, emailId }
   }
@@ -41,7 +41,11 @@ export const fetchTollDetailsThunk = createAsyncThunk(
         return {"distance": "Not Available", "duration": "Not Available", "tollAvailable": false}
       }
 
-      return response.data.data;
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(response.data.data);
+        }, 1000);
+      });
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching Toll Details');
     }
@@ -58,8 +62,11 @@ export const createBookingThunk = createAsyncThunk(
       const state = thunkAPI.getState();
       const bookingDetails = selectBookingData(state);
       const response = await axios.post(`${API_BOOKING_URL}/api/booking/newBooking`, { ...bookingDetails });
-      // const response = await require(`../../../assets/mockAPI/bookingConfirmationAPI.json`);
-      return response;
+      if (response.status !== 200) {
+        return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching Booking Confirmation');
+      } 
+      console.log("Booking Response:", response.data.data);
+      return response.data.data;
 
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching Booking Confirmation');

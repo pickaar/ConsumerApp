@@ -89,8 +89,10 @@ export const GetAddressDetails = ({ route, navigation }) => {
             locality: extractAddressComponent(components, 'sublocality_level_1') || extractAddressComponent(components, 'locality'),
 
             address: data.description,
-            latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng,
+            coordinates: [
+                details.geometry.location.lat,
+                details.geometry.location.lng
+            ],
 
             flatHouseNo: address.flatHouseNo,
             landmark: address.landmark,
@@ -116,6 +118,7 @@ export const GetAddressDetails = ({ route, navigation }) => {
     const handleSave = () => {
         if (validate()) {
             if (redirectTo === 'GET_DETAILS_SCREEN') {
+                console.log("Navigating back to Get Details Screen with address:", address);
                 navigation.navigate(SCREENS.HOME, {
                     screen: SCREENS.DASHBOARD,
                     params: {

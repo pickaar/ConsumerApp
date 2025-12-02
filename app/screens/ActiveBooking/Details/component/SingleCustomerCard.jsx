@@ -51,7 +51,7 @@ const SingleCustomerCard = React.memo(({ item, from }) => {
     const vehicleInfo = [
         { key: 'Vehicle', value: vehicleType },
         { key: 'Seater', value: seaters },
-        { key: 'Distance', value: distance }
+        { key: 'Distance', value: distance.text }
     ];
 
     return (
