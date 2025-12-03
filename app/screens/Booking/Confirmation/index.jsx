@@ -39,7 +39,6 @@ export default function Confirmation({ navigation }) {
     const dispatch = useAppDispatch();
 
     const confirmationLoader = useAppSelector((state) => state.booking.confirmationLoader);
-    const bookingCompletionStatus = useAppSelector((state) => state.booking.bookingCompletionStatus);
 
     const [termAndCondition, setTermAndCondition] = useState(false);
 

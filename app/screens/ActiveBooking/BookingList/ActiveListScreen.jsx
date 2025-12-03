@@ -37,7 +37,7 @@ export default function ActiveListScreen({ navigation }) {
                     </View>
 
                     <View style={[styles.bottomContainer, { height: contentHeight * 0.75 }]}>
-                        {isLoading ? <LoadingIndicator /> : <ActiveQuotes navigation={navigation} />}
+                        {/* {isLoading ? <LoadingIndicator /> : <ActiveQuotes navigation={navigation} />} */}
                     </View>
                 </ScrollView>
             </SafeAreaView>

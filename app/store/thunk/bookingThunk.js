@@ -12,7 +12,7 @@ const selectBookingData = (state) => {
     isTollAvailable, isBookingForOthers,
     OthersPhoneNo, OthersName, isSingleWomen,
   } = state.booking;
-  const { phoneNo, userName, emailId } = state.user.userData;
+  const userID = state.user.userData.userID||'';
 
   // Return an object containing all the required booking fields
   return {
@@ -21,7 +21,7 @@ const selectBookingData = (state) => {
     returnDate, comments, distance, duration,
     isTollAvailable, isBookingForOthers,
     OthersPhoneNo, OthersName, isSingleWomen,
-    user: { phoneNo, userName, emailId }
+    userID
   }
 };
 
@@ -65,7 +65,6 @@ export const createBookingThunk = createAsyncThunk(
       if (response.status !== 200) {
         return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching Booking Confirmation');
       } 
-      console.log("Booking Response:", response.data.data);
       return response.data.data;
 
     } catch (error) {

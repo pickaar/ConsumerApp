@@ -32,23 +32,10 @@ const initialState = {
     OthersPhoneNo: null,
     OthersName: null,
     isSingleWomen: false,
-
-    bookingLevelOneResponse: {},
+    termAndCondition: false,
+    
     tollLoader: null,
     confirmationLoader: null,
-    bookingErrMSG: '',
-    tollRouteResponse: null,
-    bookingLevelOneStatus: false,
-    bookingLevelOneMsg: '',
-    bookingLevelTwoResponse: {},
-    bookingCompletionStatus: false,
-    bookingLevelTwoMsg: '',
-    termAndCondition: false,
-    bookingList: [
-
-    ],
-    bookingQuotesList: [
-    ],
 }
 
 export const bookingSlice = createSlice({
@@ -96,7 +83,7 @@ export const bookingSlice = createSlice({
                 state.confirmationLoader = API_CALL_STATUS.PENDING;
             })
             .addCase(createBookingThunk.fulfilled, (state, action) => {
-                state.bookingLevelTwoResponse = action.payload;
+                // state.bookingLevelTwoResponse = action.payload;
                 state.confirmationLoader = API_CALL_STATUS.SUCCESS;
             })
             .addCase(createBookingThunk.rejected, (state, action) => {

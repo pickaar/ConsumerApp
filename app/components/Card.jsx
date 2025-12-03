@@ -1,64 +1,70 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from "react-native";
-import PIcon, { PIcons } from "@components/brick/Icon";
+import PIcon from "@components/brick/Icon";
 import { themeColors } from "@utils/constant";
 import { fonts } from "@utils/theme";
+import { format } from 'date-fns';
 
-const truncateAddress = (address, maxLength = 30) => {
+const ADDRESS_TRUNCATE_LENGTH = 40;
+const ADDRESS_TRUNCATE_LENGTH_RETURN = 90;
+
+const truncateAddress = (address, maxLength) => {
     if (typeof address === 'string' && address.length > maxLength) {
         return `${address.substring(0, maxLength - 3)}...`;
     }
     return address;
 };
 
-const AddressRow = ({ address, detail, isLast }) => (
+const AddressRow = React.memo(({ address, detail, isLast }) => (
     <View style={[styles.addressRow, isLast && styles.addressRowSpacing]}>
-        <PIcon name="circle" type="feather" size={13} style={styles.icon} />
+        <PIcon name="check-circle" type="feather" size={13} style={styles.icon} />
         <View>
             <Text style={styles.labelOne}>{address}</Text>
             {detail !== false && <Text style={styles.labelTwo}>{detail}</Text>}
         </View>
     </View>
-);
+));
 
-const DetailCell = ({ item, isLast }) => (
+const DetailCell = React.memo(({ item, isLast }) => (
     <View style={[styles.itemRowTwo, !isLast && styles.itemRowTwoExtra]}>
         <View style={styles.detailCellContent}>
             <Text style={styles.labelOne}>{item.Key}</Text>
             <Text style={styles.subLabel}>{item.Value}</Text>
         </View>
     </View>
-);
+));
 
-export default function Card({ item, from, cardWidth, centeringOffset }) {
-
-    const rowOneData = [
+const Card = ({ item, cardWidth, centeringOffset }) => {
+    const rowOneData = useMemo(() => [
         {
-            address: truncateAddress(item.pickupAddress),
-            detail: (item.pickUpDate && item.pickUpTime) ? `${item.pickUpDate} ${item.pickUpTime}` : '',
+            address: truncateAddress(item.pickupAddress.address, ADDRESS_TRUNCATE_LENGTH),
+            detail: format(new Date(item.pickUpDate), 'dd/MM/yyyy hh:mm a'),
         },
         {
-            address: truncateAddress(item.dropAddress),
-            detail: item.tripTypeDetail || false,
+            address: truncateAddress(
+                item.dropAddress.address,
+                item.returnDate ? ADDRESS_TRUNCATE_LENGTH : ADDRESS_TRUNCATE_LENGTH_RETURN
+            ),
+            detail: item.returnDate ? format(new Date(item.returnDate), 'dd/MM/yyyy hh:mm a') : false,
         }
-    ];
+    ], [item]);
 
-    const rowTwoData = [
+    const rowTwoData = useMemo(() => [
         { Key: 'Vehicle', Value: item.vehicleType },
         { Key: 'Seater', Value: item.seaters },
         { Key: 'Distance', Value: item.distance.text }
-    ];
+    ], [item]);
+
+    const containerStyle = useMemo(() => [
+        styles.container,
+        {
+            width: cardWidth,
+            marginLeft: centeringOffset
+        }
+    ], [cardWidth, centeringOffset]);
 
     return (
-        <View
-            style={[
-                styles.container,
-                {
-                    width: cardWidth,
-                    marginLeft: centeringOffset
-                }
-            ]}
-        >
+        <View style={containerStyle}>
             <View style={styles.BookingitemBlockA}>
                 {rowOneData.map((data, index) => (
                     <AddressRow
@@ -80,14 +86,16 @@ export default function Card({ item, from, cardWidth, centeringOffset }) {
                 ))}
             </View>
         </View >
-    )
-}
+    );
+};
+
+export default React.memo(Card);
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         backgroundColor: themeColors.primary,
-        borderRadius: 15, 
+        borderRadius: 15,
         height: 150,
         shadowColor: "#000",
         shadowOffset: {
@@ -113,7 +121,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     icon: {
-        color: themeColors.white
+        color: themeColors.yellow
     },
     labelOne: {
         color: themeColors.white,
@@ -134,7 +142,7 @@ const styles = StyleSheet.create({
     },
     itemRowTwo: {
         padding: 3,
-        width: '33%',
+        width: '33.33%', // Use percentage for equal distribution
     },
     detailCellContent: {
         flexDirection: 'column',
