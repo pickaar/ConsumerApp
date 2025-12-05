@@ -9,6 +9,8 @@ import { getFeedbackList, getVendorDetails } from '@thunk/feebackThunk';
 import { useAppSelector } from '@store/hook';
 import { TitleWithBackBtn } from '../../../components/brick/text';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { API_CALL_STATUS } from '../../../utils/constant';
+import { fetchFeedback } from '../../../store/thunk/feebackThunk';
 
 const TextSkeleton = ({ width, height = 9, style, label }) => {
     const opacityAnim = useRef(new Animated.Value(0)).current;
@@ -87,10 +89,10 @@ const UserInfoBlock = memo(({ userInfo, loader }) => (
                 <Image style={styles.driverAvatar} source={require('../../../../assets/driver_avatar.png')} />
             </View>
             <View style={styles.driverContentContainer}>
-                {loader ? <TextSkeleton width="80%" height={16} style={{ marginBottom: 0 }} /> : <Text style={styles.driverName}>{userInfo.name}</Text>}
+                {loader=== API_CALL_STATUS.PENDING ? <TextSkeleton width="80%" height={16} style={{ marginBottom: 0 }} /> : <Text style={styles.driverName}>{userInfo.name}</Text>}
                 {
 
-                    loader ?
+                    loader === API_CALL_STATUS.PENDING ?
                         Array(4).fill().map((_, index) => (
                             <View key={index} style={styles.userInfoRow}>
                                 <TextSkeleton width="40%" height={13} style={{ marginBottom: 0 }} label={USER_INFO_LABELS[index].label} />
@@ -175,10 +177,10 @@ const FeedbackItem = memo(({ item }) => (
 const FeedbackComponent = memo(({ feedbackList, loader }) => (
     <>
         <View style={styles.feedbackHeader}>
-            <Text style={styles.feedbackTitle}>Feedbacks {loader && <Text style={{ color: 'black' }}>Loading...</Text>}</Text>
+            <Text style={styles.feedbackTitle}>Feedbacks {loader===API_CALL_STATUS.PENDING && <Text style={{ color: 'black' }}>Loading...</Text>}</Text>
         </View>
 
-        {!loader && (
+        {loader === API_CALL_STATUS.SUCCESS && (
             feedbackList?.length === 0 ? (
                 <Text style={styles.noFeedbackText}>No feedback available</Text>
             ) : (
@@ -187,17 +189,15 @@ const FeedbackComponent = memo(({ feedbackList, loader }) => (
     </>
 ));
 
-export default function Feedback() {
+export default function Feedback({ navigation, route }) {
     const dispatch = useAppDispatch();
-    const feedbackList = useAppSelector((state) => state.feedback.feedbackList);
-    const { userInfo, ratings, scoredBadgesWithTotal } = useAppSelector((state) => state.feedback.user);
+    const vendorId = route.params?.vendorId;
+    const { userInfo, ratings, scoredBadgesWithTotal, feedbackList } = useAppSelector((state) => state.feedback);
     const feedbackLoader = useAppSelector((state) => state.feedback.feedbackLoader);
-    const vendorDetailsLoader = useAppSelector((state) => state.feedback.vendorDetailsLoader);
-
+    // console.log("Feedback Screen - vendorId:", vendorId);
     useEffect(() => {
-        dispatch(setQuoteParam({ key: 'detailScreenRedirectTo', value: '' }));
-        dispatch(getFeedbackList());
-        dispatch(getVendorDetails());
+        // dispatch(setQuoteParam({ key: 'detailScreenRedirectTo', value: '' }));
+        dispatch(fetchFeedback({ vendorId}));
     }, [dispatch]);
 
     return (
@@ -208,7 +208,7 @@ export default function Feedback() {
                     <View style={styles.container}>
                         <TitleWithBackBtn name="Feedback"  />
 
-                        <UserInfoBlock userInfo={userInfo} loader={vendorDetailsLoader} />
+                        <UserInfoBlock userInfo={userInfo} loader={feedbackLoader} />
                         <Hr />
                         <RatingAndReviewBlock ratings={ratings} />
                         <ScoredBadgesBlock scoredBadgesWithTotal={scoredBadgesWithTotal} />

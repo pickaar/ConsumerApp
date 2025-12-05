@@ -18,7 +18,7 @@ import SingleCustomerCard from '@screens/ActiveBooking/Details/component/SingleC
 
 import { themeColors, DEVICE_WIDTH } from "@utils/constant";
 import { fonts, pStyles } from '@utils/theme';
-import { setQuoteParam } from '@reducer/quoteSlice'; 
+import { setQuoteParam } from '@reducer/quoteSlice';
 import { useAppDispatch } from '@store/store';
 import { useAppSelector } from '@store/hook';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -78,6 +78,7 @@ const MultiLine = React.memo(({ item }) => (
 ));
 
 const MultiLineWithInfo = React.memo(({ item }) => {
+    console.log("MultiLineWithInfo item:", item);
     const dispatch = useAppDispatch();
 
     const openModal = useCallback((modalType, modalContent) => {
@@ -99,7 +100,7 @@ const MultiLineWithInfo = React.memo(({ item }) => {
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <Text style={styles.infoSubText}>{item.info}</Text>
+                    {/* <Text style={styles.infoSubText}>{item.info}</Text> */}
                 </View>
             </View>
         </View>
@@ -108,15 +109,17 @@ const MultiLineWithInfo = React.memo(({ item }) => {
 
 const ListContainer = ({ list }) => {
     return list.map((item, index) => {
-        switch (item.type) {
-            case 'singleLine':
-                return <SingleLine key={index} item={item} index={index} />;
-            case 'multiLine':
-                return <MultiLine key={index} item={item} />;
-            case 'multiLineWithInfo':
-                return <MultiLineWithInfo key={index} item={item} />;
-            default:
-                return null;
+        if (item) {
+            switch (item.type) {
+                case 'singleLine':
+                    return <SingleLine key={index} item={item} index={index} />;
+                case 'multiLine':
+                    return <MultiLine key={index} item={item} />;
+                case 'multiLineWithInfo':
+                    return <MultiLineWithInfo key={index} item={item} />;
+                default:
+                    return null;
+            }
         }
     });
 };
@@ -185,10 +188,10 @@ export default function ActiveDetailsScreen({ route, navigation }) {
     const selectedQuote = useAppSelector((state) =>
         state.quote.quotesList.find(quote => quote.quoteId === quoteId)
     );
-
     useEffect(() => {
         if (detailScreenRedirectTo === 'feedback') {
-            navigation.navigate(SCREENS.ACTIVE_BOOKING, { screen: SCREENS.FEEDBACK });
+            navigation.navigate(SCREENS.ACTIVE_BOOKING, { screen: SCREENS.FEEDBACK ,
+                params: { vendorId: selectedQuote?.vendorId } });
         }
     }, [detailScreenRedirectTo, navigation]);
 

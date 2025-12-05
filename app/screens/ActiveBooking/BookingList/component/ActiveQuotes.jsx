@@ -79,9 +79,9 @@ const ActiveQuotes = ({ navigation }) => {
 
     const quotesList = useAppSelector((state) => state.quote?.quotesList);
     const quotesCount = quotesList.length || 0;
-    const recommendedQuotes = quotesList?.filter(quote => quote.bookingPrivilege === 'Recommended');
-    const premium = quotesList?.filter(quoteObj => quoteObj.bookingPrivilege == 'Premium') || [];
-    const Economic = quotesList?.filter(quoteObj => quoteObj.bookingPrivilege == 'Economy') || [];
+    const recommendedQuotes = quotesList?.filter(quote => quote.bookingPrivilege === 'RECOMMENDED');
+    const premium = quotesList?.filter(quoteObj => quoteObj.bookingPrivilege == 'PREMIUM') || [];
+    const Economic = quotesList?.filter(quoteObj => quoteObj.bookingPrivilege == 'ECONOMY') || [];
 
     return (
         <ScrollView stye={{ flex: 2 }} contentContainerStyle={{ flexGrow: 1 }}>

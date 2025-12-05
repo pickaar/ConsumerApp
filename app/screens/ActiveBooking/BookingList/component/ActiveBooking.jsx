@@ -8,9 +8,8 @@ import { fonts } from '@utils/theme';
 import { setQuoteParam } from '@store/reducer/quoteSlice';
 import { useAppDispatch } from '@store/store';
 import { useAppSelector } from '@store/hook';
-import { getBookingListThunk } from "@thunk/quoteThunk";
+import { getBookingListThunk, fetchQuotesByBookingId } from "@thunk/quoteThunk";
 import Card from '@components/Card';
-import { fetchQuotesByBookingId } from '@thunk/quoteThunk';
 import { API_CALL_STATUS } from '../../../../utils/constant';
 
 const windowWidth = Dimensions.get('window').width;
@@ -85,10 +84,9 @@ export default memo(function ActiveBooking() {
      */
     useEffect(() => {
         if (bookingList && bookingList.length > 0) {
-            const firstBookingId = bookingList[0]?.bookingId;
+            const firstBookingId = bookingList[0]?._id;
             if (firstBookingId) {
-                // dispatch(setQuoteParam({ bookingId: firstBookingId }));
-                // dispatch(fetchQuotesByBookingId(firstBookingId));
+                dispatch(fetchQuotesByBookingId( { bookingId: firstBookingId } ));
             }
         }
     }, [bookingList, dispatch]);

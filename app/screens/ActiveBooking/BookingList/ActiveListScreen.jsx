@@ -6,6 +6,7 @@ import { themeColors, DEVICE_WIDTH } from '@utils/constant';
 import { fonts } from '@utils/theme';
 import ActiveBooking from "@screens/ActiveBooking/BookingList/component/ActiveBooking";
 import ActiveQuotes from "@screens/ActiveBooking/BookingList/component/ActiveQuotes";
+import { API_CALL_STATUS } from "../../../utils/constant";
 
 const LoadingIndicator = () => (
     <View style={styles.loaderContainer}>
@@ -20,9 +21,24 @@ const LoadingIndicator = () => (
 );
 
 export default function ActiveListScreen({ navigation }) {
-    const isLoading = useAppSelector((state) => state.quote?.quoteItemLoader);
+    const quoteItemLoader = useAppSelector((state) => state.quote?.quoteItemLoader);
+    const quoteList = useAppSelector((state) => state.quote?.quotesList.length || 0);
     const { height: screenHeight } = useSafeAreaFrame();
     const contentHeight = screenHeight - 50;
+
+    const renderQuoteContent = () => {
+        const isLoading = quoteItemLoader === API_CALL_STATUS.PENDING || quoteItemLoader === API_CALL_STATUS.IDLE;
+
+        if (isLoading) {
+            return <LoadingIndicator />;
+        }
+
+        if (quoteList === 0) {
+            return <Text style={{ alignSelf: 'center', marginTop: 20, fontFamily: fonts.RubikRegular }}>No Quotes Available</Text>;
+        }
+
+        return <ActiveQuotes navigation={navigation} />;
+    };
 
     return (
         <>
@@ -36,8 +52,8 @@ export default function ActiveListScreen({ navigation }) {
                         </View>
                     </View>
 
-                    <View style={[styles.bottomContainer, { height: contentHeight * 0.75 }]}>
-                        {/* {isLoading ? <LoadingIndicator /> : <ActiveQuotes navigation={navigation} />} */}
+                    <View style={[styles.bottomContainer, { minHeight: contentHeight * 0.75 }]}>
+                        {renderQuoteContent()}
                     </View>
                 </ScrollView>
             </SafeAreaView>

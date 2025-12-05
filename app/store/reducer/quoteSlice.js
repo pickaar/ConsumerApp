@@ -13,7 +13,7 @@ const initialState = {
 
     
     bookingLoader: null,
-    quoteItemLoader: true,
+    quoteItemLoader: API_CALL_STATUS.IDLE,
 }
 
 export const quoteSlice = createSlice({
@@ -37,26 +37,24 @@ export const quoteSlice = createSlice({
             })
             .addCase(getBookingListThunk.fulfilled, (state, action) => {
                 state.bookingList = action.payload;
-                console.log("Booking List in Reducer:", state.bookingList);
                 state.bookingLoader = API_CALL_STATUS.FULFILLED;
             })
             .addCase(getBookingListThunk.pending, (state) => {
                 state.bookingLoader = API_CALL_STATUS.PENDING;
             })
             .addCase(getBookingListThunk.rejected, (state, action) => {
-                console.log("Error in reducer:", action.payload);
                 state.bookingLoader = API_CALL_STATUS.REJECTED;
             })
             
             .addCase(fetchQuotesByBookingId.fulfilled, (state, action) => {
-                state.quotesList = action.payload.quotesList || [];
-                state.quoteItemLoader = false;
+                state.quotesList = action.payload || [];
+                state.quoteItemLoader = API_CALL_STATUS.FULFILLED;
             })
             .addCase(fetchQuotesByBookingId.pending, (state) => {
-                state.quoteItemLoader = true;
+                state.quoteItemLoader = API_CALL_STATUS.PENDING;
             })
             .addCase(fetchQuotesByBookingId.rejected, (state, action) => {
-                state.quoteItemLoader = false;
+                state.quoteItemLoader = API_CALL_STATUS.REJECTED;
             })
     }
 })

@@ -154,7 +154,6 @@ export const userSlice = createSlice({
         const { _id, phoneNo, status, userName, emailId, profileImage, emergencyContacts, createdOn,
           locations
         } = action.payload;
-        console.log('fetchUserThunk action.payload', action.payload);
         state.userData.userID = _id;
         state.userData.phoneNo = phoneNo;
         state.userData.status = status;

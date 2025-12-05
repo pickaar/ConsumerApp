@@ -12,18 +12,17 @@ const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) {
         return text;
     }
-    return `${text.substring(0, maxLength - 3)}...`;
+    return `${text?.substring(0, maxLength - 3)}...`;
 };
 
 const SingleCustomerCard = React.memo(({ item, from }) => {
 
     const bookingList = useAppSelector((state) => state.quote.bookingList);
-    const selectedIndex = useAppSelector((state) => state.quote.selectedIndex);
-
+    const selectedIndex = useAppSelector((state) => state.quote.selectedIndex || 0);
     const data = from === 'DETAIL' ? bookingList?.[selectedIndex] : item;
-
+    
     if (!data) {
-        return null; 
+        return null;
     }
 
     const {
@@ -39,11 +38,11 @@ const SingleCustomerCard = React.memo(({ item, from }) => {
 
     const locationInfo = [
         {
-            address: truncateText(pickupAddress, ADDRESS_MAX_LENGTH),
+            address: truncateText(pickupAddress.address, ADDRESS_MAX_LENGTH),
             details: `${pickUpDate} ${pickUpTime}`,
         },
         {
-            address: truncateText(dropAddress, ADDRESS_MAX_LENGTH),
+            address: truncateText(dropAddress.address, ADDRESS_MAX_LENGTH),
             details: tripTypeDetail,
         }
     ];
@@ -51,7 +50,7 @@ const SingleCustomerCard = React.memo(({ item, from }) => {
     const vehicleInfo = [
         { key: 'Vehicle', value: vehicleType },
         { key: 'Seater', value: seaters },
-        { key: 'Distance', value: distance.text }
+        { key: 'Distance', value: distance?.text }
     ];
 
     return (

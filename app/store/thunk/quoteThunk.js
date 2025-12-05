@@ -7,12 +7,9 @@ export const getBookingListThunk = createAsyncThunk(
   'quote/getBookingListThunk',
   async ({ userID }, thunkAPI) => {
     try {
-      console.log("USER ID IN THUNK:", userID);
       const response = await axios.get(`${API_BOOKING_URL}/api/booking/getBookingsByUserID`,
         { params: { userID } }
       );
-      console.log("Response in Thunk:", response);
-
       return response.data.data;
 
     } catch (error) {
@@ -26,15 +23,14 @@ export const getBookingListThunk = createAsyncThunk(
 
 export const fetchQuotesByBookingId = createAsyncThunk(
   'quote/fetchQuotesByBookingId',
-  async (bookingId, thunkAPI) => {
+  async ( {bookingId} , thunkAPI) => {
     try {
-      // const state = thunkAPI.getState();
-      // const phoneNo = state.quotes?.userDetails?.phoneNo;
-      // const response = await axios.get(`/users/${phoneNumber}`);
-      const response = await require(`../../../assets/mockAPI/quotesAPI.json`);
-      return response;
+      const response = await axios.get(`${API_BOOKING_URL}/api/quote/getQuotes/${bookingId}`);
+      console.log("Fetched quotes response:", response.data.data);
+      return response.data.data;
 
     } catch (error) {
+      console.log("Error fetching quotes:", error);
       return thunkAPI.rejectWithValue(error.response?.data || 'Error fetching Booking List');
     }
   }

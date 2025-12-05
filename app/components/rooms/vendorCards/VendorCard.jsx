@@ -5,9 +5,8 @@ import StarRating from 'react-native-star-rating-widget';
 import * as Animatable from 'react-native-animatable';
 import PIcon, { PIcons } from '../../brick/Icon';
 import { themeColors } from '@utils/constant';
-import { pStyles,fonts } from '@utils/theme';
+import { pStyles, fonts } from '@utils/theme';
 import { SCREENS } from '../../../utils/constant';
-
 
 const Bargainable = memo(() => (
     <View style={styles.bargainContainer}>
@@ -22,8 +21,8 @@ const Bargainable = memo(() => (
     </View>
 ));
 
-const TagWrapper = memo(({ width, name }) => (
-    <View style={[styles.tagContainer, { width: width }]}>
+const TagWrapper = memo(({ width, name, color }) => (
+    <View style={[styles.tagContainer, { width: width, backgroundColor: color }]}>
         <Text style={styles.tagTxt}>{name}</Text>
     </View>
 ));
@@ -47,9 +46,9 @@ const FirstColBlock = memo(({ quotedAmt, save, isNegotiable }) => (
     </View>
 ));
 
-const TopContainer = memo(({ item }) => {
+const TopContainer = memo(({ item, color }) => {
     const { vendorName, vendorStarRating, vendorExp, bookingPrivilege } = item;
-    const isTagged = ['Recommended', 'Economy', 'Regular'].includes(bookingPrivilege);
+    const isTagged = ['RECOMMENDED', 'ECONOMY'].includes(bookingPrivilege);
 
     return (
         <>
@@ -58,13 +57,13 @@ const TopContainer = memo(({ item }) => {
                     <Text style={styles.nameLabelTxt}>{vendorName}</Text>
                 </View>
                 <View style={styles.c2StarWrapper}>
-                     <StarRating
+                    <StarRating
                         rating={Math.floor(vendorStarRating)}
                         color={pStyles.yellow}
                         emptyColor={pStyles.gray}
                         starSize={17}
-                        starStyle={styles.starStyle} 
-                    /> 
+                        starStyle={styles.starStyle}
+                    />
                     <View style={styles.startRatingContainer}>
                         <Text style={styles.startRatingLabel}>{vendorStarRating} </Text>
                     </View>
@@ -76,7 +75,7 @@ const TopContainer = memo(({ item }) => {
             </View>
             {isTagged && (
                 <View style={styles.taggedWrapper}>
-                    <TagWrapper width={100} name={bookingPrivilege} />
+                    <TagWrapper width={100} color={color} name={bookingPrivilege} />
                 </View>
             )}
         </>
@@ -96,16 +95,16 @@ const FooterItems = memo(({ item, index }) => {
     );
 });
 
-const FooterContainer = memo(() => {
+const FooterContainer = memo(({ item }) => {
     const footerItems = [{
-        label: 'CAR',
-        value: 'SEDAN'
+        label: 'VEHICLE',
+        value: item.vendorCarType
     }, {
         label: 'LUGGAGE',
-        value: '2323'
+        value: item.vendorLuggageCapacity
     }, {
-        label: 'HEADER',
-        value: '323'
+        label: 'PRICE',
+        value: item.quotedAproxAmt
     }];
 
     return (
@@ -122,11 +121,10 @@ const FooterContainer = memo(() => {
 });
 
 
-const SecondColBlock = memo(({ item }) => {
+const SecondColBlock = memo(({ item, color }) => {
     const navigation = useNavigation();
 
     const gotoBookingDetail = (Id) => {
-        console.log("Selected Id:"+Id);
         navigation.navigate(SCREENS.ACTIVE_BOOKING, { screen: SCREENS.BOOKING_DETAIL, params: { quoteId: Id } });
     };
 
@@ -134,10 +132,10 @@ const SecondColBlock = memo(({ item }) => {
         <TouchableOpacity activeOpacity={0.7} onPress={() => gotoBookingDetail(item.quoteId)} style={styles.secondColMain}>
             <View style={styles.c2Container}>
                 <View style={styles.c2BlockA}>
-                    <TopContainer item={item} />
+                    <TopContainer item={item} color={color} />
                 </View>
                 <View style={styles.c2BlockB}>
-                    <FooterContainer />
+                    <FooterContainer item={item}/>
                 </View>
             </View>
             <View style={styles.angleRightContainer}>
@@ -149,15 +147,15 @@ const SecondColBlock = memo(({ item }) => {
 
 const VendorCard = memo(({ item, cardWidth }) => {
     const colors = [pStyles.recommendedColor, pStyles.premiumColor, pStyles.regularColor, pStyles.economyColor];
-    const privileges = ['Recommended', 'Premium', 'Regular', 'Economy'];
+    const privileges = ['RECOMMENDED', 'PREMIUM', 'REGULAR', 'ECONOMY'];
     const colorIndex = privileges.indexOf(item.bookingPrivilege);
     const colorCode = colors[colorIndex === -1 ? 2 : colorIndex]; // Default to 'Regular' color (index 2)
 
     return (
-        <View key={item.quoteId} style={[styles.item, { borderLeftColor: colorCode ,width: cardWidth}]}>
+        <View key={item.quoteId} style={[styles.item, { borderLeftColor: colorCode, width: cardWidth }]}>
             <View style={styles.cardContentWrapper}>
                 <FirstColBlock quotedAmt={item.quotedAmtByKM} save={item.save} isNegotiable={item.isNegotiable} />
-                <SecondColBlock item={item} />
+                <SecondColBlock item={item} color={colorCode} />
             </View>
         </View>
     );
@@ -182,200 +180,203 @@ const styles = StyleSheet.create({
         elevation: 6,
     },
     cardContentWrapper: {
-        flex: 1, 
-        flexDirection: 'row', 
+        flex: 1,
+        flexDirection: 'row',
         justifyContent: 'space-between'
     },
 
     // Column 1 Styles (Price & Bargain)
-    firstColBlock: { 
-        flex: 1, 
-        height: 150 
+    firstColBlock: {
+        flex: 1,
+        height: 150
     },
-    c1Container: { 
-        height: '100%', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
+    c1Container: {
+        height: '100%',
+        flexDirection: 'column',
+        alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 10, 
-        marginBottom: 10, 
-        borderRightWidth: 1, 
-        borderRightColor: pStyles.lightGray 
+        marginTop: 10,
+        marginBottom: 10,
+        borderRightWidth: 1,
+        borderRightColor: pStyles.lightGray
     },
-    quotedAmtTxt: { 
-        fontFamily: pStyles.fontStyleM, 
-        fontSize: 18 
+    quotedAmtTxt: {
+        fontFamily: pStyles.fontStyleM,
+        fontSize: 18
     },
-    saveWrapper: { 
-        flexDirection: 'row', 
-        alignItems: 'baseline' 
+    saveWrapper: {
+        flexDirection: 'row',
+        alignItems: 'baseline'
     },
-    savelabelTxt: { 
-        fontSize: pStyles.fontSizeSM, 
-        fontFamily: pStyles.fontStyleBI, 
-        color: pStyles.primary, 
-        opacity: 0.6 
+    savelabelTxt: {
+        fontSize: pStyles.fontSizeSM,
+        fontFamily: pStyles.fontStyleBI,
+        color: pStyles.primary,
+        opacity: 0.6
     },
-    saveValueTxt: { 
-        fontSize: pStyles.fontSizeM - 2, 
-        fontFamily: pStyles.fontStyleBI, 
-        color: pStyles.primary 
+    saveValueTxt: {
+        fontSize: pStyles.fontSizeM - 2,
+        fontFamily: pStyles.fontStyleBI,
+        color: pStyles.primary
     },
-    bargainMain: { 
-        justifyContent: 'center', 
-        width: 55, 
-        height: 17, 
-        borderRadius: 4 
+    bargainMain: {
+        justifyContent: 'center',
+        width: 55,
+        height: 17,
+        borderRadius: 4
     },
-    bargainContainer: { 
-        height: 20, 
-        borderRadius: 5, 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        backgroundColor: pStyles.lightGray 
+    bargainContainer: {
+        height: 20,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: pStyles.lightGray
     },
-    bargainLabelTxt: { 
-        fontSize: 8, 
-        opacity: 0.9, 
-        fontFamily: pStyles.fontStyleB, 
-        letterSpacing: 1.2, 
-        color: pStyles.primary, 
-        textAlign: 'center' 
+    bargainLabelTxt: {
+        fontSize: 8,
+        opacity: 0.9,
+        fontFamily: pStyles.fontStyleB,
+        letterSpacing: 1.2,
+        color: pStyles.primary,
+        textAlign: 'center'
     },
 
     // Column 2 Styles (Details)
-    secondColMain: { 
-        flex: 3, 
-        flexDirection: 'row', 
-        height: 150, 
-        justifyContent: 'center', 
-        alignSelf: 'center' 
+    secondColMain: {
+        flex: 3,
+        flexDirection: 'row',
+        height: 150,
+        justifyContent: 'center',
+        alignSelf: 'center'
     },
-    c2Container: { 
-        height: 150, 
-        width: '97%', 
-        flexDirection: 'column' 
+    c2Container: {
+        height: 150,
+        width: '97%',
+        flexDirection: 'column'
     },
-    c2BlockA: { 
-        height: 105, 
-        padding: 10 
+    c2BlockA: {
+        height: 105,
+        padding: 10
     },
-    c2BlockB: { 
-        height: 45, 
-        paddingLeft: 10 
+    c2BlockB: {
+        height: 45,
+        paddingLeft: 10
     },
-    c2BlockAContainer: { 
-        height: 30, 
-        flexDirection: 'row', 
-        justifyContent: 'space-around', 
-        alignItems: 'center' 
+    c2BlockAContainer: {
+        height: 30,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center'
     },
-    c2NameWrapper: { 
-        height: 30, 
-        width: '60%', 
-        overflow: 'hidden', 
-        flexDirection: 'row', 
-        alignItems: 'flex-start' 
+    c2NameWrapper: {
+        height: 30,
+        width: '60%',
+        overflow: 'hidden',
+        flexDirection: 'row',
+        alignItems: 'flex-start'
     },
-    nameLabelTxt: { 
-        fontSize: 18, 
-        fontFamily: fonts.RubikMedium, 
-        color: themeColors.primary 
+    nameLabelTxt: {
+        fontSize: 18,
+        fontFamily: fonts.RubikMedium,
+        color: themeColors.primary
     },
-    c2StarWrapper: { 
-        height: 30, 
-        width: '40%', 
-        flexDirection: 'column', 
-        justifyContent: 'flex-end' 
+    c2StarWrapper: {
+        height: 30,
+        width: '40%',
+        flexDirection: 'column',
+        justifyContent: 'flex-end'
     },
     starStyle: {
         width: 5
     },
-    c2ExpWrapper: { 
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        paddingTop: 3 
+    c2ExpWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 3
     },
-    expLabel: { 
-        fontSize: 9, 
-        fontFamily: fonts.RubikMedium, 
-        letterSpacing: 1.1, 
-        color: themeColors.primary, 
-        opacity: 0.7 
+    expLabel: {
+        fontSize: 9,
+        fontFamily: fonts.RubikMedium,
+        letterSpacing: 1.1,
+        color: themeColors.primary,
+        opacity: 0.7
     },
-    expValue: { 
-        fontSize: 10, 
-        fontFamily: fonts.RubikMedium, 
-        color: themeColors.primary, 
-        paddingLeft: 5, 
-        opacity: 0.9 
+    expValue: {
+        fontSize: 10,
+        fontFamily: fonts.RubikMedium,
+        color: themeColors.primary,
+        paddingLeft: 5,
+        opacity: 0.9
     },
-    taggedWrapper: { 
-        paddingTop: 5 
+    taggedWrapper: {
+        paddingTop: 7
     },
-    tagContainer: { 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        backgroundColor: themeColors.lightGray, 
-        borderRadius: 8, 
-        paddingLeft: 6, 
-        paddingRight: 6 
+    tagContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: themeColors.recommendedBgColor,
+        height: 15,
+        borderRadius: 8,
+        paddingLeft: 6,
+        paddingRight: 6
     },
-    tagTxt: { 
-        fontSize: 12, 
-        fontFamily: fonts.RubikMedium, 
-        color: themeColors.primary, 
-        opacity: 1 
+    tagTxt: {
+        fontSize: 10,
+        fontFamily: fonts.RubikMedium,
+        color: themeColors.white,
+        fontWeight: 'bold',
+        letterSpacing: 1,
+        opacity: 1
     },
     // Footer Styles
-    c2FooterBlock: { 
-        paddingTop: 10, 
-        borderTopWidth: StyleSheet.hairlineWidth, 
-        borderTopColor: themeColors.lightGray 
+    c2FooterBlock: {
+        paddingTop: 10,
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderTopColor: themeColors.lightGray
     },
-    c2FooterRow: { 
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        justifyContent: 'space-evenly' 
+    c2FooterRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
     },
-    footerItemContainer: { 
-        flex: 1.5, 
-        flexDirection: 'column', 
-        alignItems: 'flex-start', 
-        justifyContent: 'center' 
+    footerItemContainer: {
+        flex: 1.5,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'center'
     },
-    footerLabelTxt: { 
-        fontFamily: fonts.RubikMedium, 
-        fontSize: 11, 
+    footerLabelTxt: {
+        fontFamily: fonts.RubikMedium,
+        fontSize: 11,
         // opacity: 0.9, 
-        color: themeColors.gray 
+        color: themeColors.gray
     },
-    footerValueTxt: { 
-        fontFamily: fonts.RubikBlack, 
-        fontSize: 12, 
-        opacity: 0.9, 
-        color: "#000" 
+    footerValueTxt: {
+        fontFamily: fonts.RubikBlack,
+        fontSize: 12,
+        opacity: 0.9,
+        color: "#000"
     },
     // Rating Styles
-    startRatingContainer: { 
-        justifyContent: 'center', 
-        alignItems: 'center' 
+    startRatingContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    startRatingLabel: { 
-        fontSize: 9, 
-        fontFamily: fonts.RubikMediumItalic, 
-        color: themeColors.primary, 
-        paddingLeft: 20 
+    startRatingLabel: {
+        fontSize: 9,
+        fontFamily: fonts.RubikMediumItalic,
+        color: themeColors.primary,
+        paddingLeft: 20
     },
     // Icon
-    angleRightContainer: { 
-        height: 150, 
-        justifyContent: 'center', 
-        alignSelf: 'flex-end', 
-        width: '3%', 
+    angleRightContainer: {
+        height: 150,
+        justifyContent: 'center',
+        alignSelf: 'flex-end',
+        width: '3%',
     },
-    angleRightIcon: { 
-        color: themeColors.gray, 
-        opacity: 0.5 
+    angleRightIcon: {
+        color: themeColors.gray,
+        opacity: 0.5
     },
 });

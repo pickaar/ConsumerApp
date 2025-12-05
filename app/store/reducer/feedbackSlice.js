@@ -1,27 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getFeedbackList, getVendorDetails } from '@thunk/feebackThunk';
+import { API_CALL_STATUS } from '../../utils/constant';
+import { fetchFeedback, getFeedbackThunk } from '../thunk/feebackThunk';
 
 const initialState = {
-    user: {
-        userInfo: {
-            name: '',
-            exp: '',
-            language: '',
-            completedTrip: 0,
-            badgesScored: 0,
-            aboutMe: '',
-            profileImgSrc: '../../../../assets/driver_avatar.png'
-        },
-        ratings: {
-            rating: 0,
-            completedTrip: 0,
-            ratingForEach: []
-        },
-        scoredBadgesWithTotal: []
+    userInfo: {
+        name: '',
+        exp: '',
+        language: '',
+        completedTrip: 0,
+        badgesScored: 0,
+        aboutMe: '',
+        profileImgSrc: '../../../../assets/driver_avatar.png'
     },
+    ratings: {
+        rating: 0,
+        completedTrip: 0,
+        ratingForEach: []
+    },
+    scoredBadgesWithTotal: [],
     feedbackList: [],
-    vendorDetailsLoader: true,
-    feedbackLoader: true
+    feedbackLoader: API_CALL_STATUS.IDLE,
 };
 
 const feedbackSlice = createSlice({
@@ -33,21 +32,20 @@ const feedbackSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(getVendorDetails.fulfilled, (state, action) => {
-            state.user = action.payload;
-            state.vendorDetailsLoader = false;
-        })
-        .addCase(getVendorDetails.pending, (state) => {
-            state.vendorDetailsLoader = true;
-        })
-        .addCase(getFeedbackList.fulfilled, (state, action) => {
-            console.log("Feedback List:", action.payload);
-            state.feedbackList = action.payload;
-            state.feedbackLoader = false;
-        })
-        .addCase(getFeedbackList.pending, (state) => {
-            state.feedbackLoader = true;
-        });
+        builder
+            .addCase(fetchFeedback.fulfilled, (state, action) => {
+                state.userInfo = action.payload.userInfo;
+                state.ratings = action.payload.ratings;
+                state.scoredBadgesWithTotal = action.payload.scoredBadgesWithTotal;
+                state.feedbackList = action.payload.feedbackList;
+                state.feedbackLoader = API_CALL_STATUS.FULFILLED;
+            })
+            .addCase(fetchFeedback.pending, (state) => {
+                state.feedbackLoader = API_CALL_STATUS.PENDING;
+            })
+            .addCase(fetchFeedback.rejected, (state) => {
+                state.feedbackLoader = API_CALL_STATUS.REJECTED;
+            });
     }
 });
 
