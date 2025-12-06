@@ -37,8 +37,8 @@ const TextSkeleton = ({ width, height = 9, style, label }) => {
     const animatedStyle = {
         width: width,
         height: height,
-        borderRadius: 4, 
-        backgroundColor: '#e0e0e0', 
+        borderRadius: 4,
+        backgroundColor: '#e0e0e0',
         opacity: opacityAnim,
     };
 
@@ -65,7 +65,7 @@ const StarRate = memo(({ rating, size, styleWidth }) => (
         maxStars={5}
         color={pStyles.yellow}
         emptyColor={pStyles.gray}
-        enableHalfStar={false}
+        enableHalfStar={true}
         enableSwiping={false}
         starSize={size}
         starStyle={{ width: styleWidth }}
@@ -89,7 +89,7 @@ const UserInfoBlock = memo(({ userInfo, loader }) => (
                 <Image style={styles.driverAvatar} source={require('../../../../assets/driver_avatar.png')} />
             </View>
             <View style={styles.driverContentContainer}>
-                {loader=== API_CALL_STATUS.PENDING ? <TextSkeleton width="80%" height={16} style={{ marginBottom: 0 }} /> : <Text style={styles.driverName}>{userInfo.name}</Text>}
+                {loader === API_CALL_STATUS.PENDING ? <TextSkeleton width="80%" height={16} style={{ marginBottom: 0 }} /> : <Text style={styles.driverName}>{userInfo.name}</Text>}
                 {
 
                     loader === API_CALL_STATUS.PENDING ?
@@ -103,7 +103,12 @@ const UserInfoBlock = memo(({ userInfo, loader }) => (
                         USER_INFO_LABELS?.map(({ key, label }) => (
                             <View key={key} style={styles.userInfoRow}>
                                 <Text style={styles.userInfoLabel}>{label} </Text>
-                                <Text style={styles.userInfoValue} numberOfLines={1}>{userInfo[key]}</Text>
+                                {
+                                    key === 'language' ?
+                                        <Text style={styles.userInfoValue} numberOfLines={1}>{(userInfo[key] || []).join(', ')}</Text>
+                                        :
+                                        <Text style={styles.userInfoValue} numberOfLines={1}>{userInfo[key]}</Text>
+                                }
                             </View>
                         ))
 
@@ -177,36 +182,34 @@ const FeedbackItem = memo(({ item }) => (
 const FeedbackComponent = memo(({ feedbackList, loader }) => (
     <>
         <View style={styles.feedbackHeader}>
-            <Text style={styles.feedbackTitle}>Feedbacks {loader===API_CALL_STATUS.PENDING && <Text style={{ color: 'black' }}>Loading...</Text>}</Text>
+            <Text style={styles.feedbackTitle}>Feedbacks {loader === API_CALL_STATUS.PENDING && <Text style={{ color: 'black' }}>Loading...</Text>}</Text>
         </View>
 
-        {loader === API_CALL_STATUS.SUCCESS && (
+        {loader === API_CALL_STATUS.FULFILLED && (
             feedbackList?.length === 0 ? (
                 <Text style={styles.noFeedbackText}>No feedback available</Text>
             ) : (
-                feedbackList?.map((item) => <FeedbackItem key={item.id} item={item} />)
+                feedbackList?.map((item, index) => <FeedbackItem key={index} item={item} />)
             ))}
     </>
 ));
 
-export default function Feedback({ navigation, route }) {
+export default function Feedback({ route }) {
     const dispatch = useAppDispatch();
     const vendorId = route.params?.vendorId;
     const { userInfo, ratings, scoredBadgesWithTotal, feedbackList } = useAppSelector((state) => state.feedback);
     const feedbackLoader = useAppSelector((state) => state.feedback.feedbackLoader);
-    // console.log("Feedback Screen - vendorId:", vendorId);
     useEffect(() => {
-        // dispatch(setQuoteParam({ key: 'detailScreenRedirectTo', value: '' }));
-        dispatch(fetchFeedback({ vendorId}));
-    }, [dispatch]);
+        dispatch(fetchFeedback({ vendorId }));
+    }, [dispatch, vendorId]);
 
     return (
         <>
-            <StatusBar  barStyle="dark-content" />
+            <StatusBar barStyle="dark-content" />
             <SafeAreaView style={styles.safeAreaContainer}>
                 <ScrollView style={styles.scrollView}>
                     <View style={styles.container}>
-                        <TitleWithBackBtn name="Feedback"  />
+                        <TitleWithBackBtn name="Feedback" />
 
                         <UserInfoBlock userInfo={userInfo} loader={feedbackLoader} />
                         <Hr />

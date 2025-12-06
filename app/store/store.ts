@@ -4,8 +4,9 @@ import offerSlice from './reducer/offerSlice';
 import { useDispatch } from 'react-redux';
 import modalSlice from './reducer/modalSlice';
 import bookingSlice from './reducer/bookingSlice';
-import  quoteSlice  from './reducer/quoteSlice';
+import quoteSlice from './reducer/quoteSlice';
 import feedbackSlice from './reducer/feedbackSlice';
+import { socketMiddleware } from './middleware/socketMiddleware';
 
 
 /**
@@ -25,6 +26,8 @@ export const store = configureStore({
     quote: quoteSlice,
     feedback: feedbackSlice
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(socketMiddleware),
 });
 
 // TypeScript: Infer the `RootState` and `AppDispatch` types from the store itself

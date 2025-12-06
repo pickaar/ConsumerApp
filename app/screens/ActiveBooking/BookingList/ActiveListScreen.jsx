@@ -7,7 +7,9 @@ import { fonts } from '@utils/theme';
 import ActiveBooking from "@screens/ActiveBooking/BookingList/component/ActiveBooking";
 import ActiveQuotes from "@screens/ActiveBooking/BookingList/component/ActiveQuotes";
 import { API_CALL_STATUS } from "../../../utils/constant";
-
+import { wsConnect, wsDisconnect, wsJoinRoom } from "store/middleware/socketMiddleware";
+import { useAppDispatch } from '@store/store';
+import { useEffect, useRef } from "react";
 const LoadingIndicator = () => (
     <View style={styles.loaderContainer}>
         <LottieView
@@ -21,10 +23,13 @@ const LoadingIndicator = () => (
 );
 
 export default function ActiveListScreen({ navigation }) {
+    const dispatch = useAppDispatch();
+    const oldQuotesCount = useRef(0);
     const quoteItemLoader = useAppSelector((state) => state.quote?.quoteItemLoader);
     const quoteList = useAppSelector((state) => state.quote?.quotesList.length || 0);
     const { height: screenHeight } = useSafeAreaFrame();
     const contentHeight = screenHeight - 50;
+    const bookingList = useAppSelector((state) => state.quote?.bookingList);
 
     const renderQuoteContent = () => {
         const isLoading = quoteItemLoader === API_CALL_STATUS.PENDING || quoteItemLoader === API_CALL_STATUS.IDLE;
@@ -39,6 +44,44 @@ export default function ActiveListScreen({ navigation }) {
 
         return <ActiveQuotes navigation={navigation} />;
     };
+
+    useEffect(() => {
+        // 1. Connect the socket once the app is initialized
+        dispatch(wsConnect());
+
+        // 2. Join the specific room using the Booking ID
+        if (bookingList && bookingList.length > 0) {
+            bookingList.forEach(booking => {
+                console.log("Joining room for booking ID:", booking.type);
+                // Ensure you use the correct property for the booking ID
+                dispatch(wsJoinRoom({
+                    id: booking._id,
+                    type: booking.type // Assuming this is 'VEHICLE_BOOKING'
+                }));
+            });
+        }
+
+        // 3. Clean up the connection when the screen is destroyed
+        return () => {
+            // Optional: You might want to keep the connection open for background updates
+            // But good practice is to disconnect/leave rooms
+            dispatch(wsDisconnect());
+        };
+    }, [dispatch, bookingList.length]);
+
+    useEffect(() => {
+        // If the number of quotes has increased since the last render
+        if (quoteList.length > oldQuotesCount.current && oldQuotesCount.current !== 0) {
+            PToast({
+                message: 'New Quote Received!',
+                type: 'error',
+                // ... other toast params
+            });
+        }
+        // Update the reference for the next render cycle
+        oldQuotesCount.current = quoteList.length;
+    }, [quoteList.length]);
+
 
     return (
         <>

@@ -21,7 +21,8 @@ const selectBookingData = (state) => {
     returnDate, comments, distance, duration,
     isTollAvailable, isBookingForOthers,
     OthersPhoneNo, OthersName, isSingleWomen,
-    userID
+    userID,
+    bookingType: 'VEHICLE_BOOKING', // Default value
   }
 };
 

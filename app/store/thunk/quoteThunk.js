@@ -26,7 +26,6 @@ export const fetchQuotesByBookingId = createAsyncThunk(
   async ( {bookingId} , thunkAPI) => {
     try {
       const response = await axios.get(`${API_BOOKING_URL}/api/quote/getQuotes/${bookingId}`);
-      console.log("Fetched quotes response:", response.data.data);
       return response.data.data;
 
     } catch (error) {

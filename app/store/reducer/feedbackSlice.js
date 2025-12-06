@@ -34,10 +34,11 @@ const feedbackSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchFeedback.fulfilled, (state, action) => {
-                state.userInfo = action.payload.userInfo;
-                state.ratings = action.payload.ratings;
-                state.scoredBadgesWithTotal = action.payload.scoredBadgesWithTotal;
-                state.feedbackList = action.payload.feedbackList;
+                const { userInfo, ratings, scoredBadgesWithTotal, feedbacks } = action.payload;
+                state.userInfo = userInfo;
+                state.ratings = ratings;
+                state.scoredBadgesWithTotal = scoredBadgesWithTotal;
+                state.feedbackList = feedbacks;
                 state.feedbackLoader = API_CALL_STATUS.FULFILLED;
             })
             .addCase(fetchFeedback.pending, (state) => {

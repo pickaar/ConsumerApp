@@ -78,7 +78,6 @@ const MultiLine = React.memo(({ item }) => (
 ));
 
 const MultiLineWithInfo = React.memo(({ item }) => {
-    console.log("MultiLineWithInfo item:", item);
     const dispatch = useAppDispatch();
 
     const openModal = useCallback((modalType, modalContent) => {
