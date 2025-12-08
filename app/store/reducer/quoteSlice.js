@@ -24,7 +24,7 @@ export const quoteSlice = createSlice({
             state[action.payload.key] = action.payload.value
         },
         setQuotesList(state, action) {
-            console.log("Updating quotes list in store with payload:", action.payload);
+            console.log("Updating quotes list in store with payload:", JSON.stringify(action.payload));
             // The action.payload is the entire quotes list from the server response
             state.quotesList = action.payload || [];
             // state.quoteItemLoader = API_CALL_STATUS.FULFILLED;

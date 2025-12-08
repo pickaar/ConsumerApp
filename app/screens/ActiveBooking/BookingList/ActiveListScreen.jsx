@@ -46,39 +46,29 @@ export default function ActiveListScreen({ navigation }) {
     };
 
     useEffect(() => {
-        // 1. Connect the socket once the app is initialized
         dispatch(wsConnect());
 
-        // 2. Join the specific room using the Booking ID
         if (bookingList && bookingList.length > 0) {
             bookingList.forEach(booking => {
-                console.log("Joining room for booking ID:", booking.type);
-                // Ensure you use the correct property for the booking ID
                 dispatch(wsJoinRoom({
                     id: booking._id,
-                    type: booking.type // Assuming this is 'VEHICLE_BOOKING'
+                    type: booking.type
                 }));
             });
         }
 
-        // 3. Clean up the connection when the screen is destroyed
         return () => {
-            // Optional: You might want to keep the connection open for background updates
-            // But good practice is to disconnect/leave rooms
             dispatch(wsDisconnect());
         };
     }, [dispatch, bookingList.length]);
 
     useEffect(() => {
-        // If the number of quotes has increased since the last render
         if (quoteList.length > oldQuotesCount.current && oldQuotesCount.current !== 0) {
             PToast({
                 message: 'New Quote Received!',
                 type: 'error',
-                // ... other toast params
             });
         }
-        // Update the reference for the next render cycle
         oldQuotesCount.current = quoteList.length;
     }, [quoteList.length]);
 
@@ -141,6 +131,6 @@ const styles = StyleSheet.create({
     },
     loaderText: {
         fontFamily: fonts.RubikLight,
-        marginTop: 20, // Adjust as needed to position text relative to Lottie animation
+        marginTop: 20,
     },
 });

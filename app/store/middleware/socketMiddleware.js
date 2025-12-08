@@ -30,7 +30,6 @@ export const socketMiddleware = store => next => action => {
 
             // 🌟 Listen for the real-time data push from the backend 🌟
             socket.on(SOCKET_EVENT_UPDATE, (payload) => {
-                console.log("Real Time update socket :", payload.status, typeof payload.status);
                 if(payload.status === 200){
                     dispatch(setQuotesList(payload.data));
                 }
